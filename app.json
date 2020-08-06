@@ -1,0 +1,41 @@
+{
+  "expo": {
+    "name": "likeoutloud",
+    "slug": "lol",
+    "description": "Recommendation network",
+    "platforms": ["ios", "android", "web"],
+    "userInterfaceStyle": "dark",
+    "androidStatusBar": {
+      "hidden": true
+    },
+    "androidNavigationBar": { "visible": "immersive" },
+    "facebookAppId": "576643239675500",
+    "facebookAutoInitEnabled": false,
+    "facebookDisplayName": "Like out Loud",
+    "facebookAutoLogAppEventsEnabled": true,
+    "facebookAdvertiserIDCollectionEnabled": false,
+    "facebookScheme": "fb312427179949501",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/logo.png",
+    "scheme": "myapp",
+    "splash": {
+      "image": "./assets/logo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#000000"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "buildNumber": "1.0.0",
+      "bundleIdentifier": "app.likeoutloud"
+    },
+    "android": { "package": "app.likeoutloud", "versionCode": 1 },
+    "web": {
+      "favicon": "./assets/images/favicon.png"
+    }
+  }
+}

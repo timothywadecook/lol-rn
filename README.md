@@ -1,2 +1,1 @@
-# lol-rn
-Recommend with Friends React Native App
+# Like Out Loud - React Native
