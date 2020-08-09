@@ -62,17 +62,6 @@ export default function MoviesAndShowInput({
       .catch((e) => console.log("Error: ", e));
   };
 
-  // const lookupData = async () => {
-  //   if (!debouncedQuery || itemChosen) return;
-  //   const data = await lookupService.find({
-  //     query: {
-  //       category,
-  //       query: debouncedQuery,
-  //     },
-  //   });
-  //   setData(data);
-  // };
-
   const clearSelection = () => {
     setData([]);
     setItemChosen(false);
@@ -196,10 +185,10 @@ const getStyles = (theme, itemChosen) =>
       backgroundColor: "transparent",
       height: theme.windowHeight * 0.4,
     },
-    row: { flexDirection: "row", alignItems: "center" },
+    row: { flexDirection: "row", alignItems: "center", paddingVertical: 4 },
     listItemImage: {
-      width: "5%",
-      height: 20,
+      width: "8%",
+      height: 30,
       resizeMode: "contain",
       borderRadius: 2,
     },

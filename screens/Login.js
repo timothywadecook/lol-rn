@@ -19,7 +19,7 @@ export default function LoginScreen({ navigation }) {
   const theme = useTheme();
   const styles = StyleSheet.create({
     container: {
-      backgroundColor: theme.wallbg,
+      backgroundColor: theme.purple,
       flex: 1,
       justifyContent: "center",
       alignItems: "center",
@@ -28,15 +28,38 @@ export default function LoginScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <View style={{ flex: 1 }}>
+      <View
+        style={{
+          flex: 3,
+          justifyContent: "flex-end",
+          alignItems: "center",
+          backgroundColor: theme.bg,
+          borderBottomEndRadius: 130,
+          borderBottomStartRadius: 0,
+          shadowColor: theme.wallbg,
+          shadowRadius: 5,
+          shadowOpacity: 0.8,
+          shadowOffset: { width: 0, height: 1 },
+          width: theme.windowWidth,
+          paddingBottom: 100,
+        }}
+      >
         <Image source={logo} style={{ width: 200, height: 200 }} />
-        <FancyH1 style={{ color: theme.purple }}>Like out Loud</FancyH1>
+        <FancyH1 style={{ color: theme.purple }}>Like Out Loud</FancyH1>
         <H4 style={{ color: theme.primary }}>
           Recommend with Friends {"\u00A9"}
         </H4>
       </View>
 
-      <View style={{ marginBottom: 40, flex: 0.5 }}>
+      <View
+        style={{
+          width: theme.windowWidth,
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+          borderTopStartRadius: 80,
+        }}
+      >
         <FacebookLogin />
         <GoogleLogin />
       </View>

@@ -4,13 +4,9 @@ import { View, Button, TextInput } from "react-native";
 import ActivityIndicatorCentered from "../components/Atomic/ActivityIndicatorCentered";
 import UsernameNavToFriendDetails from "../components/Atomic/UsernameNavToFriendDetails";
 import ListItem from "../components/ListItems/ListItem";
-import { P, H2 } from "../components/Atomic/StyledText";
+import { P, FancyH1, H2 } from "../components/Atomic/StyledText";
 // Services
-import {
-  likesService,
-  commentsService,
-  usersService,
-} from "../services/feathersClient";
+import { commentsService, usersService } from "../services/feathersClient";
 // Hooks
 import useTheme from "../hooks/useTheme";
 import useService from "../hooks/useService";
@@ -24,9 +20,9 @@ export default function RecommendationDetails({ navigation, route }) {
 
   const theme = useTheme();
 
-  const { recommendation } = route.params;
+  const { recId } = route.params;
   const comments = useService(commentsService, {
-    recommendation: recommendation._id,
+    recommendation: recId,
   });
 
   return (
@@ -54,11 +50,11 @@ export default function RecommendationDetails({ navigation, route }) {
         ></Button>
       </View>
 
-      <ListItem disableLink={true} {...recommendation} />
+      <ListItem disableLink={true} recId={recId} />
 
       <View style={{ flex: 1, width: theme.windowWidth, paddingHorizontal: 6 }}>
         <H2 style={{ padding: 10 }}>Comments</H2>
-        <CommentInput recommendation={recommendation._id} />
+        <CommentInput recId={recId} />
         <FlatList
           data={comments}
           renderItem={({ item }) => <Comment {...item} />}
@@ -71,7 +67,7 @@ export default function RecommendationDetails({ navigation, route }) {
   );
 }
 
-export function CommentInput({ recommendation, onComplete }) {
+export function CommentInput({ recId, onComplete }) {
   const theme = useTheme();
   const [input, setInput] = React.useState("");
 
@@ -79,7 +75,7 @@ export function CommentInput({ recommendation, onComplete }) {
 
   const onSubmitComment = async () => {
     try {
-      commentsService.create({ text: input, creator, recommendation });
+      commentsService.create({ text: input, creator, recommendation: recId });
     } catch (error) {
       console.log("Error trying to create comment", error);
     }
@@ -141,10 +137,14 @@ function Comment({ text, creator }) {
           padding: 10,
         }}
       >
-        <UsernameNavToFriendDetails withAvatar={false} friend={friend} />
-        <P>{text}</P>
+        <UsernameNavToFriendDetails withAvatar={true} friend={friend} />
+        <FancyH1 style={{ fontSize: 14 }}>{text}</FancyH1>
       </View>
     );
   }
-  return <ActivityIndicatorCentered size="small" />;
+  return (
+    <View style={{ flexDirection: "row", alignItems: "center", padding: 10 }}>
+      <ActivityIndicatorCentered size="small" />
+    </View>
+  );
 }

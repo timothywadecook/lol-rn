@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { View, TextInput, StyleSheet, Image } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 import { FancyH1, Title, H4 } from "../../components/Atomic/StyledText";
 import SingleFilterButtonSpan from "../../components/SingleFilterButtonSpan";
 import AnimateExpand from "../../components/Wrappers/AnimateExpand";
@@ -7,16 +8,14 @@ import DismissKeyboard from "../../components/Wrappers/DismissKeyboard";
 import SubmitButton from "../../components/Buttons/SubmitButton";
 import IconButtons from "../../components/Buttons/IconButtons";
 
-import { recommendationsService } from "../../services/feathersClient";
+import Modal from "../../components/Modal";
 
 import MoviesAndShowsInput from "../../components/Inputs/MoviesAndShowsInput";
 import BooksInput from "../../components/Inputs/BooksInput";
 import GooglePlacesInput from "../../components/Inputs/GooglePlacesInput";
 
 import useTheme from "../../hooks/useTheme";
-import { addRecommendation } from "../../store/recommendationsSlice";
-import { addPost } from "../../store/postsSlice";
-import { connect } from "react-redux";
+import { createRecommendationAsync } from "../../store/recommendationsSlice";
 
 const MainInputField = ({ category, setItem, itemChosen, setItemChosen }) => {
   switch (category) {
@@ -59,7 +58,7 @@ const MainInputField = ({ category, setItem, itemChosen, setItemChosen }) => {
   }
 };
 const MainCommentField = ({ hide, styles, theme, item, setItem }) =>
-  hide ? null : (
+  !hide && (
     <AnimateExpand doAnimation={!hide} height={80}>
       <TextInput
         autoFocus={true}
@@ -67,7 +66,7 @@ const MainCommentField = ({ hide, styles, theme, item, setItem }) =>
         autoCorrect={true}
         placeholder="What would your friends want to know about this?"
         clearButtonMode="always"
-        onChangeText={(text) => setItem({ ...item, main_comment: text })}
+        onChange={(e) => setItem({ ...item, main_comment: e.target.value })}
         value={item.main_comment}
         multiline={true}
         numberOfLines={4}
@@ -79,62 +78,64 @@ const MainCommentField = ({ hide, styles, theme, item, setItem }) =>
     </AnimateExpand>
   );
 
-const mapState = (state) => ({
-  sessionUserId: state.user._id,
-});
+export default function CreateScreen({ route }) {
+  const theme = useTheme();
+  const styles = getStyles(theme);
+  const userId = useSelector((state) => state.user._id);
+  const dispatch = useDispatch();
 
-const mapDispatch = {
-  addRecommendation,
-  addPost,
-};
-
-function CreateScreen({ navigation, route, addRecommendation, sessionUserId }) {
+  const [showModal, setShowModal] = useState(false);
   const [category, setCategory] = useState("");
   const [itemChosen, setItemChosen] = useState(false);
   const [item, setItem] = useState({});
 
+  const resetState = () => {
+    setItem({});
+    setItemChosen(false);
+    setCategory("");
+  };
+
   React.useEffect(() => {
+    setItemChosen(false);
+    setItem({});
+  }, [category]);
+
+  const receiveRepost = () => {
     if (route.params && route.params.repost) {
       const { repost } = route.params;
       setCategory(repost.category);
       setItemChosen(true);
       setItem(repost);
     }
-  }, []);
+  };
 
-  const theme = useTheme();
-  const styles = getStyles(theme);
-
-  const submitCreate = () => {
-    //
-    // NEW RECOMMENDATION BEING CREATED
-    //
-    const newRec = { ...item, creator: sessionUserId };
-
+  const addPhysicalLocationIfNeeded = (r) => {
+    const newRec = { ...r };
     newRec.physical_location = newRec.physical_location || {
       type: "Point",
       coordinates: [34, -83],
     };
-    recommendationsService
-      .create(newRec)
-      .then((rec) => {
-        addRecommendation(rec);
-        addPost(rec);
-      })
-      .catch((e) => console.log("Error while creating rec...", e));
+    return newRec;
+  };
 
-    // Show Modal
-    navigation.navigate("Modal", {
-      message: `Success! You just recommended\n\n ${item.title}. \n\nYour friends are very lucky to know you :)`,
-    });
-    setItem("");
-    setItemChosen(false);
-    setCategory("");
+  React.useEffect(receiveRepost, []);
+
+  const submitCreate = () => {
+    const newRec = { ...item, creator: userId };
+    const newRecWithLocation = addPhysicalLocationIfNeeded(newRec);
+    dispatch(createRecommendationAsync(newRecWithLocation));
+    resetState();
+    setShowModal(true);
   };
 
   return (
     <DismissKeyboard>
       <View style={styles.container}>
+        <Modal
+          showModal={showModal}
+          setShowModal={setShowModal}
+          type="create"
+        />
         <AnimateExpand doAnimation={!category} height={50}>
           <FancyH1>What do you like?</FancyH1>
         </AnimateExpand>
@@ -154,14 +155,12 @@ function CreateScreen({ navigation, route, addRecommendation, sessionUserId }) {
             justifyContent: "flex-start",
           }}
         >
-          {/* <View style={{ marginTop: 10 }}> */}
           {itemChosen && (
             <View
               style={{
                 width: theme.contentWidth,
                 flexDirection: "row",
                 justifyContent: "space-between",
-                // backgroundColor: "blue",
                 marginBottom: 20,
               }}
             >
@@ -195,7 +194,6 @@ function CreateScreen({ navigation, route, addRecommendation, sessionUserId }) {
             <MainInputField
               category={category}
               setItem={setItem}
-              item={item}
               itemChosen={itemChosen}
               setItemChosen={setItemChosen}
             />
@@ -209,11 +207,17 @@ function CreateScreen({ navigation, route, addRecommendation, sessionUserId }) {
             setItem={setItem}
           />
 
-          <SubmitButton
-            show={itemChosen && item.main_comment}
-            title={"Post"}
-            onPress={submitCreate}
-          />
+          {itemChosen && !item.main_comment && (
+            <SubmitButton title="Cancel" onPress={resetState} />
+          )}
+
+          {itemChosen && item.main_comment && (
+            <SubmitButton
+              intent="primary"
+              title="Post"
+              onPress={submitCreate}
+            />
+          )}
         </AnimateExpand>
       </View>
     </DismissKeyboard>
@@ -239,5 +243,3 @@ const getStyles = (theme) =>
       marginTop: 7.5,
     },
   });
-
-export default connect(mapState, mapDispatch)(CreateScreen);

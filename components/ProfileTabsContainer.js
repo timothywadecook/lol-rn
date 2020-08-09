@@ -12,17 +12,18 @@ export default function ProfileTabsContainer({ user }) {
   const [activeTab, setActiveTab] = useState("Posts");
 
   const posts = useSelector((state) => state.posts.list);
-  // const postsCount = useSelector((state) => state.posts.total);
+  const followingIds = useSelector((state) => state.follows.following);
+  const followerIds = useSelector((state) => state.follows.followers);
 
   const [following, setFollowing] = useState([]);
   const [followers, setFollowers] = useState([]);
 
   const fetchFollowing = () => {
-    if (user.following.length > 0) {
+    if (followingIds.length > 0) {
       usersService
         .find({
           query: {
-            _id: { $in: user.following },
+            _id: { $in: followingIds },
             $limit: 1000,
           },
         })
@@ -33,23 +34,25 @@ export default function ProfileTabsContainer({ user }) {
     }
   };
   const fetchFollowers = () => {
-    usersService
-      .find({
-        query: {
-          following: user._id,
-          $limit: 1000,
-        },
-      })
-      .then((res) => {
-        setFollowers(res.data);
-      })
-      .catch((e) => console.log("error getting followers", e));
+    if (followerIds.length > 0) {
+      usersService
+        .find({
+          query: {
+            _id: { $in: followerIds },
+            $limit: 1000,
+          },
+        })
+        .then((res) => {
+          setFollowers(res.data);
+        })
+        .catch((e) => console.log("error getting followers", e));
+    }
   };
 
   useEffect(() => {
     fetchFollowers();
     fetchFollowing();
-  }, [user.following]);
+  }, [followingIds]);
 
   const dispatch = useDispatch();
   const fetchMorePosts = () => dispatch(fetchMorePostsAsync());

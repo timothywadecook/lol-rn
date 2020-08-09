@@ -9,7 +9,7 @@ export default function TabBarIcon(props) {
     <Ionicons
       name={props.name}
       size={24}
-      style={{ marginTop: 5 }}
+      style={{ marginTop: 7 }}
       color={props.focused ? theme.primary : theme.tabIconDefault}
     />
   );

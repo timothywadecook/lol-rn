@@ -3,6 +3,8 @@ import { Alert, View } from "react-native";
 import { FacebookSocialButton } from "react-native-social-buttons";
 import * as Facebook from "expo-facebook";
 
+import client from "../../services/feathersClient";
+
 import useTheme from "../../hooks/useTheme";
 
 export default function FacebookLogin(props) {
@@ -18,16 +20,16 @@ export default function FacebookLogin(props) {
         permissions,
         declinedPermissions,
       } = await Facebook.logInWithReadPermissionsAsync({
-        permissions: ["public_profile"],
+        permissions: ["public_profile", "email"],
       });
       if (type === "success") {
-        // Get the user's name using Facebook's Graph API
-        const response = await fetch(
-          `https://graph.facebook.com/me?access_token=${token}`
-        );
-        Alert.alert("Logged in!", `Hi ${(await response.json()).name}!`);
+        const serverAuth = await client.authenticate({
+          strategy: "facebook",
+          access_token: token,
+        });
       } else {
         // type === 'cancel'
+        alert("Facebook Login Cancelled");
       }
     } catch ({ message }) {
       alert(`Facebook Login Error: ${message}`);
@@ -40,7 +42,7 @@ export default function FacebookLogin(props) {
         buttonViewStyle={{
           width: theme.windowWidth * 0.8,
           borderWidth: 0,
-          height: 50,
+          height: 45,
           marginBottom: 10,
         }}
         onPress={logIn}

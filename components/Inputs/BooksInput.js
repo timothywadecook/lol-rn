@@ -186,10 +186,10 @@ const getStyles = (theme, itemChosen) =>
       backgroundColor: "transparent",
       height: theme.windowHeight * 0.4,
     },
-    row: { flexDirection: "row", alignItems: "center" },
+    row: { flexDirection: "row", alignItems: "center", paddingVertical: 4 },
     listItemImage: {
-      width: "5%",
-      height: 20,
+      width: "8%",
+      height: 30,
       resizeMode: "contain",
       borderRadius: 2,
     },

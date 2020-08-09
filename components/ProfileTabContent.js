@@ -1,11 +1,13 @@
 import React from "react";
 import { connect, useDispatch, useSelector } from "react-redux";
-import { Text, ScrollView } from "react-native";
+import { Text, ScrollView, View } from "react-native";
 import UserListItem from "./ListItems/UserListItem";
 import FilteredRecommendationsList from "./Lists/FilteredRecommendationsList";
 
-import { toggleFollowingAsync } from "../store/userSlice";
+import { toggleFollowingAsync } from "../store/followsSlice";
 import useTheme from "../hooks/useTheme";
+
+import { H1 } from "../components/Atomic/StyledText";
 
 export default function ProfileTabContent({
   activeTab,
@@ -22,7 +24,7 @@ export default function ProfileTabContent({
   const dispatch = useDispatch();
   const toggleFollowing = (userId) => dispatch(toggleFollowingAsync(userId));
 
-  const sessionUserFollowing = useSelector((state) => state.user.following);
+  const sessionUserFollowing = useSelector((state) => state.follows.following);
 
   switch (activeTab) {
     case "Posts":
@@ -39,8 +41,15 @@ export default function ProfileTabContent({
     case "Lists":
       return (
         <ScrollView>
-          <Text>My Public List</Text>
-          <Text>My Private List</Text>
+          <View style={{ width: theme.windowWidth, padding: 20 }}>
+            <H1>My Private List</H1>
+          </View>
+          <View style={{ width: theme.windowWidth, padding: 20 }}>
+            <H1>My Public List</H1>
+          </View>
+          <View style={{ width: theme.windowWidth, padding: 20 }}>
+            <H1 style={{ color: "gray" }}>+ Create New List</H1>
+          </View>
         </ScrollView>
       );
     case "Followers":
@@ -54,8 +63,7 @@ export default function ProfileTabContent({
           {followers.map((u) => (
             <UserListItem
               username={u.username}
-              first_name={u.first_name}
-              last_name={u.last_name}
+              name={u.name}
               action={
                 sessionUserFollowing.includes(u._id) ? "unfollow" : "follow"
               }
@@ -78,8 +86,7 @@ export default function ProfileTabContent({
           {following.map((u) => (
             <UserListItem
               username={u.username}
-              first_name={u.first_name}
-              last_name={u.last_name}
+              name={u.name}
               action={
                 sessionUserFollowing.includes(u._id) ? "unfollow" : "follow"
               }

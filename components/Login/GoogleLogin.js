@@ -40,7 +40,7 @@ export default function GoogleLogin(props) {
         buttonViewStyle={{
           width: theme.windowWidth * 0.8,
           borderWidth: 0,
-          height: 50,
+          height: 45,
           marginBottom: 10,
         }}
         onPress={logIn}

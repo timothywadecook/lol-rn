@@ -13,7 +13,7 @@ import FriendDetails from "./screens/FriendDetails";
 import RecommendationDetails from "./screens/RecommendationDetails";
 import Modal from "./screens/Modal";
 // Actions
-import { login, logout, setAppIsReady } from "./store/userSlice";
+import { login, setAppIsReady } from "./store/userSlice";
 
 const Stack = createStackNavigator();
 
@@ -25,16 +25,9 @@ const mapState = (state) => ({
 const mapDispatch = {
   login,
   setAppIsReady,
-  logout,
 };
 
-const Router = ({
-  appIsReady,
-  isAuthenticated,
-  login,
-  logout,
-  setAppIsReady,
-}) => {
+const Router = ({ appIsReady, isAuthenticated, login, setAppIsReady }) => {
   const handleAuthenticated = async (response) => {
     login(response.user);
     setAppIsReady();
@@ -42,7 +35,6 @@ const Router = ({
 
   React.useEffect(() => {
     client.on("authenticated", handleAuthenticated);
-    client.on("logout", () => logout());
     client
       .reAuthenticate()
       .then(() => {

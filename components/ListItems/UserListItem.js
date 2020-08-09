@@ -4,13 +4,7 @@ import { View, Button, Image } from "react-native";
 import { H2, H2G } from "../Atomic/StyledText";
 import useTheme from "../../hooks/useTheme";
 
-const UserListItem = ({
-  username,
-  first_name,
-  last_name,
-  action,
-  handleAction,
-}) => {
+const UserListItem = ({ username, name, action, handleAction }) => {
   const title = {
     follow: "Follow",
     unfollow: "Unfollow",
@@ -18,7 +12,6 @@ const UserListItem = ({
   }[action];
 
   const theme = useTheme();
-  const displayName = first_name + " " + last_name;
 
   return (
     <View
@@ -26,7 +19,7 @@ const UserListItem = ({
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        paddingVertical: 15,
+        paddingVertical: 20,
       }}
     >
       <View
@@ -53,8 +46,8 @@ const UserListItem = ({
             flexDirection: "column",
           }}
         >
-          <H2>@{username}</H2>
-          <H2G>{displayName}</H2G>
+          <H2>{username}</H2>
+          <H2G>{name}</H2G>
         </View>
       </View>
 

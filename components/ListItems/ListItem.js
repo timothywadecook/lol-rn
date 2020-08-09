@@ -1,207 +1,178 @@
 import React from "react";
-import {
-  View,
-  Pressable,
-  Image,
-  Vibration,
-  TouchableWithoutFeedback,
-} from "react-native";
+import { useSelector, useDispatch } from "react-redux";
+// Components
+import { View, Image, TouchableWithoutFeedback } from "react-native";
 import { Title, FancyH1, H4, H2, H3, CommentText } from "../Atomic/StyledText";
 import UsernameNavToFriendDetails from "../Atomic/UsernameNavToFriendDetails";
-// Redux
-import { useSelector, useDispatch } from "react-redux";
-import { toggleLikedAsync } from "../../store/likesSlice";
-// Icons
 import IconButtons from "../Buttons/IconButtons";
+// Actions
+import {
+  likeByRecIdAsync,
+  unlikeByRecIdAsync,
+} from "../../store/recommendationsSlice";
 // Hooks
 import useTheme from "../../hooks/useTheme";
 import { useNavigation } from "@react-navigation/native";
-// Services
-import {
-  likesService,
-  commentsService,
-  usersService,
-} from "../../services/feathersClient";
+// Helper
+import moment from "moment";
 
-// temp
-import { CommentInput } from "../../screens/RecommendationDetails";
+export default function ListItem({
+  spaced = false,
+  disableLink = false,
+  recId,
+  category,
+}) {
+  const theme = useTheme();
+  const dispatch = useDispatch();
+  navigation = useNavigation();
 
-const ListItem = React.memo(
-  ({
-    spaced = false,
-    disableLink = false,
-    _id,
-    creator,
-    thing,
-    main_comment,
-    isRepost,
-    parentId,
-    timestamp = "5 min",
-  }) => {
-    const { category, title, subtitle, image } = thing;
+  const r = useSelector((state) => state.recommendations[recId]);
 
-    const theme = useTheme();
-    navigation = useNavigation();
+  const toggleLiked = () => {
+    if (r.likes.liked) {
+      dispatch(unlikeByRecIdAsync(recId));
+    } else {
+      dispatch(likeByRecIdAsync(recId));
+    }
+  };
 
-    // State
-    const likes = useSelector((state) => state.likes);
+  const onRepost = () => {
+    navigation.navigate("Create", {
+      repost: {
+        isRepost: true,
+        parentId: recId,
+        ...r.thing,
+      },
+    });
+  };
 
-    const liked = likes.includes(_id);
+  const openDetails = () => {
+    navigation.navigate("RecommendationDetails", {
+      recId,
+    });
+  };
 
-    // Dispatch
-    const dispatch = useDispatch();
-    const toggleLiked = () => dispatch(toggleLikedAsync(_id));
+  const listStyle = spaced
+    ? { flex: 1, marginBottom: 45, paddingBottom: 20 }
+    : null;
+  // FILTER BY CATEGORY
+  if (category) {
+    const show = category === "All" || category.includes(r.thing.category);
+    console.log("show", show);
+    if (!show) {
+      return null;
+    }
+  }
 
-    const onRepost = () => {
-      navigation.navigate("Create", {
-        repost: {
-          isRepost: true,
-          parentId: _id,
-          ...thing,
-        },
-      });
-    };
-
-    const openDetails = () => {
-      navigation.navigate("RecommendationDetails", {
-        recommendation: {
-          _id,
-          creator,
-          category,
-          title,
-          subtitle,
-          image,
-          main_comment,
-          timestamp,
-        },
-      });
-    };
-
-    const listStyle = spaced
-      ? { flex: 1, marginBottom: 45, paddingBottom: 20 }
-      : null;
-
-    return (
-      <View style={listStyle}>
+  return (
+    <View style={listStyle}>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          paddingHorizontal: 5,
+          paddingBottom: 5,
+        }}
+      >
         <View
           style={{
+            flex: 5,
             flexDirection: "row",
             alignItems: "center",
-            paddingHorizontal: 5,
-            paddingBottom: 5,
-            // borderBottomColor: theme.bg,
-            // borderBottomWidth: 1,
           }}
         >
-          <View
-            style={{
-              flex: 5,
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
-            <UsernameNavToFriendDetails friend={creator} />
+          <UsernameNavToFriendDetails friend={r.creator} />
 
-            <H4> Recommends a {category}</H4>
-          </View>
-          <View
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              paddingRight: 5,
-            }}
-          >
-            <H4>{timestamp + " ago"}</H4>
-          </View>
+          <H4> Recommends a {r.thing.category}</H4>
         </View>
-
         <View
           style={{
-            width: theme.windowWidth,
+            display: "flex",
+            justifyContent: "center",
             alignItems: "center",
-            justifyContent: "flex-start",
-            backgroundColor: theme.bg,
-            borderRadius: 15,
-            // borderTopWidth: 2,
-            // borderBottomWidth: 2,
-            // borderTopColor: theme.bg,
-            overflow: "hidden",
+            paddingRight: 5,
           }}
         >
-          <TouchableWithoutFeedback
-            disabled={disableLink}
-            onPress={openDetails}
+          <H4>{moment(r.createdAt).fromNow()}</H4>
+        </View>
+      </View>
+
+      <View
+        style={{
+          width: theme.windowWidth,
+          alignItems: "center",
+          justifyContent: "flex-start",
+          backgroundColor: theme.bg,
+          borderRadius: 15,
+          overflow: "hidden",
+        }}
+      >
+        <TouchableWithoutFeedback disabled={disableLink} onPress={openDetails}>
+          <View
+            style={{
+              width: theme.windowWidth,
+              paddingHorizontal: 10,
+              paddingTop: 20,
+              borderBottomColor: theme.wallbg,
+              borderBottomWidth: 1,
+            }}
           >
             <View
               style={{
-                width: theme.windowWidth,
-                paddingHorizontal: 10,
-                paddingTop: 20,
-                // paddingBottom: 5,
-                borderBottomColor: theme.wallbg,
-                // backgroundColor: theme.bg,
-                borderBottomWidth: 1,
+                flexDirection: "row",
+                justifyContent: "space-between",
+                marginBottom: 20,
               }}
             >
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  // backgroundColor: "blue",
-                  marginBottom: 20,
-                }}
-              >
-                <View style={{ flex: 1, flexDirection: "row" }}>
-                  {image && (
-                    <Image
-                      source={{ uri: image }}
-                      style={{
-                        resizeMode: "cover",
-                        width: "10%",
-                        height: 40,
-                        borderRadius: 5,
-                        marginRight: 5,
-                        marginTop: 2,
-                      }}
-                    />
-                  )}
+              <View style={{ flex: 1, flexDirection: "row" }}>
+                {r.thing.image && (
+                  <Image
+                    source={{ uri: r.thing.image }}
+                    style={{
+                      resizeMode: "cover",
+                      width: "10%",
+                      height: 40,
+                      borderRadius: 5,
+                      marginRight: 5,
+                      marginTop: 2,
+                    }}
+                  />
+                )}
 
-                  <View style={{ flexDirection: "column", flex: 1 }}>
-                    <Title style={{ paddingBottom: 0 }}>{title}</Title>
-                    <H4 style={{ fontWeight: "bold" }}>{subtitle}</H4>
-                  </View>
-                </View>
-
-                <View>
-                  <IconButtons.AddToListButton />
+                <View style={{ flexDirection: "column", flex: 1 }}>
+                  <Title style={{ paddingBottom: 0 }}>{r.thing.title}</Title>
+                  <H4 style={{ fontWeight: "bold" }}>{r.thing.subtitle}</H4>
                 </View>
               </View>
 
-              <FancyH1
-                style={{
-                  paddingBottom: 20,
-                  fontSize: 20,
-                }}
-              >
-                {main_comment}
-              </FancyH1>
+              <View>
+                <IconButtons.AddToListButton />
+              </View>
             </View>
-          </TouchableWithoutFeedback>
 
-          <ActionBar
-            liked={liked}
-            toggleLiked={toggleLiked}
-            openDetails={openDetails}
-            onRepost={onRepost}
-          />
-        </View>
+            <FancyH1
+              style={{
+                paddingBottom: 20,
+                fontSize: 20,
+              }}
+            >
+              {r.main_comment}
+            </FancyH1>
+          </View>
+        </TouchableWithoutFeedback>
+
+        <ActionBar
+          r={r}
+          toggleLiked={toggleLiked}
+          openDetails={openDetails}
+          onRepost={onRepost}
+        />
       </View>
-    );
-  }
-);
+    </View>
+  );
+}
 
-const ActionBar = ({ liked, toggleLiked, openDetails, onRepost }) => {
+const ActionBar = ({ r, toggleLiked, openDetails, onRepost }) => {
   return (
     <View
       style={{
@@ -214,89 +185,25 @@ const ActionBar = ({ liked, toggleLiked, openDetails, onRepost }) => {
       <View style={{ flexDirection: "row", justifyContent: "flex-start" }}>
         <IconButtons.LikeButton
           showCount={true}
-          count={3}
-          active={liked}
+          count={r.likes.total}
+          active={r.likes.liked}
           onPress={toggleLiked}
         />
       </View>
 
       <IconButtons.CommentButton
         showCount={true}
-        count={5} // count of comments for this recommendation_id
-        // active={} // user has commented on this recommendation
+        count={r.comments.total}
+        active={r.comments.commented}
         onPress={openDetails}
       />
 
       <IconButtons.RepostButton
         showCount={true}
-        count={22} // count of times this recommendation was reposted (not total number of times this item was shared)
+        active={r.reposts.reposted}
+        count={r.reposts.total}
         onPress={onRepost}
       />
-    </View>
-  );
-};
-
-export default ListItem;
-
-const CommentsList = ({ recommendation }) => {
-  const [comments, setComments] = React.useState([]);
-
-  const fetchComments = () => {
-    commentsService
-      .find({
-        query: {
-          recommendation,
-          $limit: 1000,
-        },
-      })
-      .then((response) => setComments(response.data))
-      .catch((e) => console.log("Error fetching comments", e));
-  };
-
-  React.useState(() => {
-    fetchComments();
-  }, []);
-
-  return (
-    <View>
-      {comments.map((c) => (
-        <Comment text={c.text} creator={c.creator} />
-      ))}
-    </View>
-  );
-};
-
-const Comment = ({ text, creator }) => {
-  const [friend, setFriend] = React.useState({});
-  const theme = useTheme();
-
-  const fetchUser = async (userId) => {
-    try {
-      const user = await usersService.get(userId);
-      setFriend(user);
-    } catch (error) {
-      console.log("Problem fetching user for comment", error);
-    }
-  };
-
-  React.useEffect(() => {
-    fetchUser(creator);
-  }, []);
-
-  return (
-    <View
-      style={{
-        flexDirection: "row",
-        alignItems: "flex-start",
-        width: theme.contentWidth,
-        paddingHorizontal: 15,
-        paddingVertical: 7,
-      }}
-    >
-      <UsernameNavToFriendDetails friend={friend} withAvatar={false} />
-      <CommentText style={{ paddingLeft: 5, flex: 1, flexWrap: "wrap" }}>
-        {text}
-      </CommentText>
     </View>
   );
 };

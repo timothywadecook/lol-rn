@@ -1,12 +1,15 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { View, Button, TextInput } from "react-native";
 
 import { H3, H4 } from "./Atomic/StyledText";
 import LightModeDarkModeButton from "../components/Buttons/LightModeDarkModeButton";
 
-import { logout } from "../services/client";
+import { logoutAsync } from "../store/userSlice";
 
 const ProfileSettings = ({ user, theme }) => {
+  const dispatch = useDispatch();
+
   function EditableTextField({ initialValue, onSave, lowercase }) {
     const [value, setValue] = useState(initialValue);
     const [changed, setChanged] = useState(false);
@@ -53,7 +56,7 @@ const ProfileSettings = ({ user, theme }) => {
     <View style={{ width: theme.contentWidth, flexDirection: "column" }}>
       <H3>Edit Name:</H3>
       <EditableTextField
-        initialValue={user.first_name + " " + user.last_name}
+        initialValue={user.name}
         onSave={() => console.log("Name Changed")}
       />
 
@@ -82,7 +85,7 @@ const ProfileSettings = ({ user, theme }) => {
         }}
       >
         <Button
-          onPress={logout}
+          onPress={() => dispatch(logoutAsync())}
           // style={{ padding: 20, alignSelf: "flex-end" }}
           color={theme.purple}
           title="Logout"

@@ -1,107 +1,121 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { recommendationsService } from "../services/feathersClient";
+import {
+  recommendationsService,
+  likesService,
+} from "../services/feathersClient";
+import { addRecommendationToFeed } from "./feedSlice";
+import { addRecommendationToPosts } from "./postsSlice";
+import { Vibration } from "react-native";
+
+const convertArrayToObject = (array, key) => {
+  const initialValue = {};
+  return array.reduce((obj, item) => {
+    return {
+      ...obj,
+      [item[key]]: item,
+    };
+  }, initialValue);
+};
 
 const recommendationsSlice = createSlice({
   name: "recommendations",
-  initialState: {
-    loading: false,
-    refreshing: false,
-    moreToFetch: true,
-    list: [],
-  },
+  initialState: {}, // {recId: {rec object}}
   reducers: {
-    setLoadingTrue(state, action) {
-      state.loading = true;
+    addLoadedRecommendations(state, action) {
+      const recObject = convertArrayToObject(action.payload, "_id");
+      return { ...state, ...recObject };
     },
-    setLoadingFalse(state, action) {
-      state.loading = false;
+    clearData(state, action) {
+      return {};
     },
-    addLoadedData(state, action) {
-      state.list.push(...action.payload);
+    likeByRecId(state, action) {
+      state[action.payload].likes.liked = true;
+      state[action.payload].likes.total += 1;
     },
-    setRefreshingTrue(state, action) {
-      state.refreshing = true;
+    unlikeByRecId(state, action) {
+      state[action.payload].likes.liked = false;
+      state[action.payload].likes.total -= 1;
     },
-    setRefreshingFalse(state, action) {
-      state.refreshing = false;
+    addCommentByRecId(state, action) {
+      state[action.payload].comments.total += 1;
+      state[action.payload].comments.commented = true;
     },
-    setRefreshedData(state, action) {
-      state.list = action.payload;
-    },
-    setMoreToFetch(state, action) {
-      state.moreToFetch = action.payload;
-    },
-    addRecommendation(state, action) {
-      state.list.unshift(action.payload);
+    addCreatedRecommendation(state, action) {
+      // if is repost .. update that one too
+      state[action.payload._id] = action.payload;
+      if (action.payload.isRepost) {
+        state[action.payload.parentId].reposts.total += 1;
+        state[action.payload.parentId].reposts.reposted = true;
+      }
     },
   },
 });
 
 export default recommendationsSlice.reducer;
 
-const {
-  setLoadingTrue,
-  setLoadingFalse,
-  addLoadedData,
-  setRefreshingTrue,
-  setRefreshingFalse,
-  setRefreshedData,
-  setMoreToFetch,
-} = recommendationsSlice.actions;
-
 // Useable action creators....
 
-export const { addRecommendation } = recommendationsSlice.actions;
+const {
+  addCreatedRecommendation,
+  unlikeByRecId,
+  likeByRecId,
+} = recommendationsSlice.actions;
 
-export const refreshRecommendationsAsync = () => async (dispatch, getState) => {
-  // start fetching first 10, set refreshing true
-  dispatch(setRefreshingTrue());
+export const {
+  addLoadedRecommendations,
+  clearData,
+  addCommentByRecId,
+} = recommendationsSlice.actions;
 
-  const feedIds = getState().user.feedIds;
+export const likeByRecIdAsync = (recId) => async (dispatch, getState) => {
+  Vibration.vibrate();
+  dispatch(likeByRecId(recId));
+  const userId = getState().user._id;
   try {
-    const response = await recommendationsService.find({
-      query: {
-        $limit: 5,
-        creator: { $in: feedIds },
-        $sort: { createdAt: -1 },
-      },
-    });
-    dispatch(setRefreshedData(response.data));
-    dispatch(setMoreToFetch(response.total > response.skip));
-    dispatch(setRefreshingFalse());
-  } catch {
-    console.log("Error while trying to refresh recommendations");
-    dispatch(setRefreshingFalse());
+    likesService.create({ creator: userId, recommendation: recId });
+  } catch (error) {
+    console.log(
+      "Error liking by rec id async",
+      "recId",
+      recId,
+      "userId",
+      userId,
+      error
+    );
   }
 };
 
-export const fetchMoreRecommendationsAsync = () => async (
+export const unlikeByRecIdAsync = (recId) => async (dispatch, getState) => {
+  Vibration.vibrate();
+  dispatch(unlikeByRecId(recId));
+  const userId = getState().user._id;
+  try {
+    const existingLike = await likesService.find({
+      query: { recommendation: recId, creator: userId },
+    });
+    likesService.remove(existingLike.data[0]._id);
+  } catch (error) {
+    console.log(
+      "Error unliking by rec id async",
+      "recId",
+      recId,
+      "userId",
+      userId,
+      error
+    );
+  }
+};
+
+export const createRecommendationAsync = (rec) => async (
   dispatch,
   getState
 ) => {
-  const moreToFetch = getState().recommendations.moreToFetch;
-  const loading = getState().recommendations.loading;
-  const refreshing = getState().recommendations.refreshing;
-  if (moreToFetch && !loading && !refreshing) {
-    // console.log("MORE BEING FETCHED");
-    dispatch(setLoadingTrue());
-    const feedIds = getState().user.feedIds;
-    const skip = getState().recommendations.list.length;
-    try {
-      const response = await recommendationsService.find({
-        query: {
-          $skip: skip,
-          $limit: 5,
-          creator: { $in: feedIds },
-          $sort: { createdAt: -1 },
-        },
-      });
-      dispatch(setMoreToFetch(response.total > response.skip));
-      dispatch(addLoadedData(response.data));
-      dispatch(setLoadingFalse());
-    } catch {
-      console.log("Error while trying to fetch more recommendations");
-      dispatch(setLoadingFalse());
-    }
+  try {
+    const r = await recommendationsService.create(rec);
+    dispatch(addCreatedRecommendation(r));
+    dispatch(addRecommendationToFeed(r._id));
+    dispatch(addRecommendationToPosts(r._id));
+  } catch (error) {
+    console.log("Error creating recommendation", error);
   }
 };

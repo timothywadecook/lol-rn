@@ -13,8 +13,9 @@ const SingleFilterButton = ({ text, setFilter, filter }) => {
         setFilter(filter === text ? "" : text);
       }}
       style={{
+        paddingVertical: 10,
         paddingHorizontal: 10,
-        height: 30,
+        // height: 30,
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 15,

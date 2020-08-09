@@ -29,18 +29,18 @@ const ProfileMainHeader = ({ user, theme, showSettings, setShowSettings }) => {
           <UserAvatar
             style={{
               margin: 10,
-              borderWidth: 0.5,
+              borderWidth: 1,
               borderColor: "white",
             }}
-            size={80}
-            name={user.first_name + " " + user.last_name}
+            size={50}
+            name={user.name}
             bgColor={"black"}
             src={user.avatar}
           />
           <View>
             <Title>{user.username}</Title>
-            <H2G>{user.first_name + " " + user.last_name}</H2G>
-            <P>Atlanta, GA</P>
+            <H2G>{user.name}</H2G>
+            {/* <P>Atlanta, GA</P> */}
           </View>
         </View>
 

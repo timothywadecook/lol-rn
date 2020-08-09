@@ -14,6 +14,7 @@ client.configure(auth({ storage: AsyncStorage }));
 
 export let recommendationsService = client.service("recommendations");
 export let likesService = client.service("likes");
+export let followsService = client.service("follows");
 export let commentsService = client.service("comments");
 export let usersService = client.service("users");
 

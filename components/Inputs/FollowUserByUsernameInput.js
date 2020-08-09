@@ -16,12 +16,12 @@ import useDebounce from "../../hooks/useDebounce";
 import useTheme from "../../hooks/useTheme";
 //
 import { usersService } from "../../services/feathersClient";
-import { toggleFollowingAsync } from "../../store/userSlice";
+import { toggleFollowingAsync } from "../../store/followsSlice";
 
 export default function FollowUserByUsernameInput({ setInputFocus }) {
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const sessionUser = useSelector((state) => state.user);
+  const followingIds = useSelector((state) => state.follows.following);
 
   const [item, setItem] = useState({});
   const [query, setQuery] = useState("");
@@ -36,7 +36,7 @@ export default function FollowUserByUsernameInput({ setInputFocus }) {
     usersService
       .find({
         query: {
-          _id: { $nin: sessionUser.following },
+          _id: { $nin: followingIds },
           username: { $search: [debouncedQuery] },
         },
       })
@@ -99,7 +99,7 @@ export default function FollowUserByUsernameInput({ setInputFocus }) {
                 borderColor: "white",
               }}
               size={30}
-              name={user.first_name + " " + user.last_name}
+              name={user.name}
               bgColor={"black"}
               src={user.avatar}
             />
@@ -225,43 +225,3 @@ const getStyles = (theme) =>
     subtitle: { color: theme.iconDefault },
     subsubtitle: { color: theme.purple },
   });
-
-// export default function FollowUserInput({ followUser, setInputFocus }) {
-//   const [text, setText] = useState("");
-//   const theme = useTheme();
-
-//   const handleFollowUser = () => {
-//     followUser(text);
-//     setText("");
-//     setInputFocus(false);
-//   };
-//   return (
-//     <View
-//       style={{
-//         width: theme.contentWidth,
-//         paddingHorizontal: 20,
-//         margin: 7,
-//         flexDirection: "row",
-//         justifyContent: "space-between",
-//         backgroundColor: theme.bg,
-//         borderRadius: 20,
-//       }}
-//     >
-//       <TextInput
-//         style={{
-//           flex: 1,
-//           color: theme.primary,
-//         }}
-//         value={text}
-//         onChangeText={(text) => setText(text.toLowerCase())}
-//         placeholderTextColor="#5d5d5d"
-//         placeholder="Enter username..."
-//         onFocus={() => setInputFocus(true)}
-//         onSubmitEditing={() => {
-//           setInputFocus(false);
-//         }}
-//       />
-//       <Button title="Follow" color={theme.purple} onPress={handleFollowUser} />
-//     </View>
-//   );
-// }

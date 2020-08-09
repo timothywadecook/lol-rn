@@ -22,13 +22,6 @@ const FilteredRecommendationsList = ({
   const theme = useTheme();
   const styles = getStyles(theme);
 
-  const data =
-    category === "All"
-      ? recommendations
-      : recommendations.filter(
-          (r) => r.thing.category === category.slice(0, category.length - 1)
-        );
-
   return (
     <View style={styles.container}>
       <FlatList
@@ -36,10 +29,12 @@ const FilteredRecommendationsList = ({
         onEndReachedThreshold={0.5}
         onRefresh={refresh}
         refreshing={refreshing}
-        data={data}
-        renderItem={({ item }) => <ListItem spaced={true} {...item} />}
+        data={recommendations}
+        renderItem={({ item }) => (
+          <ListItem spaced={true} recId={item} category={category} />
+        )}
         initialNumToRender={4}
-        keyExtractor={(item) => item._id}
+        keyExtractor={(item) => item}
         showsVerticalScrollIndicator={false}
         stickyHeaderIndices={[0]}
         ListFooterComponent={() =>

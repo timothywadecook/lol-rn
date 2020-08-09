@@ -3,14 +3,13 @@ import { recommendationsService } from "../services/feathersClient";
 
 import { addLoadedRecommendations } from "./recommendationsSlice";
 
-const postsSlice = createSlice({
-  name: "posts",
+const feedSlice = createSlice({
+  name: "feed",
   initialState: {
     loading: false,
     refreshing: false,
     moreToFetch: true,
-    total: 0,
-    list: [], // should be an array of recIds, all actual recs are in recommendationsSlice by Id
+    list: [], // should just be an array of recIds, and recommendationSlice has single source of truth
   },
   reducers: {
     setLoading(state, action) {
@@ -28,79 +27,78 @@ const postsSlice = createSlice({
     setMoreToFetch(state, action) {
       state.moreToFetch = action.payload;
     },
-    setTotal(state, action) {
-      state.total = action.payload;
-    },
-    addRecommendationToPosts(state, action) {
+    addRecommendationToFeed(state, action) {
       state.list.unshift(action.payload);
     },
   },
 });
 
-export default postsSlice.reducer;
+export default feedSlice.reducer;
 
 const {
-  setLoading,
   addLoadedData,
+  setLoading,
   setRefreshing,
   setRefreshedData,
   setMoreToFetch,
-  setTotal,
-} = postsSlice.actions;
+} = feedSlice.actions;
 
 // Useable action creators....
 
-export const { addRecommendationToPosts } = postsSlice.actions;
+export const { addRecommendationToFeed } = feedSlice.actions;
 
-export const refreshPostsAsync = () => async (dispatch, getState) => {
-  // start fetching, set refreshing true
+export const refreshFeedAsync = () => async (dispatch, getState) => {
+  // start fetching first 10, set refreshing true
   dispatch(setRefreshing(true));
 
-  const creator = getState().user._id;
+  const feedIds = [...getState().follows.following];
+  feedIds.push(getState().user._id);
   try {
     const response = await recommendationsService.find({
       query: {
         $limit: 5,
-        creator,
+        creator: { $in: feedIds },
         $sort: { createdAt: -1 },
       },
     });
+
     dispatch(addLoadedRecommendations(response.data));
     dispatch(setRefreshedData(response.data.map((r) => r._id)));
-    dispatch(setTotal(response.total));
     dispatch(setMoreToFetch(response.total > response.skip));
     dispatch(setRefreshing(false));
   } catch {
-    console.log("Error while trying to refresh posts");
+    console.log("Error while trying to refresh recommendations");
     dispatch(setRefreshing(false));
   }
 };
 
-export const fetchMorePostsAsync = () => async (dispatch, getState) => {
-  const moreToFetch = getState().posts.moreToFetch;
-  const loading = getState().posts.loading;
-  const refreshing = getState().posts.refreshing;
+export const fetchMoreFeedAsync = () => async (dispatch, getState) => {
+  const moreToFetch = getState().feed.moreToFetch;
+  const loading = getState().feed.loading;
+  const refreshing = getState().feed.refreshing;
   if (moreToFetch && !loading && !refreshing) {
-    // console.log("MORE BEING FETCHED");
     dispatch(setLoading(true));
-    const creator = getState().user._id;
-    const skip = getState().posts.list.length;
+    const feedIds = [...getState().follows.following];
+    feedIds.push(getState().user._id);
+
+    const skip = getState().feed.list.length;
     try {
       const response = await recommendationsService.find({
         query: {
           $skip: skip,
           $limit: 5,
-          creator,
+          creator: { $in: feedIds },
           $sort: { createdAt: -1 },
         },
       });
+
       dispatch(addLoadedRecommendations(response.data));
       dispatch(addLoadedData(response.data.map((r) => r._id)));
+
       dispatch(setMoreToFetch(response.total > response.skip));
-      dispatch(setTotal(response.total));
       dispatch(setLoading(false));
     } catch {
-      console.log("Error while trying to fetch more posts");
+      console.log("Error while trying to fetch more recommendations");
       dispatch(setLoading(false));
     }
   }

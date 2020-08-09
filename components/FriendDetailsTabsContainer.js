@@ -5,6 +5,7 @@ import ProfileTabMenu from "./ProfileTabMenu";
 import {
   recommendationsService,
   usersService,
+  followsService,
 } from "../services/feathersClient";
 
 export default function FriendDetailsTabsContainer({ user }) {
@@ -20,30 +21,55 @@ export default function FriendDetailsTabsContainer({ user }) {
     fetchFollowing();
   }, [user._id]);
 
-  const fetchFollowing = () => {
-    usersService
-      .find({
-        query: {
-          _id: { $in: user.following },
-          $limit: 1000,
-        },
-      })
-      .then((res) => {
-        setFollowing(res.data);
-      })
-      .catch((e) => console.log("error getting friend details", e));
+  const fetchFollowing = async () => {
+    try {
+      const followingIds = (
+        await followsService.find({
+          query: {
+            follower: user._id,
+            $limit: 1000,
+          },
+        })
+      ).data.map((f) => f.following);
+
+      if (followingIds.length > 0) {
+        const following = await usersService.find({
+          query: {
+            _id: { $in: followingIds },
+            $limit: 1000,
+          },
+        });
+        setFollowing(following.data);
+      }
+    } catch (e) {
+      console.log("error fetching following for friend", e);
+    }
   };
-  const fetchFollowers = () => {
-    usersService
-      .find({
-        query: {
-          following: user._id,
-          $limit: 1000,
-        },
-      })
-      .then((res) => setFollowers(res.data))
-      .catch((e) => console.log("error getting followers", e));
+
+  const fetchFollowers = async () => {
+    try {
+      const followerIds = (
+        await followsService.find({
+          query: {
+            following: user._id,
+            $limit: 1000,
+          },
+        })
+      ).data.map((f) => f.follower);
+      if (followersIds.length > 0) {
+        const followers = await usersService.find({
+          query: {
+            _id: { $in: followerIds },
+            $limit: 1000,
+          },
+        });
+        setFollowers(followers.data);
+      }
+    } catch (e) {
+      console.log("error fetching followers for friend", e);
+    }
   };
+
   const fetchPosts = () => {
     recommendationsService
       .find({

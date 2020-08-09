@@ -37,12 +37,12 @@ export function Title(props) {
     <Text
       {...props}
       style={[
-        props.style,
         {
           color: theme.primary,
           fontSize: 24,
           fontWeight: "bold",
         },
+        props.style,
       ]}
     />
   );

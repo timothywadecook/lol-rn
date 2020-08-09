@@ -1,34 +1,53 @@
 import React from "react";
-import { Button, ActivityIndicator, View } from "react-native";
+import { View, ActivityIndicator, TouchableOpacity } from "react-native";
 import AnimateExpand from "../Wrappers/AnimateExpand";
+import { Title } from "../Atomic/StyledText";
 
 import useTheme from "../../hooks/useTheme";
 
 export default SubmitButton = ({
-  bg,
-  show,
+  intent = "info",
   onPress,
   title,
   isProcessing,
-  height = 50,
 }) => {
   const theme = useTheme();
+  const bgColor = {
+    primary: theme.purple,
+    info: "transparent",
+  };
+  const fontWeight = {
+    primary: "normal",
+    info: "normal",
+  };
+  const fontColor = {
+    primary: theme.primary,
+    info: theme.purple,
+  };
   return (
-    <AnimateExpand doAnimation={show} height={height}>
+    <View>
       {isProcessing ? (
         <ActivityIndicator size="small" />
       ) : (
-        <View
+        <TouchableOpacity
+          onPress={onPress}
           style={{
-            marginVertical: 5,
+            marginVertical: 15,
             borderRadius: 5,
-            paddingHorizontal: 10,
-            backgroundColor: bg && theme.primary,
+            paddingVertical: 3,
+            width: theme.contentWidth,
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: bgColor[intent],
           }}
         >
-          <Button onPress={onPress} title={title} color={theme.purple} />
-        </View>
+          <Title
+            style={{ color: fontColor[intent], fontWeight: fontWeight[intent] }}
+          >
+            {title}
+          </Title>
+        </TouchableOpacity>
       )}
-    </AnimateExpand>
+    </View>
   );
 };

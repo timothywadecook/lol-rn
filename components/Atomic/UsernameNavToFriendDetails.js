@@ -25,14 +25,13 @@ const UsernameNavToFriendDetails = ({ friend, withAvatar = true }) => {
     >
       {withAvatar && (
         <UserAvatar
-          style={{ margin: 6, borderWidth: 1, borderColor: "white" }}
+          style={{ margin: 6, borderWidth: 0.5, borderColor: "white" }}
           bgColor="black"
           size={24}
-          name={friend.first_name + " " + friend.last_name}
+          name={friend.name}
           src={friend.avatar}
         />
       )}
-      {/* <H3>{friend.first_name + " " + friend.last_name}</H3> */}
       <H2>{friend.username}</H2>
     </TouchableOpacity>
   );
