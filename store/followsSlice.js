@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { followsService } from "../services/feathersClient";
-import { Vibration } from "react-native";
 
 const followsSlice = createSlice({
   name: "follows",
@@ -65,8 +64,6 @@ export const toggleFollowingAsync = (friendId) => async (
   dispatch,
   getState
 ) => {
-  Vibration.vibrate();
-
   const sessionUserFollowing = getState().follows.following;
   const isFollowing = sessionUserFollowing.includes(friendId);
   const userId = getState().user._id;

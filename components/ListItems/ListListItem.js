@@ -6,6 +6,9 @@ import useTheme from "../../hooks/useTheme";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import SquareIconButton from "./SwipableSquareIconButton";
 import IconButtons from "../Buttons/IconButtons";
+
+import { Ionicons } from "@expo/vector-icons";
+
 //
 import { useNavigation } from "@react-navigation/native";
 import {
@@ -68,8 +71,6 @@ export default function ListListItem({
         style={{
           width: theme.windowWidth,
           paddingHorizontal: 10,
-          borderBottomWidth: 1,
-          borderBottomColor: theme.bg,
           backgroundColor: theme.wallbg,
           flexDirection: "row",
           justifyContent: "space-between",
@@ -84,6 +85,12 @@ export default function ListListItem({
             alignItems: "center",
           }}
         >
+          <Ionicons
+            style={{ paddingRight: 20, paddingLeft: 5 }}
+            name={isPrivate ? "md-eye-off" : "md-globe"}
+            size={24}
+            color={isPrivate ? theme.iconDefault : theme.purple}
+          />
           <H2 style={{ fontSize: 20, fontWeight: "normal" }}>{name}</H2>
         </View>
         <View
@@ -93,7 +100,7 @@ export default function ListListItem({
             alignItems: "center",
           }}
         >
-          {isPrivate && <H2G>Private</H2G>}
+          {/* {isPrivate && <H2G>Private</H2G>} */}
           {participants.length > 1 && <IconButtons.IsShared active={true} />}
         </View>
       </TouchableWithoutFeedback>

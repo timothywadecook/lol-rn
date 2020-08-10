@@ -169,7 +169,7 @@ export default function CreateScreen({ route }) {
           />
         )}
         <AnimateExpand doAnimation={!category} height={50}>
-          <FancyH1>What do you like?</FancyH1>
+          <FancyH1 style={{ color: theme.purple }}>Like Out Loud</FancyH1>
         </AnimateExpand>
 
         <SingleFilterButtonSpan

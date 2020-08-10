@@ -6,6 +6,7 @@ import {
 import { addRecommendationToFeed } from "./feedSlice";
 import { addRecommendationToPosts } from "./postsSlice";
 import { Vibration } from "react-native";
+import * as Haptics from "expo-haptics";
 
 const convertArrayToObject = (array, key) => {
   const initialValue = {};
@@ -68,7 +69,8 @@ export const {
 } = recommendationsSlice.actions;
 
 export const likeByRecIdAsync = (recId) => async (dispatch, getState) => {
-  Vibration.vibrate();
+  // Vibration.vibrate();
+  Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
   dispatch(likeByRecId(recId));
   const userId = getState().user._id;
   try {
@@ -86,7 +88,8 @@ export const likeByRecIdAsync = (recId) => async (dispatch, getState) => {
 };
 
 export const unlikeByRecIdAsync = (recId) => async (dispatch, getState) => {
-  Vibration.vibrate();
+  // Vibration.vibrate();
+  Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
   dispatch(unlikeByRecId(recId));
   const userId = getState().user._id;
   try {

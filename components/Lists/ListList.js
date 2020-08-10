@@ -7,6 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 import { listsService } from "../../services/feathersClient";
 
 import ListListItem from "../ListItems/ListListItem";
+import useTheme from "../../hooks/useTheme";
 
 export default function ListList({ userId }) {
   const [lists, setLists] = React.useState([]);
@@ -88,10 +89,25 @@ export default function ListList({ userId }) {
           onMakePublic={() => onMakePublic(item._id)}
         />
       )}
+      ItemSeparatorComponent={FlatListItemSeparator}
       keyExtractor={(item) => item._id}
       ListFooterComponent={canCreate() && <CreateNewListFooter />}
       showsVerticalScrollIndicator={false}
     />
+  );
+}
+
+function FlatListItemSeparator() {
+  const theme = useTheme();
+  return (
+    <View
+      style={{
+        height: 0.5,
+        backgroundColor: theme.bg,
+        width: "85%",
+        alignSelf: "flex-end",
+      }}
+    ></View>
   );
 }
 
