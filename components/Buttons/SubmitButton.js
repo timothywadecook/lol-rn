@@ -1,6 +1,5 @@
 import React from "react";
 import { View, ActivityIndicator, TouchableOpacity } from "react-native";
-import AnimateExpand from "../Wrappers/AnimateExpand";
 import { Title } from "../Atomic/StyledText";
 
 import useTheme from "../../hooks/useTheme";
@@ -13,16 +12,19 @@ export default SubmitButton = ({
 }) => {
   const theme = useTheme();
   const bgColor = {
+    secondary: "transparent",
     primary: theme.purple,
     info: "transparent",
   };
   const fontWeight = {
     primary: "normal",
+    secondary: "normal",
     info: "normal",
   };
   const fontColor = {
+    secondary: theme.purple,
     primary: theme.primary,
-    info: theme.purple,
+    info: theme.iconDefault,
   };
   return (
     <View>
@@ -34,7 +36,7 @@ export default SubmitButton = ({
           style={{
             marginVertical: 15,
             borderRadius: 5,
-            paddingVertical: 3,
+            paddingVertical: 6,
             width: theme.contentWidth,
             alignItems: "center",
             justifyContent: "center",
@@ -42,7 +44,11 @@ export default SubmitButton = ({
           }}
         >
           <Title
-            style={{ color: fontColor[intent], fontWeight: fontWeight[intent] }}
+            style={{
+              color: fontColor[intent],
+              fontWeight: fontWeight[intent],
+              fontSize: 20,
+            }}
           >
             {title}
           </Title>

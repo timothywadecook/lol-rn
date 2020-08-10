@@ -6,8 +6,8 @@ import { H2 } from "../Atomic/StyledText";
 import useTheme from "../../hooks/useTheme";
 
 const iconButtonCreator = (iconName) => ({
-  showCount,
-  active,
+  showCount = false,
+  active = false,
   onPress,
   size = 22,
   count = 0,
@@ -42,13 +42,20 @@ const iconButtonCreator = (iconName) => ({
 export const LikeButton = iconButtonCreator("md-heart");
 export const CommentButton = iconButtonCreator("md-text");
 export const RepostButton = iconButtonCreator("md-repeat");
-export const AddToListButton = iconButtonCreator("md-add-circle-outline");
+export const AddCircle = iconButtonCreator("md-add-circle-outline");
+export const RemoveCircle = iconButtonCreator("md-remove-circle-outline");
 
-const IcontButtons = {
+export const Delete = iconButtonCreator("md-trash");
+export const IsShared = iconButtonCreator("md-people");
+
+const IconButtons = {
+  Delete,
+  IsShared,
   LikeButton,
   CommentButton,
-  AddToListButton,
+  AddCircle,
+  RemoveCircle,
   RepostButton,
 };
 
-export default IcontButtons;
+export default IconButtons;

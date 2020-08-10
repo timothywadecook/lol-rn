@@ -100,7 +100,7 @@ export default function FriendDetailsTabsContainer({ user }) {
 
       <ProfileTabContent
         posts={posts}
-        // lists={lists}
+        userId={user._id}
         following={following}
         followers={followers}
         activeTab={activeTab}

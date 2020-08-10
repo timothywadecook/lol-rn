@@ -5,6 +5,7 @@ import { View, Image, TouchableWithoutFeedback } from "react-native";
 import { Title, FancyH1, H4, H2, H3, CommentText } from "../Atomic/StyledText";
 import UsernameNavToFriendDetails from "../Atomic/UsernameNavToFriendDetails";
 import IconButtons from "../Buttons/IconButtons";
+import AddThingToListModal from "../AddThingToListModal";
 // Actions
 import {
   likeByRecIdAsync,
@@ -26,6 +27,8 @@ export default function ListItem({
   const dispatch = useDispatch();
   navigation = useNavigation();
 
+  const [showModal, setShowModal] = React.useState(false);
+
   const r = useSelector((state) => state.recommendations[recId]);
 
   const toggleLiked = () => {
@@ -37,6 +40,7 @@ export default function ListItem({
   };
 
   const onRepost = () => {
+    console.log("r.thing", r.thing);
     navigation.navigate("Create", {
       repost: {
         isRepost: true,
@@ -58,7 +62,6 @@ export default function ListItem({
   // FILTER BY CATEGORY
   if (category) {
     const show = category === "All" || category.includes(r.thing.category);
-    console.log("show", show);
     if (!show) {
       return null;
     }
@@ -66,6 +69,14 @@ export default function ListItem({
 
   return (
     <View style={listStyle}>
+      {showModal && (
+        <AddThingToListModal
+          thingId={r.thing._id}
+          setShowModal={setShowModal}
+          showModal={showModal}
+        />
+      )}
+
       <View
         style={{
           flexDirection: "row",
@@ -146,7 +157,10 @@ export default function ListItem({
               </View>
 
               <View>
-                <IconButtons.AddToListButton />
+                <IconButtons.AddCircle
+                  active={showModal}
+                  onPress={() => setShowModal(true)}
+                />
               </View>
             </View>
 

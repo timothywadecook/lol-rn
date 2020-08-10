@@ -17,5 +17,7 @@ export let likesService = client.service("likes");
 export let followsService = client.service("follows");
 export let commentsService = client.service("comments");
 export let usersService = client.service("users");
+export let listsService = client.service("lists");
+export let thingsService = client.service("things");
 
 export default client;

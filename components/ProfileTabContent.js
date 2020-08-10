@@ -2,6 +2,7 @@ import React from "react";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { Text, ScrollView, View } from "react-native";
 import UserListItem from "./ListItems/UserListItem";
+import ListList from "./Lists/ListList";
 import FilteredRecommendationsList from "./Lists/FilteredRecommendationsList";
 
 import { toggleFollowingAsync } from "../store/followsSlice";
@@ -10,6 +11,7 @@ import useTheme from "../hooks/useTheme";
 import { H1 } from "../components/Atomic/StyledText";
 
 export default function ProfileTabContent({
+  userId,
   activeTab,
   fetchMorePosts,
   refreshPosts,
@@ -39,19 +41,7 @@ export default function ProfileTabContent({
       );
 
     case "Lists":
-      return (
-        <ScrollView>
-          <View style={{ width: theme.windowWidth, padding: 20 }}>
-            <H1>My Private List</H1>
-          </View>
-          <View style={{ width: theme.windowWidth, padding: 20 }}>
-            <H1>My Public List</H1>
-          </View>
-          <View style={{ width: theme.windowWidth, padding: 20 }}>
-            <H1 style={{ color: "gray" }}>+ Create New List</H1>
-          </View>
-        </ScrollView>
-      );
+      return <ListList userId={userId} />;
     case "Followers":
       return (
         <ScrollView

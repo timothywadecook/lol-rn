@@ -16,6 +16,8 @@ import GooglePlacesInput from "../../components/Inputs/GooglePlacesInput";
 
 import useTheme from "../../hooks/useTheme";
 import { createRecommendationAsync } from "../../store/recommendationsSlice";
+import AddThingToListModal from "../../components/AddThingToListModal";
+import { thingsService } from "../../services/feathersClient";
 
 const MainInputField = ({ category, setItem, itemChosen, setItemChosen }) => {
   switch (category) {
@@ -85,6 +87,7 @@ export default function CreateScreen({ route }) {
   const dispatch = useDispatch();
 
   const [showModal, setShowModal] = useState(false);
+  const [showAddToListModal, setShowAddToListModal] = useState(false);
   const [category, setCategory] = useState("");
   const [itemChosen, setItemChosen] = useState(false);
   const [item, setItem] = useState({});
@@ -95,17 +98,13 @@ export default function CreateScreen({ route }) {
     setCategory("");
   };
 
-  React.useEffect(() => {
-    setItemChosen(false);
-    setItem({});
-  }, [category]);
-
   const receiveRepost = () => {
     if (route.params && route.params.repost) {
       const { repost } = route.params;
+      console.log("is repost actually empty?", repost);
       setCategory(repost.category);
-      setItemChosen(true);
       setItem(repost);
+      setItemChosen(true);
     }
   };
 
@@ -118,7 +117,7 @@ export default function CreateScreen({ route }) {
     return newRec;
   };
 
-  React.useEffect(receiveRepost, []);
+  React.useEffect(receiveRepost, [route.params]);
 
   const submitCreate = () => {
     const newRec = { ...item, creator: userId };
@@ -126,6 +125,32 @@ export default function CreateScreen({ route }) {
     dispatch(createRecommendationAsync(newRecWithLocation));
     resetState();
     setShowModal(true);
+  };
+
+  const getThingId = () => {
+    async function findOrCreateThing() {
+      const params = { category };
+      if (category === "Movie" || category === "Show") {
+        params.imdb = item.imdb;
+      }
+      if (category === "Place") {
+        params.place_id = item.place_id;
+      }
+      if (category === "Book") {
+        params.api_id = item.api_id;
+      }
+      const res = await thingsService.find({ query: params });
+      if (res.total === 1) {
+        return res.data[0]._id;
+      } else if (res.total === 0) {
+        console.log(
+          "Thing doesnt exist in database yet and in order to create it on the fly we need to move addPhysicalLocation to a before hook on create Things"
+        );
+      }
+    }
+    if (itemChosen && item.title && item.subtitle && item.category) {
+      findOrCreateThing();
+    }
   };
 
   return (
@@ -136,6 +161,13 @@ export default function CreateScreen({ route }) {
           setShowModal={setShowModal}
           type="create"
         />
+        {itemChosen && (
+          <AddThingToListModal
+            thingId={getThingId()}
+            showModal={showAddToListModal}
+            setShowModal={setShowAddToListModal}
+          />
+        )}
         <AnimateExpand doAnimation={!category} height={50}>
           <FancyH1>What do you like?</FancyH1>
         </AnimateExpand>
@@ -186,7 +218,9 @@ export default function CreateScreen({ route }) {
               </View>
 
               <View>
-                <IconButtons.AddToListButton />
+                <IconButtons.AddCircle
+                  onPress={() => setShowAddToListModal(true)}
+                />
               </View>
             </View>
           )}

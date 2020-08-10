@@ -11,6 +11,8 @@ import BottomTabNavigator from "./navigation/BottomTabNavigator";
 import Login from "./screens/Login";
 import FriendDetails from "./screens/FriendDetails";
 import RecommendationDetails from "./screens/RecommendationDetails";
+import CreateOrEditList from "./screens/CreateOrEditList";
+import List from "./screens/List";
 import Modal from "./screens/Modal";
 // Actions
 import { login, setAppIsReady } from "./store/userSlice";
@@ -60,6 +62,11 @@ const Router = ({ appIsReady, isAuthenticated, login, setAppIsReady }) => {
               component={RecommendationDetails}
             />
             <Stack.Screen name="FriendDetails" component={FriendDetails} />
+            <Stack.Screen
+              name="CreateOrEditList"
+              component={CreateOrEditList}
+            />
+            <Stack.Screen name="List" component={List} />
             <Stack.Screen name="Modal" component={Modal} />
           </React.Fragment>
         ) : (

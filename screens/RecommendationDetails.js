@@ -11,7 +11,8 @@ import { commentsService, usersService } from "../services/feathersClient";
 import useTheme from "../hooks/useTheme";
 import useService from "../hooks/useService";
 import { FlatList } from "react-native-gesture-handler";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { addCommentByRecId } from "../store/recommendationsSlice";
 
 export default function RecommendationDetails({ navigation, route }) {
   navigation.setOptions({
@@ -69,12 +70,14 @@ export default function RecommendationDetails({ navigation, route }) {
 
 export function CommentInput({ recId, onComplete }) {
   const theme = useTheme();
+  const dispatch = useDispatch();
   const [input, setInput] = React.useState("");
 
   const creator = useSelector((state) => state.user._id);
 
   const onSubmitComment = async () => {
     try {
+      dispatch(addCommentByRecId(recId));
       commentsService.create({ text: input, creator, recommendation: recId });
     } catch (error) {
       console.log("Error trying to create comment", error);

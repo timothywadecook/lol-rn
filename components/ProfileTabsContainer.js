@@ -80,6 +80,7 @@ export default function ProfileTabsContainer({ user }) {
       />
 
       <ProfileTabContent
+        userId={user._id}
         fetchMorePosts={fetchMorePosts}
         refreshPosts={refreshPosts}
         loadingPosts={loadingPosts}
