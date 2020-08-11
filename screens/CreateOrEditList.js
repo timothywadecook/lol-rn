@@ -207,22 +207,18 @@ function SelectableUserList({
       </View>
       <ScrollView>
         {candidates.map((u) => (
-          <UserListItem2
-            key={u._id}
-            user={u}
-            renderRightChild={
-              isSessionUser(u._id) ? null : !isParticipant(u._id) ? (
-                <IconButtons.AddCircle
-                  active={true}
-                  onPress={() => onAddParticipant(u._id)}
-                />
-              ) : (
-                <IconButtons.RemoveCircle
-                  onPress={() => onRemoveParticipant(u._id)}
-                />
-              )
-            }
-          />
+          <UserListItem2 key={u._id} user={u}>
+            {isSessionUser(u._id) ? null : !isParticipant(u._id) ? (
+              <IconButtons.AddCircle
+                active={true}
+                onPress={() => onAddParticipant(u._id)}
+              />
+            ) : (
+              <IconButtons.RemoveCircle
+                onPress={() => onRemoveParticipant(u._id)}
+              />
+            )}
+          </UserListItem2>
         ))}
       </ScrollView>
     </View>

@@ -27,6 +27,7 @@ const userSlice = createSlice({
 });
 
 export const {
+  logout,
   login,
   appIsReady,
   setAppIsReady,

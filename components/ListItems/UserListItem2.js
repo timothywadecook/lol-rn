@@ -3,7 +3,7 @@ import { View, Button, Image } from "react-native";
 
 import { H2, H2G } from "../Atomic/StyledText";
 
-export default function UserListItem2({ user, renderRightChild }) {
+export default function UserListItem2({ user, children }) {
   const { username, name } = user;
 
   return (
@@ -43,7 +43,7 @@ export default function UserListItem2({ user, renderRightChild }) {
           <H2G>{name}</H2G>
         </View>
       </View>
-      {renderRightChild && renderRightChild()}
+      {children}
     </View>
   );
 }

@@ -99,9 +99,9 @@ export default function FollowUserByUsernameInput({ setInputFocus }) {
                 borderColor: "white",
               }}
               size={30}
-              name={user.name}
+              name={item.name}
               bgColor={"black"}
-              src={user.avatar}
+              src={item.avatar}
             />
             <H2 style={styles.listItemTitle}>{item.username}</H2>
           </TouchableOpacity>

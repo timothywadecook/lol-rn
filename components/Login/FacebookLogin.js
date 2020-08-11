@@ -23,7 +23,7 @@ export default function FacebookLogin(props) {
         permissions: ["public_profile", "email"],
       });
       if (type === "success") {
-        const serverAuth = await client.authenticate({
+        client.authenticate({
           strategy: "facebook",
           access_token: token,
         });

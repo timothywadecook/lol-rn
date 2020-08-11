@@ -68,7 +68,7 @@ const MainCommentField = ({ hide, styles, theme, item, setItem }) =>
         autoCorrect={true}
         placeholder="What would your friends want to know about this?"
         clearButtonMode="always"
-        onChange={(e) => setItem({ ...item, main_comment: e.target.value })}
+        onChange={(e) => setItem({ ...item, main_comment: e.nativeEvent.text })}
         value={item.main_comment}
         multiline={true}
         numberOfLines={4}
@@ -153,6 +153,8 @@ export default function CreateScreen({ route }) {
     }
   };
 
+  console.log(item, itemChosen);
+
   return (
     <DismissKeyboard>
       <View style={styles.container}>
@@ -161,13 +163,13 @@ export default function CreateScreen({ route }) {
           setShowModal={setShowModal}
           type="create"
         />
-        {itemChosen && (
+        {/* {itemChosen && (
           <AddThingToListModal
             thingId={getThingId()}
             showModal={showAddToListModal}
             setShowModal={setShowAddToListModal}
           />
-        )}
+        )} */}
         <AnimateExpand doAnimation={!category} height={50}>
           <FancyH1 style={{ color: theme.purple }}>Like Out Loud</FancyH1>
         </AnimateExpand>
@@ -219,7 +221,7 @@ export default function CreateScreen({ route }) {
 
               <View>
                 <IconButtons.AddCircle
-                  onPress={() => setShowAddToListModal(true)}
+                // onPress={() => setShowAddToListModal(true)}
                 />
               </View>
             </View>
@@ -245,7 +247,7 @@ export default function CreateScreen({ route }) {
             <SubmitButton title="Cancel" onPress={resetState} />
           )}
 
-          {itemChosen && item.main_comment && (
+          {itemChosen && !!item.main_comment && (
             <SubmitButton
               intent="primary"
               title="Post"

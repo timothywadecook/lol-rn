@@ -32,7 +32,7 @@ export default function ProfileScreen() {
         alignItems: "center",
       }}
     >
-      {/* <FollowUserByUsernameInput setInputFocus={setInputFocus} /> */}
+      <FollowUserByUsernameInput setInputFocus={setInputFocus} />
       {!inputFocus && (
         <ProfileMainHeader
           user={user}

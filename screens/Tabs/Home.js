@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import FilteredRecommendationsList from "../../components/Lists/FilteredRecommendationsList";
 import { refreshFeedAsync, fetchMoreFeedAsync } from "../../store/feedSlice";
+import { fetchFollowsAsync } from "../../store/followsSlice";
 
 export default function HomeScreen() {
   const feed = useSelector((state) => state.feed.list);
@@ -11,11 +12,15 @@ export default function HomeScreen() {
   const dispatch = useDispatch();
   const refresh = () => dispatch(refreshFeedAsync());
   const fetchMore = () => dispatch(fetchMoreFeedAsync());
+  const fetchFollows = () => dispatch(fetchFollowsAsync());
 
-  const componentDidMount = () => {
+  const componentDidMount = async () => {
+    await fetchFollows();
     refresh();
   };
-  useEffect(componentDidMount, []);
+  useEffect(() => {
+    componentDidMount();
+  }, []);
 
   return (
     <FilteredRecommendationsList

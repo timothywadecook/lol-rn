@@ -56,34 +56,45 @@ export default function AddThingToListModal({
       <View style={{ flex: 1 }}></View>
       <View
         style={{
-          backgroundColor: theme.wallbg,
-          paddingBottom: 20,
-          borderWidth: 1,
-          borderColor: theme.bg,
-          borderRadius: 40,
+          // backgroundColor: theme.wallbg,
+          marginBottom: 20,
+          // borderWidth: 1,
+          // borderColor: theme.bg,
+          // borderRadius: 40,
           //   borderTopStartRadius: 15,
           //   borderTopEndRadius: 15,
           overflow: "hidden",
         }}
       >
         <ScrollView>
-          {lists.map((list) => (
-            <View
-              style={{
-                flex: 1,
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <SubmitButton
-                intent="secondary"
-                title={list.name}
-                onPress={() => onAddThingToList(list._id)}
-              />
-            </View>
-          ))}
           <View
             style={{
+              backgroundColor: theme.bg,
+            }}
+          >
+            {lists.map((list) => (
+              <View
+                key={list._id}
+                style={{
+                  marginBottom: 4,
+                  borderRadius: 20,
+                  flex: 1,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <SubmitButton
+                  intent="secondary"
+                  title={list.name}
+                  onPress={() => onAddThingToList(list._id)}
+                />
+              </View>
+            ))}
+          </View>
+          <View
+            style={{
+              borderRadius: 40,
+              backgroundColor: theme.bg,
               flex: 1,
               justifyContent: "center",
               alignItems: "center",

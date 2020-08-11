@@ -11,7 +11,6 @@ export default function useService(service, params) {
         query: {
           $limit: 1000,
           $sort: { createdAt: -1 },
-          creator,
           ...params,
         },
       });

@@ -53,6 +53,7 @@ export const refreshFeedAsync = () => async (dispatch, getState) => {
 
   const feedIds = [...getState().follows.following];
   feedIds.push(getState().user._id);
+  console.log("feedIds ?", feedIds);
   try {
     const response = await recommendationsService.find({
       query: {
