@@ -8,7 +8,7 @@ import useTheme from "../hooks/useTheme";
 
 const Text = {
   create: "Great post! \nYou are muy interesante",
-  follow: "DOPE. Following is dope.",
+  follow: "Dope follow. \nFollowing is dope.",
 };
 
 export default function MyModal({ showModal, setShowModal, type, message }) {

@@ -9,6 +9,7 @@ export default SubmitButton = ({
   onPress,
   title,
   isProcessing,
+  fullwidth = false,
 }) => {
   const theme = useTheme();
   const bgColor = {
@@ -37,7 +38,8 @@ export default SubmitButton = ({
             marginVertical: 15,
             borderRadius: 5,
             paddingVertical: 6,
-            width: theme.contentWidth,
+            paddingHorizontal: 20,
+            width: fullwidth ? theme.windowWidth : null,
             alignItems: "center",
             justifyContent: "center",
             backgroundColor: bgColor[intent],

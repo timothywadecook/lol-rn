@@ -22,6 +22,7 @@ export default function ProfileTabContent({
   following,
 }) {
   const theme = useTheme();
+  console.log("posts?", posts);
 
   const dispatch = useDispatch();
   const toggleFollowing = (userId) => dispatch(toggleFollowingAsync(userId));

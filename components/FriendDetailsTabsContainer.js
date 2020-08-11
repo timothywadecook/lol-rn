@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { View } from "react-native";
 import ProfileTabContent from "./ProfileTabContent";
 import ProfileTabMenu from "./ProfileTabMenu";
@@ -8,7 +9,11 @@ import {
   followsService,
 } from "../services/feathersClient";
 
+import { addLoadedRecommendations } from "../store/recommendationsSlice";
+
 export default function FriendDetailsTabsContainer({ user }) {
+  const dispatch = useDispatch();
+
   const [activeTab, setActiveTab] = useState("Posts");
 
   const [posts, setPosts] = useState([]);
@@ -56,7 +61,7 @@ export default function FriendDetailsTabsContainer({ user }) {
           },
         })
       ).data.map((f) => f.follower);
-      if (followersIds.length > 0) {
+      if (followerIds.length > 0) {
         const followers = await usersService.find({
           query: {
             _id: { $in: followerIds },
@@ -80,7 +85,8 @@ export default function FriendDetailsTabsContainer({ user }) {
         },
       })
       .then((response) => {
-        setPosts(response.data);
+        dispatch(addLoadedRecommendations(response.data));
+        setPosts(response.data.map((r) => r._id));
       });
   };
 

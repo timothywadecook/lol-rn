@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigation } from "@react-navigation/native";
 import {
   View,
   TextInput,
   Button,
   StyleSheet,
   TouchableOpacity,
-  Image,
+  ActivityIndicator,
+  Keyboard,
 } from "react-native";
 import { H2 } from "../Atomic/StyledText";
 import UserAvatar from "react-native-user-avatar";
@@ -15,64 +15,65 @@ import Autocomplete from "react-native-autocomplete-input";
 import useDebounce from "../../hooks/useDebounce";
 import useTheme from "../../hooks/useTheme";
 //
+import { useNavigation } from "@react-navigation/native";
 import { usersService } from "../../services/feathersClient";
-import { toggleFollowingAsync } from "../../store/followsSlice";
 
 export default function FollowUserByUsernameInput({ setInputFocus }) {
-  const dispatch = useDispatch();
   const navigation = useNavigation();
-  const followingIds = useSelector((state) => state.follows.following);
 
-  const [item, setItem] = useState({});
   const [query, setQuery] = useState("");
+  const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const theme = useTheme();
   const styles = getStyles(theme);
 
   const debouncedQuery = useDebounce(query, 300);
   const searchDbForUsername = () => {
-    if (!debouncedQuery || !!item._id) return;
+    if (!debouncedQuery) return;
     // search users by username fuzzy search
+    setLoading(true);
     usersService
       .find({
         query: {
-          _id: { $nin: followingIds },
           username: { $search: [debouncedQuery] },
         },
       })
       .then((res) => {
-        setData(res.data);
-        console.log("SUCCESS $SEARCH BRUH: ", res);
+        if (!!query) {
+          setData(res.data);
+        }
+        setLoading(false);
       })
-      .catch((e) => console.log("$search failed", e));
+      .catch((e) => {
+        console.log("$search failed", e);
+        setLoading(false);
+      });
 
     //
   };
   useEffect(searchDbForUsername, [debouncedQuery]);
 
-  const handleItemSelection = (item) => {
-    setItem(item);
-    setQuery(item.username);
-    setData([]);
-  };
-
-  const handleFollowUser = () => {
-    dispatch(toggleFollowingAsync(item._id)).then(() =>
-      navigation.navigate("Modal", {
-        message: `Success! You are following @${item.username}`,
-      })
-    );
-    setItem({});
+  const reset = () => {
     setQuery("");
+    setData([]);
+    setInputFocus(false);
   };
 
-  const clearSelection = () => {
-    setItem({});
-    setData([]);
+  const onViewProfile = (item) => {
+    reset();
+    navigation.navigate("FriendDetails", { friend: item });
   };
+
+  const onCancel = () => {
+    reset();
+    Keyboard.dismiss();
+  };
+
   useEffect(() => {
-    if (!query) {
-      clearSelection();
+    if (query.length > 0) {
+      setInputFocus(true);
+    } else {
+      reset();
     }
   }, [query]);
 
@@ -82,13 +83,13 @@ export default function FollowUserByUsernameInput({ setInputFocus }) {
         containerStyle={styles.autocompleteContainer}
         inputContainerStyle={styles.inputContainer}
         listStyle={styles.list}
-        data={item._id ? [] : data}
+        data={data}
         defaultValue={query}
         keyExtractor={(item) => item._id}
         renderItem={({ item }) => (
           <TouchableOpacity
             onPress={() => {
-              handleItemSelection(item);
+              onViewProfile(item);
             }}
             style={styles.row}
           >
@@ -111,12 +112,11 @@ export default function FollowUserByUsernameInput({ setInputFocus }) {
             onChange={(e) => {
               setQuery(e.nativeEvent.text.toLowerCase());
             }}
+            loading={loading}
             theme={theme}
             styles={styles}
             value={query}
-            item={item}
-            handleFollowUser={handleFollowUser}
-            setInputFocus={setInputFocus}
+            onCancel={onCancel}
           />
         )}
       />
@@ -124,13 +124,7 @@ export default function FollowUserByUsernameInput({ setInputFocus }) {
   );
 }
 
-function CustomTextInput({
-  onChange,
-  value,
-  item,
-  handleFollowUser,
-  setInputFocus,
-}) {
+function CustomTextInput({ onChange, value, loading, onCancel }) {
   const theme = useTheme();
 
   return (
@@ -157,19 +151,15 @@ function CustomTextInput({
         autoCorrect={false}
         keyboardAppearance={theme.theme}
         placeholderTextColor="#5d5d5d"
-        placeholder="Follow by username..."
-        onFocus={() => setInputFocus(true)}
-        onSubmitEditing={() => {
-          setInputFocus(false);
-        }}
+        placeholder="Find friends by username..."
+        onSubmit={onCancel}
       />
-      {item._id && (
-        <Button
-          title="Follow"
-          color={theme.purple}
-          onPress={handleFollowUser}
-        />
-      )}
+      {value.length > 0 &&
+        (loading ? (
+          <ActivityIndicator color={theme.primary} size="small" />
+        ) : (
+          <Button title="Cancel" color={theme.iconDefault} onPress={onCancel} />
+        ))}
     </View>
   );
 }

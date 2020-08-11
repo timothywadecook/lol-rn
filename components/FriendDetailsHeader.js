@@ -35,11 +35,11 @@ const FriendDetailsHeader = ({ user, theme }) => {
         >
           <UserAvatar
             style={{
-              margin: 10,
-              borderWidth: 0.5,
+              marginRight: 10,
+              borderWidth: 1,
               borderColor: "white",
             }}
-            size={80}
+            size={50}
             name={user.name}
             bgColor={"black"}
             src={user.avatar}
@@ -47,7 +47,7 @@ const FriendDetailsHeader = ({ user, theme }) => {
           <View>
             <Title>{user.username}</Title>
             <H2G>{user.name}</H2G>
-            <P>Atlanta, GA</P>
+            {/* <P>Atlanta, GA</P> */}
           </View>
         </View>
 
@@ -59,7 +59,7 @@ const FriendDetailsHeader = ({ user, theme }) => {
           }}
         >
           <SubmitButton
-            intent="primary"
+            intent={isFollowing ? "info" : "primary"}
             title={title}
             onPress={() => dispatch(toggleFollowingAsync(user._id))}
           />

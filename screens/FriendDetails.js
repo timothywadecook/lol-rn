@@ -42,7 +42,6 @@ export default function FriendDetailsScreen({ navigation, route }) {
             navigation.goBack();
           }}
           color={theme.primary}
-          // style={{ alignSelf: "flex-start" }}
         ></Button>
       </View>
 
