@@ -1,7 +1,7 @@
 import React from "react";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { Text, ScrollView, View } from "react-native";
-import UserListItem from "./ListItems/UserListItem";
+import UserListItem2 from "./ListItems/UserListItem2";
 import ListList from "./Lists/ListList";
 import FilteredRecommendationsList from "./Lists/FilteredRecommendationsList";
 
@@ -9,6 +9,7 @@ import { toggleFollowingAsync } from "../store/followsSlice";
 import useTheme from "../hooks/useTheme";
 
 import { H1 } from "../components/Atomic/StyledText";
+import SubmitButton from "./Buttons/SubmitButton";
 
 export default function ProfileTabContent({
   userId,
@@ -52,17 +53,17 @@ export default function ProfileTabContent({
           }}
         >
           {followers.map((u) => (
-            <UserListItem
-              username={u.username}
-              name={u.name}
-              action={
-                sessionUserFollowing.includes(u._id) ? "unfollow" : "follow"
-              }
-              handleAction={() => {
-                toggleFollowing(u._id);
-              }}
-              key={u.username}
-            />
+            <UserListItem2 key={u._id} user={u}>
+              <SubmitButton
+                onPress={() => toggleFollowing(u._id)}
+                intent={
+                  sessionUserFollowing.includes(u._id) ? "info" : "primary"
+                }
+                title={
+                  sessionUserFollowing.includes(u._id) ? "Unfollow" : "Follow"
+                }
+              />
+            </UserListItem2>
           ))}
         </ScrollView>
       );
@@ -75,17 +76,17 @@ export default function ProfileTabContent({
           }}
         >
           {following.map((u) => (
-            <UserListItem
-              username={u.username}
-              name={u.name}
-              action={
-                sessionUserFollowing.includes(u._id) ? "unfollow" : "follow"
-              }
-              handleAction={() => {
-                toggleFollowing(u._id);
-              }}
-              key={u.username}
-            />
+            <UserListItem2 key={u._id} user={u}>
+              <SubmitButton
+                onPress={() => toggleFollowing(u._id)}
+                intent={
+                  sessionUserFollowing.includes(u._id) ? "info" : "primary"
+                }
+                title={
+                  sessionUserFollowing.includes(u._id) ? "Unfollow" : "Follow"
+                }
+              />
+            </UserListItem2>
           ))}
         </ScrollView>
       );

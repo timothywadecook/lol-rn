@@ -15,6 +15,7 @@ import BooksInput from "../../components/Inputs/BooksInput";
 import GooglePlacesInput from "../../components/Inputs/GooglePlacesInput";
 
 import useTheme from "../../hooks/useTheme";
+import usePrevious from "../../hooks/usePrevious";
 import { createRecommendationAsync } from "../../store/recommendationsSlice";
 import AddThingToListModal from "../../components/AddThingToListModal";
 import { thingsService } from "../../services/feathersClient";
@@ -89,6 +90,7 @@ export default function CreateScreen({ route }) {
   const [showModal, setShowModal] = useState(false);
   const [showAddToListModal, setShowAddToListModal] = useState(false);
   const [category, setCategory] = useState("");
+  const prevCategory = usePrevious(category);
   const [itemChosen, setItemChosen] = useState(false);
   const [item, setItem] = useState({});
 
@@ -101,7 +103,6 @@ export default function CreateScreen({ route }) {
   const receiveRepost = () => {
     if (route.params && route.params.repost) {
       const { repost } = route.params;
-      console.log("is repost actually empty?", repost);
       setCategory(repost.category);
       setItem(repost);
       setItemChosen(true);
@@ -126,6 +127,13 @@ export default function CreateScreen({ route }) {
     resetState();
     setShowModal(true);
   };
+
+  React.useEffect(() => {
+    if (itemChosen && !!prevCategory) {
+      setItem({});
+      setItemChosen(false);
+    }
+  }, [category]);
 
   const getThingId = () => {
     async function findOrCreateThing() {
@@ -171,7 +179,7 @@ export default function CreateScreen({ route }) {
           />
         )} */}
         <AnimateExpand doAnimation={!category} height={50}>
-          <FancyH1 style={{ color: theme.purple }}>Like Out Loud</FancyH1>
+          <FancyH1 style={{ color: theme.purple }}>What do you like?</FancyH1>
         </AnimateExpand>
 
         <SingleFilterButtonSpan
@@ -243,15 +251,19 @@ export default function CreateScreen({ route }) {
             setItem={setItem}
           />
 
-          {itemChosen && !item.main_comment && (
-            <SubmitButton title="Cancel" onPress={resetState} />
-          )}
-
           {itemChosen && !!item.main_comment && (
             <SubmitButton
               intent="primary"
               title="Post"
+              fullwidth={true}
               onPress={submitCreate}
+            />
+          )}
+          {itemChosen && (
+            <SubmitButton
+              title="Cancel"
+              fullwidth={true}
+              onPress={resetState}
             />
           )}
         </AnimateExpand>

@@ -24,14 +24,13 @@ export default function UserListItem2({ user, children }) {
       >
         <Image
           source={{
-            uri:
-              "https://www.libreriasanjorge.com.ar/core/vendors/v24/wf/clean/images/usuario-avatar-circular.fw-p-500.png",
+            uri: user.avatar,
           }}
           style={{
             width: 36,
             height: 36,
             borderRadius: 18,
-            margin: 5,
+            marginRight: 10,
           }}
         />
         <View

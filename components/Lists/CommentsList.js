@@ -69,7 +69,6 @@ export default function CommentsList({ recommendation }) {
       >
         <FlatList
           inverted={true}
-          // horizontal={true}
           data={comments}
           renderItem={({ item }) => <Comment {...item} />}
           initialNumToRender={4}

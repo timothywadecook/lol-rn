@@ -24,7 +24,7 @@ export default SubmitButton = ({
   };
   const fontColor = {
     secondary: theme.purple,
-    primary: theme.primary,
+    primary: theme.white,
     info: theme.iconDefault,
   };
   return (
@@ -39,7 +39,7 @@ export default SubmitButton = ({
             borderRadius: 5,
             paddingVertical: 6,
             paddingHorizontal: 20,
-            width: fullwidth ? theme.windowWidth : null,
+            width: fullwidth ? theme.contentWidth : null,
             alignItems: "center",
             justifyContent: "center",
             backgroundColor: bgColor[intent],

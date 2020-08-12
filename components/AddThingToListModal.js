@@ -1,10 +1,11 @@
 import React from "react";
-import { View, Modal, ScrollView } from "react-native";
+import { View, Modal, ScrollView, ActivityIndicator } from "react-native";
 import { useSelector } from "react-redux";
 
 import SubmitButton from "./Buttons/SubmitButton";
 import useTheme from "../hooks/useTheme";
 import { listsService } from "../services/feathersClient";
+import ActivityIndicatorCentered from "./Atomic/ActivityIndicatorCentered";
 
 export default function AddThingToListModal({
   showModal,
@@ -47,55 +48,57 @@ export default function AddThingToListModal({
 
   return (
     <Modal
-      animationType="slide"
+      animationType="fade"
       transparent={true}
       visible={showModal}
       onRequestClose={() => setShowModal(false)}
       onDismiss={() => setShowModal(false)}
     >
-      <View style={{ flex: 1 }}></View>
-      <View
-        style={{
-          // backgroundColor: theme.wallbg,
-          marginBottom: 20,
-          // borderWidth: 1,
-          // borderColor: theme.bg,
-          // borderRadius: 40,
-          //   borderTopStartRadius: 15,
-          //   borderTopEndRadius: 15,
-          overflow: "hidden",
-        }}
-      >
-        <ScrollView>
+      <View style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.5)" }}>
+        <View style={{ flex: 1 }}></View>
+
+        <View
+          style={{
+            marginBottom: 20,
+          }}
+        >
           <View
             style={{
               backgroundColor: theme.bg,
+              paddingVertical: 10,
+              marginBottom: 8,
+              borderRadius: 40,
             }}
           >
-            {lists.map((list) => (
-              <View
-                key={list._id}
-                style={{
-                  marginBottom: 4,
-                  borderRadius: 20,
-                  flex: 1,
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <SubmitButton
-                  intent="secondary"
-                  title={list.name}
-                  onPress={() => onAddThingToList(list._id)}
-                />
-              </View>
-            ))}
+            <ScrollView>
+              {lists.length < 0 ? (
+                <View style={{ height: 100 }}>
+                  <ActivityIndicatorCentered size="small" />
+                </View>
+              ) : (
+                lists.map((list) => (
+                  <View
+                    key={list._id}
+                    style={{
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <SubmitButton
+                      intent="secondary"
+                      title={list.name}
+                      onPress={() => onAddThingToList(list._id)}
+                    />
+                  </View>
+                ))
+              )}
+            </ScrollView>
           </View>
           <View
             style={{
               borderRadius: 40,
               backgroundColor: theme.bg,
-              flex: 1,
+              // flex: 1,
               justifyContent: "center",
               alignItems: "center",
               borderTopWidth: 1,
@@ -104,7 +107,7 @@ export default function AddThingToListModal({
           >
             <SubmitButton title="Dismiss" onPress={() => setShowModal(false)} />
           </View>
-        </ScrollView>
+        </View>
       </View>
     </Modal>
   );

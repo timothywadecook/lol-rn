@@ -28,7 +28,8 @@ const ProfileMainHeader = ({ user, theme, showSettings, setShowSettings }) => {
         >
           <UserAvatar
             style={{
-              marginRight: 10,
+              marginRight: 15,
+              marginLeft: 10,
               borderWidth: 1,
               borderColor: "white",
             }}

@@ -57,6 +57,8 @@ export default function RecommendationDetails({ navigation, route }) {
         <H2 style={{ padding: 10 }}>Comments</H2>
         <CommentInput recId={recId} />
         <FlatList
+          ListHeaderComponent={<View style={{ height: 10 }}></View>}
+          ListFooterComponent={<View style={{ height: 30 }}></View>}
           data={comments}
           renderItem={({ item }) => <Comment {...item} />}
           initialNumToRender={8}
@@ -146,7 +148,13 @@ function Comment({ text, creator }) {
     );
   }
   return (
-    <View style={{ flexDirection: "row", alignItems: "center", padding: 10 }}>
+    <View
+      style={{
+        flexDirection: "row",
+        alignItems: "center",
+        padding: 10,
+      }}
+    >
       <ActivityIndicatorCentered size="small" />
     </View>
   );

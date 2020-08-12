@@ -18,7 +18,10 @@ import useTheme from "../../hooks/useTheme";
 import { useNavigation } from "@react-navigation/native";
 import { usersService } from "../../services/feathersClient";
 
-export default function FollowUserByUsernameInput({ setInputFocus }) {
+export default function FollowUserByUsernameInput({
+  setInputFocus,
+  inputFocus,
+}) {
   const navigation = useNavigation();
 
   const [query, setQuery] = useState("");
@@ -117,6 +120,7 @@ export default function FollowUserByUsernameInput({ setInputFocus }) {
             styles={styles}
             value={query}
             onCancel={onCancel}
+            inputFocus={inputFocus}
           />
         )}
       />
@@ -124,13 +128,13 @@ export default function FollowUserByUsernameInput({ setInputFocus }) {
   );
 }
 
-function CustomTextInput({ onChange, value, loading, onCancel }) {
+function CustomTextInput({ onChange, value, loading, onCancel, inputFocus }) {
   const theme = useTheme();
 
   return (
     <View
       style={{
-        width: theme.contentWidth,
+        width: inputFocus ? theme.contentWidth : theme.contentWidth * 0.65,
         alignSelf: "center",
         paddingHorizontal: 20,
         margin: 7,

@@ -1,6 +1,7 @@
 import Layout from "./Layout";
 
 const base = {
+  white: "#fafafa",
   windowHeight: Layout.window.height,
   windowWidth: Layout.window.width,
   contentWidth: Layout.window.width * 0.95,
@@ -19,8 +20,11 @@ export const themes = {
     // purple: "#5856D6",
     purple: "#20B6D9",
     activeButtonBg: "#f5f5f5",
-    bg: "#fafafa",
-    wallbg: "#E8E8E8",
+    // wallbg: "#fafafa",
+    bg: "#f5f5f5",
+    // wallbg: "#F5FFFA",
+    // bg: "#E8E8E8",
+    wallbg: "#fcfcfc",
     deepwallbg: "#E0E0E0",
     // wallbg: "#f5f5f5",
     inputBackground: "rgba(240,240,240,1)",

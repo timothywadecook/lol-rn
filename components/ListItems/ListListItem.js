@@ -1,5 +1,5 @@
 import React from "react";
-import { View } from "react-native";
+import { View, ActivityIndicator } from "react-native";
 
 import { Title, H2G, H2 } from "../Atomic/StyledText";
 import useTheme from "../../hooks/useTheme";
@@ -14,7 +14,10 @@ import { useNavigation } from "@react-navigation/native";
 import {
   TouchableOpacity,
   TouchableWithoutFeedback,
+  FlatList,
 } from "react-native-gesture-handler";
+import { usersService } from "../../services/feathersClient";
+import UserAvatar from "react-native-user-avatar";
 
 export default function ListListItem({
   list,
@@ -24,7 +27,6 @@ export default function ListListItem({
   onMakePublic,
   onDeleteList,
 }) {
-  console.log("list ? ", list);
   const { _id, name, isPrivate, participants } = list;
   const theme = useTheme();
 
@@ -85,12 +87,20 @@ export default function ListListItem({
             alignItems: "center",
           }}
         >
-          <Ionicons
+          {/* <Ionicons
             style={{ paddingRight: 20, paddingLeft: 5 }}
-            name={isPrivate ? "md-eye-off" : "md-globe"}
+            name={participants.length > 1 ? "md-people" : "md-person"}
             size={24}
-            color={isPrivate ? theme.iconDefault : theme.purple}
-          />
+            color={theme.iconDefault}
+          /> */}
+          {isPrivate && (
+            <Ionicons
+              style={{ paddingRight: 20, paddingLeft: 5 }}
+              name="md-eye-off"
+              size={24}
+              color={theme.iconDefault}
+            />
+          )}
           <H2 style={{ fontSize: 20, fontWeight: "normal" }}>{name}</H2>
         </View>
         <View
@@ -100,10 +110,58 @@ export default function ListListItem({
             alignItems: "center",
           }}
         >
-          {/* {isPrivate && <H2G>Private</H2G>} */}
-          {participants.length > 1 && <IconButtons.IsShared active={true} />}
+          <ParticipantsRow participants={participants} />
         </View>
       </TouchableWithoutFeedback>
     </Swipeable>
+  );
+}
+
+function ParticipantsRow({ participants }) {
+  // return a horizontal list, flex 1, scrollable
+
+  return (
+    <View style={{ flexGrow: 0 }}>
+      <FlatList
+        // inverted={true}
+        horizontal={true}
+        data={participants}
+        renderItem={({ item }) => <ParticipantAvatar participantId={item} />}
+        initialNumToRender={5}
+        keyExtractor={(item) => item}
+        showsHorizontalScrollIndicator={false}
+      />
+    </View>
+  );
+}
+
+function ParticipantAvatar({ participantId }) {
+  const [user, setUser] = React.useState({});
+
+  React.useEffect(() => {
+    usersService
+      .get(participantId)
+      .then((res) => setUser(res))
+      .catch((e) =>
+        console.log(
+          "Error getting participant for participant avatar",
+          participantId,
+          e.message
+        )
+      );
+  }, []);
+
+  if (!user._id) {
+    return <ActivityIndicator size="small" />;
+  }
+
+  return (
+    <UserAvatar
+      style={{ marginHorizontal: 7, borderWidth: 0, borderColor: "white" }}
+      bgColor="transparent"
+      size={24}
+      name={user.name}
+      src={user.avatar}
+    />
   );
 }

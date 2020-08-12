@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Button, Image, ScrollView } from "react-native";
-import { Title, H4 } from "../components/Atomic/StyledText";
+import { Title, H4, H2 } from "../components/Atomic/StyledText";
 
 import { listsService, thingsService } from "../services/feathersClient";
 import { useNavigation } from "@react-navigation/native";
@@ -12,8 +12,7 @@ import ActivityIndicatorCentered from "../components/Atomic/ActivityIndicatorCen
 import useTheme from "../hooks/useTheme";
 
 //
-export default function List({ route }) {
-  const navigation = useNavigation();
+export default function List({ route, navigation }) {
   navigation.setOptions({
     headerShown: false,
   });
@@ -88,7 +87,7 @@ function ListHeader({ name, onNavBack, onOpenEditList }) {
       }}
     >
       <Button title="Back" onPress={onNavBack} color={theme.primary}></Button>
-      <Title>{name}</Title>
+      <H2>{name}</H2>
 
       <Button
         title="Edit"
@@ -135,6 +134,7 @@ function ThingList({ thingIds, onDeleteThing }) {
 }
 
 function ThingListItem({ thing, onDeleteThing }) {
+  const theme = useTheme();
   return (
     <Swipeable
       renderRightActions={() => (
@@ -145,6 +145,7 @@ function ThingListItem({ thing, onDeleteThing }) {
     >
       <View
         style={{
+          width: theme.contentWidth,
           flex: 1,
           flexDirection: "row",
           paddingVertical: 15,
@@ -159,7 +160,7 @@ function ThingListItem({ thing, onDeleteThing }) {
               width: "10%",
               height: 40,
               borderRadius: 5,
-              marginRight: 5,
+              marginRight: 8,
               marginTop: 2,
             }}
           />

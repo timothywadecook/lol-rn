@@ -126,7 +126,8 @@ function CreateNewListFooter() {
       }}
     >
       <SubmitButton
-        title="+ Create New List"
+        fullwidth={true}
+        title="Create New List"
         onPress={openCreateOrEditListScreen}
       />
     </View>

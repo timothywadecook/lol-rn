@@ -44,7 +44,6 @@ export const fetchFollowsAsync = () => async (dispatch, getState) => {
         $limit: 1000,
       },
     });
-    console.log("getfollowing.data", getFollowing.data);
     dispatch(setFollowing(getFollowing.data.map((f) => f.following)));
 
     const getFollowers = await followsService.find({

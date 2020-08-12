@@ -5,13 +5,14 @@ import IconButtons from "../components/Buttons/IconButtons";
 import SubmitButton from "../components/Buttons/SubmitButton";
 import { useNavigation } from "@react-navigation/native";
 
-import { Title, H2G } from "../components/Atomic/StyledText";
+import { Title, H2G, H2 } from "../components/Atomic/StyledText";
 
 import useTheme from "../hooks/useTheme";
 
 import UserListItem2 from "../components/ListItems/UserListItem2";
 
 import { usersService, listsService } from "../services/feathersClient";
+import { BorderlessButton } from "react-native-gesture-handler";
 
 export default function CreateOrEditList({ navigation, route }) {
   navigation.setOptions({
@@ -79,7 +80,9 @@ export default function CreateOrEditList({ navigation, route }) {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: theme.wallbg }}>
+    <View
+      style={{ flex: 1, backgroundColor: theme.wallbg, alignItems: "center" }}
+    >
       <EditListHeader isEditMode={isEditMode} onNavBack={onNavBack} />
       <EditName name={name} setName={setName} />
       <ToggleIsPrivate
@@ -116,7 +119,7 @@ function EditListHeader({ onNavBack, isEditMode }) {
         <Button title="Back" onPress={onNavBack} color={theme.primary}></Button>
       </View>
       <View style={{ flex: 2, alignItems: "center" }}>
-        <Title>{isEditMode ? "Edit List" : "Create List"}</Title>
+        <H2>{isEditMode ? "Edit List" : "Create List"}</H2>
       </View>
       <View style={{ flex: 1 }}></View>
     </View>
@@ -124,9 +127,10 @@ function EditListHeader({ onNavBack, isEditMode }) {
 }
 
 function EditListFooter({ show, onSubmit }) {
+  const theme = useTheme();
   return (
     show && (
-      <View style={{ paddingBottom: 30 }}>
+      <View style={{ paddingBottom: 30, width: theme.contentWidth }}>
         <SubmitButton intent="primary" title="Save List" onPress={onSubmit} />
       </View>
     )
@@ -136,12 +140,13 @@ function EditListFooter({ show, onSubmit }) {
 function EditName({ name, setName }) {
   const theme = useTheme();
   return (
-    <View style={{ paddingHorizontal: 10 }}>
+    <View style={{ width: theme.contentWidth }}>
       <View style={{ paddingTop: 30, paddingBottom: 15 }}>
         <H2G>List Name</H2G>
       </View>
 
       <TextInput
+        style={{ fontSize: 26, fontWeight: "bold", color: theme.primary }}
         placeholder="List name..."
         value={name}
         onChangeText={(text) => setName(text)}
@@ -158,8 +163,9 @@ function EditName({ name, setName }) {
 }
 
 function ToggleIsPrivate({ isPrivate, toggleIsPrivate }) {
+  const theme = useTheme();
   return (
-    <View style={{ paddingHorizontal: 10 }}>
+    <View style={{ width: theme.contentWidth }}>
       <View style={{ paddingTop: 30, paddingBottom: 15 }}>
         <H2G>Private List</H2G>
       </View>
@@ -177,6 +183,7 @@ function SelectableUserList({
   onRemoveParticipant,
 }) {
   const [candidates, setCandidates] = React.useState([]);
+  const theme = useTheme();
 
   const sessionUserFollowing = useSelector((state) => state.follows.following);
   // fetch candidates and set state
@@ -199,22 +206,21 @@ function SelectableUserList({
   }, []);
 
   return (
-    <View style={{ flex: 1 }}>
-      <View
-        style={{ paddingHorizontal: 10, paddingTop: 30, paddingBottom: 15 }}
-      >
+    <View style={{ flex: 1, width: theme.contentWidth }}>
+      <View style={{ paddingTop: 30, paddingBottom: 15 }}>
         <H2G>Participants</H2G>
       </View>
       <ScrollView>
         {candidates.map((u) => (
           <UserListItem2 key={u._id} user={u}>
-            {isSessionUser(u._id) ? null : !isParticipant(u._id) ? (
+            {!isParticipant(u._id) ? (
               <IconButtons.AddCircle
-                active={true}
+                // active={true}
                 onPress={() => onAddParticipant(u._id)}
               />
             ) : (
-              <IconButtons.RemoveCircle
+              <IconButtons.CheckmarkCircle
+                active={true}
                 onPress={() => onRemoveParticipant(u._id)}
               />
             )}

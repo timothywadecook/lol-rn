@@ -36,7 +36,7 @@ const FilteredRecommendationsList = ({
         initialNumToRender={4}
         keyExtractor={(item) => item}
         showsVerticalScrollIndicator={false}
-        stickyHeaderIndices={[0]}
+        // stickyHeaderIndices={[0]}
         ListFooterComponent={() =>
           loading ? <ActivityIndicatorCentered size="small" /> : null
         }

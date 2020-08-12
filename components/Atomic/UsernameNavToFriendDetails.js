@@ -25,7 +25,7 @@ const UsernameNavToFriendDetails = ({ friend, withAvatar = true }) => {
     >
       {withAvatar && (
         <UserAvatar
-          style={{ margin: 6, borderWidth: 0.5, borderColor: "white" }}
+          style={{ margin: 7, borderWidth: 0.5, borderColor: "white" }}
           bgColor="black"
           size={24}
           name={friend.name}
