@@ -37,7 +37,7 @@ export default SubmitButton = ({
           style={{
             marginVertical: 15,
             borderRadius: 5,
-            paddingVertical: 6,
+            paddingVertical: 7.5,
             paddingHorizontal: 20,
             width: fullwidth ? theme.contentWidth : null,
             alignItems: "center",

@@ -5,8 +5,10 @@ import user from "./userSlice";
 import posts from "./postsSlice";
 import follows from "./followsSlice";
 import feed from "./feedSlice";
+import lists from "./listsStore";
 
 const rootReducer = combineReducers({
+  lists,
   feed,
   posts,
   recommendations,

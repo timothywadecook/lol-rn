@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Switch, ScrollView, Button, TextInput } from "react-native";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import IconButtons from "../components/Buttons/IconButtons";
 import SubmitButton from "../components/Buttons/SubmitButton";
 import { useNavigation } from "@react-navigation/native";
@@ -12,7 +12,8 @@ import useTheme from "../hooks/useTheme";
 import UserListItem2 from "../components/ListItems/UserListItem2";
 
 import { usersService, listsService } from "../services/feathersClient";
-import { BorderlessButton } from "react-native-gesture-handler";
+
+import { updateList, addCreatedList } from "../store/listsStore";
 
 export default function CreateOrEditList({ navigation, route }) {
   navigation.setOptions({
@@ -22,6 +23,7 @@ export default function CreateOrEditList({ navigation, route }) {
   const theme = useTheme();
   const isEditMode = !!list;
   const sessionUserId = useSelector((state) => state.user._id);
+  const dispatch = useDispatch();
 
   // local form state. field = name, participants, isPrivate
   const [name, setName] = React.useState("");
@@ -37,7 +39,6 @@ export default function CreateOrEditList({ navigation, route }) {
   };
   React.useEffect(ifEditMode, []);
 
-  const isSessionUser = (userId) => sessionUserId === userId;
   const isParticipant = (userId) => participants.includes(userId);
 
   const onAddParticipant = (userId) =>
@@ -52,7 +53,12 @@ export default function CreateOrEditList({ navigation, route }) {
   const onSubmit = async () => {
     if (isEditMode) {
       try {
-        listsService.patch(list._id, { name, isPrivate, participants });
+        const updatedList = await listsService.patch(list._id, {
+          name,
+          isPrivate,
+          participants,
+        });
+        dispatch(updateList(updatedList));
       } catch (error) {
         console.log(
           "Error saving edit changes to list",
@@ -65,7 +71,12 @@ export default function CreateOrEditList({ navigation, route }) {
       }
     } else {
       try {
-        listsService.create({ name, isPrivate, participants });
+        const newList = await listsService.create({
+          name,
+          isPrivate,
+          participants,
+        });
+        dispatch(addCreatedList(newList));
       } catch (error) {
         console.log(
           "Error creating new list",
@@ -91,7 +102,6 @@ export default function CreateOrEditList({ navigation, route }) {
       />
       <SelectableUserList
         participants={participants}
-        isSessionUser={isSessionUser}
         isParticipant={isParticipant}
         onAddParticipant={onAddParticipant}
         onRemoveParticipant={onRemoveParticipant}
@@ -177,7 +187,6 @@ function ToggleIsPrivate({ isPrivate, toggleIsPrivate }) {
 
 function SelectableUserList({
   participants,
-  isSessionUser,
   isParticipant,
   onAddParticipant,
   onRemoveParticipant,

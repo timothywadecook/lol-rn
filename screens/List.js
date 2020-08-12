@@ -1,9 +1,10 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { View, Button, Image, ScrollView } from "react-native";
 import { Title, H4, H2 } from "../components/Atomic/StyledText";
 
 import { listsService, thingsService } from "../services/feathersClient";
-import { useNavigation } from "@react-navigation/native";
+
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import SquareIconButton from "../components/ListItems/SwipableSquareIconButton";
 
@@ -11,35 +12,25 @@ import ActivityIndicatorCentered from "../components/Atomic/ActivityIndicatorCen
 
 import useTheme from "../hooks/useTheme";
 
+import { updateList } from "../store/listsStore";
+
 //
 export default function List({ route, navigation }) {
   navigation.setOptions({
     headerShown: false,
   });
   const theme = useTheme();
-
+  const dispatch = useDispatch();
   const { listId } = route.params;
 
-  const [list, setList] = React.useState({});
-  const fetchList = async () => {
-    try {
-      const list = await listsService.get(listId);
-      setList(list);
-    } catch (error) {
-      console.log("Error trying to fetch list with id", listId);
-    }
-  };
-  React.useEffect(() => {
-    fetchList();
-  }, []);
+  const list = useSelector((state) => state.lists[listId]);
 
   const onDeleteThing = async (thingId) => {
-    setList({ ...list, things: list.things.filter((l) => l._id !== thingId) });
-
     try {
-      listsService.patch(listId, {
+      const updatedList = await listsService.patch(listId, {
         things: { $pull: thingId },
       });
+      dispatch(updateList(updatedList));
     } catch (error) {
       console.log(
         "Error onDeleteThing for listId and thingId",

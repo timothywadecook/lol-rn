@@ -10,6 +10,7 @@ import useTheme from "../hooks/useTheme";
 
 import { H1 } from "../components/Atomic/StyledText";
 import SubmitButton from "./Buttons/SubmitButton";
+import ActivityIndicatorCentered from "./Atomic/ActivityIndicatorCentered";
 
 export default function ProfileTabContent({
   userId,
@@ -23,7 +24,6 @@ export default function ProfileTabContent({
   following,
 }) {
   const theme = useTheme();
-  console.log("posts?", posts);
 
   const dispatch = useDispatch();
   const toggleFollowing = (userId) => dispatch(toggleFollowingAsync(userId));
@@ -32,7 +32,9 @@ export default function ProfileTabContent({
 
   switch (activeTab) {
     case "Posts":
-      return (
+      return !posts ? (
+        <ActivityIndicatorCentered />
+      ) : (
         <FilteredRecommendationsList
           loading={loadingPosts}
           refresh={refreshPosts}

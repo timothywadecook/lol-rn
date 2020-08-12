@@ -1,11 +1,11 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { View, ActivityIndicator } from "react-native";
 
 import { Title, H2G, H2 } from "../Atomic/StyledText";
 import useTheme from "../../hooks/useTheme";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import SquareIconButton from "./SwipableSquareIconButton";
-import IconButtons from "../Buttons/IconButtons";
 
 import { Ionicons } from "@expo/vector-icons";
 
@@ -16,24 +16,57 @@ import {
   TouchableWithoutFeedback,
   FlatList,
 } from "react-native-gesture-handler";
-import { usersService } from "../../services/feathersClient";
+import { usersService, listsService } from "../../services/feathersClient";
 import UserAvatar from "react-native-user-avatar";
 
-export default function ListListItem({
-  list,
-  canView,
-  canEdit,
-  onMakePrivate,
-  onMakePublic,
-  onDeleteList,
-}) {
-  const { _id, name, isPrivate, participants } = list;
-  const theme = useTheme();
+import { removeDeletedList, updateList } from "../../store/listsStore";
 
+export default function ListListItem({ listId }) {
   const navigation = useNavigation();
+  const theme = useTheme();
+  const dispatch = useDispatch();
+
+  const list = useSelector((state) => state.lists[listId]);
+  console.log("list??", list);
+  const { name, isPrivate, participants } = list;
+
   const onViewList = () => {
-    navigation.navigate("List", { listId: list._id });
+    navigation.navigate("List", { listId });
   };
+
+  const onDeleteList = async (listId) => {
+    try {
+      listsService.remove(listId);
+      dispatch(removeDeletedList(listId));
+    } catch (error) {
+      console.log("Error onDeleteList for listId", listId, error);
+    }
+  };
+
+  const onMakePrivate = async (listId) => {
+    try {
+      const updatedList = await listsService.patch(listId, { isPrivate: true });
+      dispatch(updateList(updatedList));
+    } catch (error) {
+      console.log("Error onMakePrivate for listId", listId, error);
+    }
+  };
+
+  const onMakePublic = async (listId) => {
+    try {
+      const updatedList = await listsService.patch(listId, {
+        isPrivate: false,
+      });
+      dispatch(updateList(updatedList));
+    } catch (error) {
+      console.log("Error onMakePublic for listId", listId, error);
+    }
+  };
+
+  const sessionUserId = useSelector((state) => state.user._id);
+  const canView = () =>
+    !list.isPrivate || list.participants.includes(sessionUserId);
+  const canEdit = () => list.participants.includes(sessionUserId);
 
   if (!canView()) {
     return null;
