@@ -32,7 +32,7 @@ export default function MyModal({ showModal, setShowModal, type, message }) {
         }}
       >
         <View
-          style={{ flex: 3, justifyContent: "center", alignItems: "center" }}
+          style={{ flex: 4, justifyContent: "center", alignItems: "center" }}
         >
           <Image source={logo} style={{ width: 200, height: 200 }} />
           <FancyH1 style={{ textAlign: "center" }}>{text}</FancyH1>

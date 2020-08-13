@@ -12,7 +12,7 @@ import ActivityIndicatorCentered from "../components/Atomic/ActivityIndicatorCen
 
 import useTheme from "../hooks/useTheme";
 
-import { updateList } from "../store/listsStore";
+import { updateList } from "../store/listsSlice";
 
 //
 export default function List({ route, navigation }) {
@@ -77,13 +77,13 @@ function ListHeader({ name, onNavBack, onOpenEditList }) {
         alignItems: "center",
       }}
     >
-      <Button title="Back" onPress={onNavBack} color={theme.primary}></Button>
+      <Button title="Back" onPress={onNavBack} color={theme.purple}></Button>
       <H2>{name}</H2>
 
       <Button
         title="Edit"
         onPress={onOpenEditList}
-        color={theme.primary}
+        color={theme.purple}
       ></Button>
     </View>
   );

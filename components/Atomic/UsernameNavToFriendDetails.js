@@ -5,7 +5,11 @@ import { H3, H2 } from "./StyledText";
 import { useNavigation } from "@react-navigation/native";
 import UserAvatar from "react-native-user-avatar";
 
-const UsernameNavToFriendDetails = ({ friend, withAvatar = true }) => {
+const UsernameNavToFriendDetails = ({
+  friend,
+  withAvatar = true,
+  withName = false,
+}) => {
   const navigation = useNavigation();
   const activeUserId = useSelector((state) => state.user._id);
 

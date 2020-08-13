@@ -35,7 +35,7 @@ export default SubmitButton = ({
         <TouchableOpacity
           onPress={onPress}
           style={{
-            marginVertical: 15,
+            marginVertical: 10,
             borderRadius: 5,
             paddingVertical: 7.5,
             paddingHorizontal: 20,

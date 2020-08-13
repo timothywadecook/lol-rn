@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { followsService } from "../services/feathersClient";
+import * as Haptics from "expo-haptics";
 
 const followsSlice = createSlice({
   name: "follows",
@@ -68,13 +69,14 @@ export const toggleFollowingAsync = (friendId) => async (
   const userId = getState().user._id;
 
   if (isFollowing) {
-    // THEN UNFOLLOW USER
     dispatch(unFollowById(friendId));
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+
     try {
       const findFollow = await followsService.find({
         query: { follower: userId, following: friendId },
       });
-      return followsService.remove(findFollow.data[0]._id);
+      followsService.remove(findFollow.data[0]._id);
     } catch {
       console.log(
         "Error trying to unfollow",
@@ -86,10 +88,11 @@ export const toggleFollowingAsync = (friendId) => async (
       dispatch(followById(friendId));
     }
   } else {
-    // THEN FOLLOW USER
     dispatch(followById(friendId));
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+
     try {
-      return followsService.create({ follower: userId, following: friendId });
+      followsService.create({ follower: userId, following: friendId });
     } catch {
       console.log(
         "Error trying to create follow",

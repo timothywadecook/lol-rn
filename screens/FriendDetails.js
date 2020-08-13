@@ -41,7 +41,7 @@ export default function FriendDetailsScreen({ navigation, route }) {
           onPress={() => {
             navigation.goBack();
           }}
-          color={theme.primary}
+          color={theme.purple}
         ></Button>
       </View>
 

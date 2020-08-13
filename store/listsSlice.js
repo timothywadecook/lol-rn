@@ -23,12 +23,15 @@ const listsSlice = createSlice({
       return {};
     },
     updateList(state, action) {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       state[action.payload._id] = action.payload;
     },
     addCreatedList(state, action) {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       state[action.payload._id] = action.payload;
     },
     removeDeletedList(state, action) {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       delete state[action.payload];
     },
   },

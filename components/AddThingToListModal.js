@@ -7,7 +7,7 @@ import useTheme from "../hooks/useTheme";
 import { listsService } from "../services/feathersClient";
 import ActivityIndicatorCentered from "./Atomic/ActivityIndicatorCentered";
 //
-import { updateList } from "../store/listsStore";
+import { updateList } from "../store/listsSlice";
 
 export default function AddThingToListModal({
   showModal,

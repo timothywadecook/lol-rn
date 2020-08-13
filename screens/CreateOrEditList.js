@@ -3,17 +3,16 @@ import { View, Switch, ScrollView, Button, TextInput } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import IconButtons from "../components/Buttons/IconButtons";
 import SubmitButton from "../components/Buttons/SubmitButton";
-import { useNavigation } from "@react-navigation/native";
 
 import { Title, H2G, H2 } from "../components/Atomic/StyledText";
 
 import useTheme from "../hooks/useTheme";
 
-import UserListItem2 from "../components/ListItems/UserListItem2";
+import UserListItem from "../components/ListItems/UserListItem";
 
 import { usersService, listsService } from "../services/feathersClient";
 
-import { updateList, addCreatedList } from "../store/listsStore";
+import { updateList, addCreatedList } from "../store/listsSlice";
 
 export default function CreateOrEditList({ navigation, route }) {
   navigation.setOptions({
@@ -126,7 +125,7 @@ function EditListHeader({ onNavBack, isEditMode }) {
       }}
     >
       <View style={{ flex: 1, alignItems: "flex-start" }}>
-        <Button title="Back" onPress={onNavBack} color={theme.primary}></Button>
+        <Button title="Back" onPress={onNavBack} color={theme.purple}></Button>
       </View>
       <View style={{ flex: 2, alignItems: "center" }}>
         <H2>{isEditMode ? "Edit List" : "Create List"}</H2>
@@ -221,19 +220,16 @@ function SelectableUserList({
       </View>
       <ScrollView>
         {candidates.map((u) => (
-          <UserListItem2 key={u._id} user={u}>
+          <UserListItem key={u._id} user={u}>
             {!isParticipant(u._id) ? (
-              <IconButtons.AddCircle
-                // active={true}
-                onPress={() => onAddParticipant(u._id)}
-              />
+              <IconButtons.AddCircle onPress={() => onAddParticipant(u._id)} />
             ) : (
               <IconButtons.CheckmarkCircle
                 active={true}
                 onPress={() => onRemoveParticipant(u._id)}
               />
             )}
-          </UserListItem2>
+          </UserListItem>
         ))}
       </ScrollView>
     </View>

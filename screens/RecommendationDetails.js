@@ -22,6 +22,7 @@ export default function RecommendationDetails({ navigation, route }) {
   const theme = useTheme();
 
   const { recId } = route.params;
+  console.log("recId?", recId);
   const comments = useService(commentsService, {
     recommendation: recId,
   });
@@ -47,7 +48,7 @@ export default function RecommendationDetails({ navigation, route }) {
           onPress={() => {
             navigation.goBack();
           }}
-          color={theme.primary}
+          color={theme.purple}
         ></Button>
       </View>
 

@@ -5,7 +5,6 @@ import {
 } from "../services/feathersClient";
 import { addRecommendationToFeed } from "./feedSlice";
 import { addRecommendationToPosts } from "./postsSlice";
-import { Vibration } from "react-native";
 import * as Haptics from "expo-haptics";
 
 const convertArrayToObject = (array, key) => {
@@ -38,11 +37,14 @@ const recommendationsSlice = createSlice({
       state[action.payload].likes.total -= 1;
     },
     addCommentByRecId(state, action) {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       state[action.payload].comments.total += 1;
       state[action.payload].comments.commented = true;
     },
     addCreatedRecommendation(state, action) {
       // if is repost .. update that one too
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+
       state[action.payload._id] = action.payload;
       if (action.payload.isRepost) {
         state[action.payload.parentId].reposts.total += 1;

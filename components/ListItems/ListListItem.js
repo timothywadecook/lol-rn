@@ -19,7 +19,7 @@ import {
 import { usersService, listsService } from "../../services/feathersClient";
 import UserAvatar from "react-native-user-avatar";
 
-import { removeDeletedList, updateList } from "../../store/listsStore";
+import { removeDeletedList, updateList } from "../../store/listsSlice";
 
 export default function ListListItem({ listId }) {
   const navigation = useNavigation();
@@ -27,14 +27,13 @@ export default function ListListItem({ listId }) {
   const dispatch = useDispatch();
 
   const list = useSelector((state) => state.lists[listId]);
-  console.log("list??", list);
   const { name, isPrivate, participants } = list;
 
   const onViewList = () => {
     navigation.navigate("List", { listId });
   };
 
-  const onDeleteList = async (listId) => {
+  const onDeleteList = async () => {
     try {
       listsService.remove(listId);
       dispatch(removeDeletedList(listId));
@@ -43,7 +42,7 @@ export default function ListListItem({ listId }) {
     }
   };
 
-  const onMakePrivate = async (listId) => {
+  const onMakePrivate = async () => {
     try {
       const updatedList = await listsService.patch(listId, { isPrivate: true });
       dispatch(updateList(updatedList));
@@ -52,7 +51,7 @@ export default function ListListItem({ listId }) {
     }
   };
 
-  const onMakePublic = async (listId) => {
+  const onMakePublic = async () => {
     try {
       const updatedList = await listsService.patch(listId, {
         isPrivate: false,
@@ -73,7 +72,7 @@ export default function ListListItem({ listId }) {
   }
   return (
     <Swipeable
-      renderRightActions={() =>
+      renderLeftActions={() =>
         !canEdit() ? null : (
           <View
             style={{ width: theme.windowWidth * 0.43, flexDirection: "row" }}

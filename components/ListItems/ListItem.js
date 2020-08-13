@@ -1,11 +1,11 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 // Components
-import { View, Image, TouchableWithoutFeedback } from "react-native";
-import { Title, FancyH1, H4, H2, H3, CommentText } from "../Atomic/StyledText";
+import { View, TouchableWithoutFeedback } from "react-native";
+import { FancyH1, H4 } from "../Atomic/StyledText";
 import UsernameNavToFriendDetails from "../Atomic/UsernameNavToFriendDetails";
 import IconButtons from "../Buttons/IconButtons";
-import AddThingToListModal from "../AddThingToListModal";
+import { ThingItemWithAddToList } from "./ThingItem";
 // Actions
 import {
   likeByRecIdAsync,
@@ -16,6 +16,7 @@ import useTheme from "../../hooks/useTheme";
 import { useNavigation } from "@react-navigation/native";
 // Helper
 import moment from "moment";
+import UserListItem from "./UserListItem";
 
 export default function ListItem({
   spaced = false,
@@ -26,8 +27,6 @@ export default function ListItem({
   const theme = useTheme();
   const dispatch = useDispatch();
   navigation = useNavigation();
-
-  const [showModal, setShowModal] = React.useState(false);
 
   const r = useSelector((state) => state.recommendations[recId]);
 
@@ -40,7 +39,6 @@ export default function ListItem({
   };
 
   const onRepost = () => {
-    console.log("r.thing", r.thing);
     navigation.navigate("Create", {
       repost: {
         isRepost: true,
@@ -69,124 +67,35 @@ export default function ListItem({
 
   return (
     <View style={listStyle}>
-      {showModal && (
-        <AddThingToListModal
-          thingId={r.thing._id}
-          setShowModal={setShowModal}
-          showModal={showModal}
-        />
-      )}
-
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          paddingHorizontal: 5,
-          paddingBottom: 5,
-        }}
+      <UserListItem
+        user={r.creator}
+        lean={true}
+        adjacentText={`Recommends a ${r.thing.category}`}
       >
-        <View
-          style={{
-            flex: 5,
-            flexDirection: "row",
-            alignItems: "center",
-          }}
-        >
-          <UsernameNavToFriendDetails friend={r.creator} />
+        <H4>{moment(r.createdAt).fromNow()}</H4>
+      </UserListItem>
 
-          <H4> Recommends a {r.thing.category}</H4>
-        </View>
-        <View
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            paddingRight: 5,
-          }}
-        >
-          <H4>{moment(r.createdAt).fromNow()}</H4>
-        </View>
-      </View>
-
-      <View
-        style={{
-          width: theme.windowWidth,
-          alignItems: "center",
-          justifyContent: "flex-start",
-          backgroundColor: theme.bg,
-          borderRadius: 15,
-          overflow: "hidden",
-        }}
-      >
+      <Card>
         <TouchableWithoutFeedback disabled={disableLink} onPress={openDetails}>
-          <View
-            style={{
-              width: theme.windowWidth,
-              paddingHorizontal: 10,
-              paddingTop: 20,
-              borderBottomColor: theme.wallbg,
-              borderBottomWidth: 1,
-            }}
-          >
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                marginBottom: 20,
-              }}
-            >
-              <View style={{ flex: 1, flexDirection: "row" }}>
-                {r.thing.image && (
-                  <Image
-                    source={{ uri: r.thing.image }}
-                    style={{
-                      resizeMode: "cover",
-                      width: "10%",
-                      height: 40,
-                      borderRadius: 5,
-                      marginRight: 5,
-                      marginTop: 2,
-                    }}
-                  />
-                )}
+          <CardContent>
+            <ThingItemWithAddToList thing={r.thing} />
 
-                <View style={{ flexDirection: "column", flex: 1 }}>
-                  <Title style={{ paddingBottom: 0 }}>{r.thing.title}</Title>
-                  <H4 style={{ fontWeight: "bold" }}>{r.thing.subtitle}</H4>
-                </View>
-              </View>
-
-              <View>
-                <IconButtons.AddCircle
-                  active={showModal}
-                  onPress={() => setShowModal(true)}
-                />
-              </View>
-            </View>
-
-            <FancyH1
-              style={{
-                paddingBottom: 20,
-                fontSize: 20,
-              }}
-            >
-              {r.main_comment}
-            </FancyH1>
-          </View>
+            <FancyH1 style={{ fontSize: 20 }}>{r.main_comment}</FancyH1>
+          </CardContent>
         </TouchableWithoutFeedback>
 
-        <ActionBar
+        <CardActionBar
           r={r}
           toggleLiked={toggleLiked}
           openDetails={openDetails}
           onRepost={onRepost}
         />
-      </View>
+      </Card>
     </View>
   );
 }
 
-const ActionBar = ({ r, toggleLiked, openDetails, onRepost }) => {
+const CardActionBar = ({ r, toggleLiked, openDetails, onRepost }) => {
   return (
     <View
       style={{
@@ -218,6 +127,43 @@ const ActionBar = ({ r, toggleLiked, openDetails, onRepost }) => {
         count={r.reposts.total}
         onPress={onRepost}
       />
+    </View>
+  );
+};
+
+const CardContent = (props) => {
+  const theme = useTheme();
+
+  return (
+    <View
+      style={{
+        width: theme.windowWidth,
+        paddingHorizontal: 10,
+        paddingVertical: 20,
+        borderBottomColor: theme.wallbg,
+        borderBottomWidth: 1,
+      }}
+    >
+      {props.children}
+    </View>
+  );
+};
+
+const Card = (props) => {
+  const theme = useTheme();
+
+  return (
+    <View
+      style={{
+        width: theme.windowWidth,
+        alignItems: "center",
+        justifyContent: "flex-start",
+        backgroundColor: theme.bg,
+        borderRadius: 15,
+        overflow: "hidden",
+      }}
+    >
+      {props.children}
     </View>
   );
 };

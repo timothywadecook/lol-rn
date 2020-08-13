@@ -4,7 +4,7 @@ import FilteredRecommendationsList from "../../components/Lists/FilteredRecommen
 import { refreshFeedAsync, fetchMoreFeedAsync } from "../../store/feedSlice";
 import { fetchFollowsAsync } from "../../store/followsSlice";
 import { listsService } from "../../services/feathersClient";
-import { addLoadedLists } from "../../store/listsStore";
+import { addLoadedLists } from "../../store/listsSlice";
 
 export default function HomeScreen() {
   const feed = useSelector((state) => state.feed.list);

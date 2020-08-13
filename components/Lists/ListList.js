@@ -9,7 +9,7 @@ import useTheme from "../../hooks/useTheme";
 
 //
 import { listsService } from "../../services/feathersClient";
-import { addLoadedLists } from "../../store/listsStore";
+import { addLoadedLists } from "../../store/listsSlice";
 
 export default function ListList({ userId }) {
   const listIds = useSelector((state) =>

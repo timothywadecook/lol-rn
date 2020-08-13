@@ -1,20 +1,11 @@
 import React from "react";
-import { View, Image, Text } from "react-native";
-import { Title, H2, H2G, P } from "./Atomic/StyledText";
-
-import SubmitButton from "./Buttons/SubmitButton";
-import { useSelector, useDispatch } from "react-redux";
-import { toggleFollowingAsync } from "../store/followsSlice";
+import { View } from "react-native";
+import { Title, H2G } from "./Atomic/StyledText";
 
 import UserAvatar from "react-native-user-avatar";
+import FollowUnfollowButton from "./Buttons/FollowUnfollowButton";
 
 const FriendDetailsHeader = ({ user, theme }) => {
-  const dispatch = useDispatch();
-
-  const sessionUserFollowing = useSelector((state) => state.follows.following);
-  const isFollowing = sessionUserFollowing.includes(user._id);
-  const title = isFollowing ? "Unfollow" : "Follow";
-
   return (
     <View>
       <View
@@ -47,7 +38,6 @@ const FriendDetailsHeader = ({ user, theme }) => {
           <View>
             <Title>{user.username}</Title>
             <H2G>{user.name}</H2G>
-            {/* <P>Atlanta, GA</P> */}
           </View>
         </View>
 
@@ -58,11 +48,7 @@ const FriendDetailsHeader = ({ user, theme }) => {
             alignItems: "center",
           }}
         >
-          <SubmitButton
-            intent={isFollowing ? "info" : "primary"}
-            title={title}
-            onPress={() => dispatch(toggleFollowingAsync(user._id))}
-          />
+          <FollowUnfollowButton userId={user._id} />
         </View>
       </View>
     </View>

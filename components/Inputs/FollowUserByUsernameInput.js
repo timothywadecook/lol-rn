@@ -154,7 +154,8 @@ function CustomTextInput({ onChange, value, loading, onCancel, inputFocus }) {
         onChange={onChange}
         autoCorrect={false}
         keyboardAppearance={theme.theme}
-        placeholderTextColor="#5d5d5d"
+        // placeholderTextColor="#5d5d5d"
+        placeholderTextColor={theme.iconDefault}
         placeholder="Find friends by username..."
         onSubmit={onCancel}
       />

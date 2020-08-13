@@ -1,5 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import * as Font from "expo-font";
+import { Asset } from "expo-asset";
 import * as SplashScreen from "expo-splash-screen";
 import * as React from "react";
 
@@ -11,6 +12,9 @@ export default function useCachedResources() {
     async function loadResourcesAndDataAsync() {
       try {
         SplashScreen.preventAutoHideAsync();
+
+        // Load logo
+        await Asset.loadAsync(require("../assets/logo.png"));
 
         // Load fonts
         await Font.loadAsync({
