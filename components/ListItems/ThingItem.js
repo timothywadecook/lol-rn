@@ -6,8 +6,9 @@ import IconButtons from "../Buttons/IconButtons";
 import AddThingToListModal from "../AddThingToListModal";
 // hooks
 import useTheme from "../../hooks/useTheme";
+import { thingsService } from "../../services/feathersClient";
 
-export default function ThingItem({ thing, children }) {
+export default function ThingItem({ thing, children, border }) {
   const theme = useTheme();
   const { image, title, subtitle } = thing;
 
@@ -17,7 +18,13 @@ export default function ThingItem({ thing, children }) {
         width: theme.contentWidth,
         flexDirection: "row",
         justifyContent: "space-between",
+        alignItems: "center",
         marginBottom: 20,
+        borderWidth: border ? 1 : 0,
+        borderColor: theme.wallbg,
+        borderRadius: 8,
+        padding: 6,
+        alignSelf: "center",
       }}
     >
       <View style={{ flex: 1, flexDirection: "row" }}>
@@ -46,15 +53,33 @@ export default function ThingItem({ thing, children }) {
   );
 }
 
-export function ThingItemWithAddToList({ thing }) {
+export function ThingItemWithAddToList({ thing, onComplete, border }) {
   const [showModal, setShowModal] = React.useState(false);
+  const [thingId, setThingId] = React.useState(null);
+  // if no thingId then fetch thing Id when thing is loaded
+  React.useEffect(() => {
+    if (thing._id) {
+      setThingId(thing._id);
+    } else {
+      getThingId(thing)
+        .then((id) => setThingId(id))
+        .catch((e) =>
+          console.log(
+            "Error getting thingId for ThingItemWithAddToList",
+            e.message
+          )
+        );
+    }
+  }, [thing]);
+
   return (
-    <ThingItem thing={thing}>
+    <ThingItem border={border} thing={thing}>
       {showModal && (
         <AddThingToListModal
+          onComplete={onComplete}
           showModal={showModal}
           setShowModal={setShowModal}
-          thingId={thing._id}
+          thingId={thingId}
         />
       )}
       <IconButtons.AddCircle
@@ -64,3 +89,19 @@ export function ThingItemWithAddToList({ thing }) {
     </ThingItem>
   );
 }
+
+const getThingId = async (thing) => {
+  console.log("get thingId for", thing);
+  const { category, api, api_id } = thing;
+  const params = { category, api_id, api };
+
+  const res = await thingsService.find({ query: params });
+  if (res.total === 1) {
+    console.log("thing found", res.data[0]._id);
+    return res.data[0]._id;
+  } else if (res.total === 0) {
+    const newThing = await thingsService.create(thing);
+    console.log("thing made", newThing);
+    return newThing._id;
+  }
+};

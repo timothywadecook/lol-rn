@@ -12,6 +12,7 @@ import Login from "./screens/Login";
 import FriendDetails from "./screens/FriendDetails";
 import RecommendationDetails from "./screens/RecommendationDetails";
 import CreateOrEditList from "./screens/CreateOrEditList";
+import SearchUsers from "./screens/SearchUsers";
 import List from "./screens/List";
 import Modal from "./screens/Modal";
 // Actions
@@ -66,6 +67,7 @@ const Router = ({ appIsReady, isAuthenticated, login, setAppIsReady }) => {
               name="CreateOrEditList"
               component={CreateOrEditList}
             />
+            <Stack.Screen name="Search Users" component={SearchUsers} />
             <Stack.Screen name="List" component={List} />
             <Stack.Screen name="Modal" component={Modal} />
           </React.Fragment>

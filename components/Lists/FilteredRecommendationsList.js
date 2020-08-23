@@ -16,6 +16,7 @@ const FilteredRecommendationsList = ({
   recommendations,
   filterable = false,
   topPad = false,
+  horizontal = false,
 }) => {
   const [category, setCategory] = useState("All");
 
@@ -25,18 +26,27 @@ const FilteredRecommendationsList = ({
   return (
     <View style={styles.container}>
       <FlatList
+        snapToAlignment={horizontal ? "center" : null}
+        snapToInterval={horizontal ? theme.windowWidth : null}
+        decelerationRate={horizontal ? "fast" : null}
+        horizontal={horizontal}
         onEndReached={fetchMore}
         onEndReachedThreshold={0.5}
         onRefresh={refresh}
         refreshing={refreshing}
         data={recommendations}
         renderItem={({ item }) => (
-          <ListItem spaced={true} recId={item} category={category} />
+          <ListItem
+            horizontal={horizontal}
+            spaced={true}
+            recId={item}
+            category={category}
+          />
         )}
         initialNumToRender={4}
         keyExtractor={(item) => item}
         showsVerticalScrollIndicator={false}
-        stickyHeaderIndices={[0]}
+        // stickyHeaderIndices={[0]}
         ListFooterComponent={() =>
           loading ? <ActivityIndicatorCentered size="small" /> : null
         }
@@ -67,7 +77,6 @@ export default FilteredRecommendationsList;
 const getStyles = (theme) =>
   StyleSheet.create({
     container: {
-      backgroundColor: theme.wallbg,
       flex: 1,
       justifyContent: "center",
       alignItems: "center",

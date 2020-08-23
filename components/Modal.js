@@ -14,7 +14,11 @@ const Text = {
 export default function MyModal({ showModal, setShowModal, type, message }) {
   const theme = useTheme();
 
-  const text = message || Text[type];
+  let text = message;
+
+  if (type) {
+    text = Text[type];
+  }
 
   return (
     <Modal
@@ -27,7 +31,6 @@ export default function MyModal({ showModal, setShowModal, type, message }) {
       <View
         style={{
           flex: 1,
-
           backgroundColor: theme.bg,
         }}
       >

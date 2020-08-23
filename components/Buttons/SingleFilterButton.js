@@ -19,7 +19,7 @@ const SingleFilterButton = ({ text, setFilter, filter }) => {
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 15,
-        backgroundColor: isActive ? theme.activeButtonBg : "transparent",
+        backgroundColor: isActive ? theme.activeButtonBg : theme.wallbg,
       }}
     >
       <H2

@@ -6,7 +6,6 @@ import { FancyH1, H4 } from "../Atomic/StyledText";
 import UsernameNavToFriendDetails from "../Atomic/UsernameNavToFriendDetails";
 import IconButtons from "../Buttons/IconButtons";
 import { ThingItemWithAddToList } from "./ThingItem";
-import Card from "../Atomic/Card";
 // Actions
 import {
   likeByRecIdAsync,
@@ -20,7 +19,6 @@ import moment from "moment";
 import UserListItem from "./UserListItem";
 
 export default function ListItem({
-  horizontal = false,
   spaced = false,
   disableLink = false,
   recId,
@@ -56,7 +54,9 @@ export default function ListItem({
     });
   };
 
-  const listStyle = spaced ? { flex: 1, marginVertical: 4 } : null;
+  const listStyle = spaced
+    ? { flex: 1, marginBottom: 45, paddingBottom: 20 }
+    : null;
   // FILTER BY CATEGORY
   if (category) {
     const show = category === "All" || category.includes(r.thing.category);
@@ -75,16 +75,14 @@ export default function ListItem({
         <H4>{moment(r.createdAt).fromNow()}</H4>
       </UserListItem>
 
-      <Card horizontal={horizontal}>
-        <CardContent>
-          <ThingItemWithAddToList border={false} thing={r.thing} />
-          <TouchableWithoutFeedback
-            disabled={disableLink}
-            onPress={openDetails}
-          >
+      <Card>
+        <TouchableWithoutFeedback disabled={disableLink} onPress={openDetails}>
+          <CardContent>
+            <ThingItemWithAddToList thing={r.thing} />
+
             <FancyH1 style={{ fontSize: 20 }}>{r.main_comment}</FancyH1>
-          </TouchableWithoutFeedback>
-        </CardContent>
+          </CardContent>
+        </TouchableWithoutFeedback>
 
         <CardActionBar
           r={r}
@@ -141,9 +139,30 @@ const CardContent = (props) => {
       style={{
         width: theme.windowWidth,
         paddingHorizontal: 10,
-        paddingBottom: 20,
+        paddingVertical: 20,
         borderBottomColor: theme.wallbg,
         borderBottomWidth: 1,
+      }}
+    >
+      {props.children}
+    </View>
+  );
+};
+
+const Card = (props) => {
+  const theme = useTheme();
+
+  return (
+    <View
+      style={{
+        borderColor: theme.wallbg,
+        borderWidth: 2,
+        width: theme.windowWidth,
+        alignItems: "center",
+        justifyContent: "flex-start",
+        backgroundColor: theme.bg,
+        borderRadius: 15,
+        overflow: "hidden",
       }}
     >
       {props.children}

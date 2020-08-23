@@ -14,14 +14,15 @@ import { addLoadedRecommendations } from "../store/recommendationsSlice";
 export default function FriendDetailsTabsContainer({ user }) {
   const dispatch = useDispatch();
 
-  const [activeTab, setActiveTab] = useState("Posts");
+  const [activeTab, setActiveTab] = useState("Lists");
+  const [refreshing, setRefreshing] = useState(false);
 
   const [posts, setPosts] = useState([]);
   const [followers, setFollowers] = useState([]);
   const [following, setFollowing] = useState([]);
 
   useEffect(() => {
-    fetchPosts();
+    refreshPosts();
     fetchFollowers();
     fetchFollowing();
   }, [user._id]);
@@ -75,7 +76,8 @@ export default function FriendDetailsTabsContainer({ user }) {
     }
   };
 
-  const fetchPosts = () => {
+  const refreshPosts = () => {
+    setRefreshing(true);
     recommendationsService
       .find({
         query: {
@@ -87,25 +89,22 @@ export default function FriendDetailsTabsContainer({ user }) {
       .then((response) => {
         dispatch(addLoadedRecommendations(response.data));
         setPosts(response.data.map((r) => r._id));
+        setRefreshing(false);
       });
   };
 
   return (
     <View style={{ flex: 1, alignItems: "center" }}>
       <ProfileTabMenu
-        // count={{
-        //   Posts: posts.length,
-        //   Lists: lists.length
-        //   Followers: followers.length,
-        //   Following: following.length,
-        // }}
         activeTab={activeTab}
         setActiveTab={setActiveTab}
-        options={["Posts", "Lists", "Followers", "Following"]}
+        options={["Lists", "Posts", "Followers", "Following"]}
       />
 
       <ProfileTabContent
         posts={posts}
+        refreshPosts={refreshPosts}
+        refreshingPosts={refreshing}
         userId={user._id}
         following={following}
         followers={followers}

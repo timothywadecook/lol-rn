@@ -76,7 +76,7 @@ export const toggleFollowingAsync = (friendId) => async (
       const findFollow = await followsService.find({
         query: { follower: userId, following: friendId },
       });
-      followsService.remove(findFollow.data[0]._id);
+      return followsService.remove(findFollow.data[0]._id);
     } catch {
       console.log(
         "Error trying to unfollow",
@@ -92,7 +92,10 @@ export const toggleFollowingAsync = (friendId) => async (
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
 
     try {
-      followsService.create({ follower: userId, following: friendId });
+      return followsService.create({
+        follower: userId,
+        following: friendId,
+      });
     } catch {
       console.log(
         "Error trying to create follow",

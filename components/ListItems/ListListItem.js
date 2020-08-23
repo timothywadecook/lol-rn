@@ -2,26 +2,26 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { View, ActivityIndicator } from "react-native";
 
-import { Title, H2G, H2 } from "../Atomic/StyledText";
+import { Title, H2G, H2, H4 } from "../Atomic/StyledText";
 import useTheme from "../../hooks/useTheme";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import SquareIconButton from "./SwipableSquareIconButton";
 
-import { Ionicons } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 
 //
 import { useNavigation } from "@react-navigation/native";
 import {
-  TouchableOpacity,
   TouchableWithoutFeedback,
   FlatList,
+  TouchableOpacity,
 } from "react-native-gesture-handler";
 import { usersService, listsService } from "../../services/feathersClient";
-import UserAvatar from "react-native-user-avatar";
+import Avatar from "../Atomic/Avatar";
 
 import { removeDeletedList, updateList } from "../../store/listsSlice";
 
-export default function ListListItem({ listId }) {
+export default function ListListItem({ privateList, listId }) {
   const navigation = useNavigation();
   const theme = useTheme();
   const dispatch = useDispatch();
@@ -103,38 +103,26 @@ export default function ListListItem({ listId }) {
       <TouchableWithoutFeedback
         onPress={onViewList}
         style={{
-          width: theme.windowWidth,
+          width: "100%",
           paddingHorizontal: 10,
-          backgroundColor: theme.wallbg,
+          backgroundColor: theme.bg,
           flexDirection: "row",
           justifyContent: "space-between",
           alignItems: "center",
-          paddingVertical: 20,
+          paddingVertical: 10,
         }}
       >
         <View
           style={{
-            flexDirection: "row",
-            justifyContent: "flex-start",
-            alignItems: "center",
+            flexDirection: "column",
+            justifyContent: "center",
+            // alignItems: "center",
           }}
         >
-          {/* <Ionicons
-            style={{ paddingRight: 20, paddingLeft: 5 }}
-            name={participants.length > 1 ? "md-people" : "md-person"}
-            size={24}
-            color={theme.iconDefault}
-          /> */}
-          {isPrivate && (
-            <Ionicons
-              style={{ paddingRight: 20, paddingLeft: 5 }}
-              name="md-eye-off"
-              size={24}
-              color={theme.iconDefault}
-            />
-          )}
-          <H2 style={{ fontSize: 20, fontWeight: "normal" }}>{name}</H2>
+          <H2 style={{ marginVertical: 4 }}>{name}</H2>
+          <H4>14 items</H4>
         </View>
+
         <View
           style={{
             flexDirection: "row",
@@ -143,6 +131,12 @@ export default function ListListItem({ listId }) {
           }}
         >
           <ParticipantsRow participants={participants} />
+          <Feather
+            name="chevron-right"
+            size={30}
+            color={theme.iconDefault}
+            style={{ paddingHorizontal: 10 }}
+          />
         </View>
       </TouchableWithoutFeedback>
     </Swipeable>
@@ -155,7 +149,6 @@ function ParticipantsRow({ participants }) {
   return (
     <View style={{ flexGrow: 0 }}>
       <FlatList
-        // inverted={true}
         horizontal={true}
         data={participants}
         renderItem={({ item }) => <ParticipantAvatar participantId={item} />}
@@ -187,13 +180,5 @@ function ParticipantAvatar({ participantId }) {
     return <ActivityIndicator size="small" />;
   }
 
-  return (
-    <UserAvatar
-      style={{ marginHorizontal: 7, borderWidth: 0, borderColor: "white" }}
-      bgColor="transparent"
-      size={24}
-      name={user.name}
-      src={user.avatar}
-    />
-  );
+  return <Avatar style={{ marginHorizontal: 4 }} user={user} />;
 }

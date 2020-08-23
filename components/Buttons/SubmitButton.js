@@ -5,6 +5,7 @@ import { Title } from "../Atomic/StyledText";
 import useTheme from "../../hooks/useTheme";
 
 export default SubmitButton = ({
+  style,
   intent = "info",
   onPress,
   title,
@@ -15,7 +16,7 @@ export default SubmitButton = ({
   const bgColor = {
     secondary: "transparent",
     primary: theme.purple,
-    info: "transparent",
+    info: theme.bg,
   };
   const fontWeight = {
     primary: "normal",
@@ -34,16 +35,19 @@ export default SubmitButton = ({
       ) : (
         <TouchableOpacity
           onPress={onPress}
-          style={{
-            marginVertical: 10,
-            borderRadius: 5,
-            paddingVertical: 7.5,
-            paddingHorizontal: 20,
-            width: fullwidth ? theme.contentWidth : null,
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundColor: bgColor[intent],
-          }}
+          style={[
+            {
+              marginVertical: 10,
+              borderRadius: 5,
+              paddingVertical: 7.5,
+              paddingHorizontal: 20,
+              width: fullwidth ? theme.contentWidth : null,
+              alignItems: "center",
+              justifyContent: "center",
+              backgroundColor: bgColor[intent],
+            },
+            style,
+          ]}
         >
           <Title
             style={{

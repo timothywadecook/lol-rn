@@ -1,67 +1,57 @@
 import React from "react";
-import { View, Image, Text } from "react-native";
-import { Title, H2, H2G, P } from "./Atomic/StyledText";
+import { View, TouchableOpacity } from "react-native";
+import Avatar from "./Atomic/Avatar";
+import FollowUserByUsernameInput from "./Inputs/FollowUserByUsernameInput";
 
-import UserAvatar from "react-native-user-avatar";
+import useTheme from "../hooks/useTheme";
 
-import { Ionicons } from "@expo/vector-icons";
-import { TouchableOpacity } from "react-native-gesture-handler";
-
-const ProfileMainHeader = ({ user, theme, showSettings, setShowSettings }) => {
+const ProfileMainHeader = ({
+  user,
+  showSettings,
+  setShowSettings,
+  setInputFocus,
+  inputFocus,
+}) => {
+  const theme = useTheme();
   return (
     <View>
       <View
         style={{
           width: theme.contentWidth,
           flexDirection: "row",
-          justifyContent: "space-between",
-          paddingVertical: 30,
+          paddingBottom: 10,
+          paddingHorizontal: 10,
         }}
       >
-        <View
-          style={{
-            flexDirection: "row",
-            flex: 0.8,
-            alignItems: "center",
-            justifyContent: "flex-start",
-          }}
-        >
-          <UserAvatar
-            style={{
-              marginRight: 15,
-              marginLeft: 10,
-              borderWidth: 1,
-              borderColor: "white",
-            }}
-            size={50}
-            name={user.name}
-            bgColor={"black"}
-            src={user.avatar}
-          />
-          <View>
-            <Title>{user.username}</Title>
-            <H2G>{user.name}</H2G>
-            {/* <P>Atlanta, GA</P> */}
-          </View>
-        </View>
+        <FollowUserByUsernameInput
+          inputFocus={inputFocus}
+          setInputFocus={setInputFocus}
+        />
 
-        <View
-          style={{
-            flex: 0.2,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          {!!setShowSettings && (
-            <TouchableOpacity onPress={() => setShowSettings(!showSettings)}>
-              <Ionicons
-                name={showSettings ? "md-close" : "md-settings"}
+        {!inputFocus && (
+          <View
+            style={{
+              flexDirection: "row",
+              flex: 0.25,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <TouchableOpacity
+              activeOpacity={0.5}
+              onPress={() => setShowSettings(!showSettings)}
+            >
+              <Avatar
+                style={{
+                  marginRight: 15,
+                  marginLeft: 10,
+                }}
                 size={30}
-                color={showSettings ? theme.purple : theme.iconDefault}
+                user={user}
               />
             </TouchableOpacity>
-          )}
-        </View>
+          </View>
+        )}
       </View>
     </View>
   );

@@ -2,73 +2,55 @@ import React from "react";
 import { Text, ScrollView, View } from "react-native";
 import UserListItem from "./ListItems/UserListItem";
 import ListList from "./Lists/ListList";
-import FilteredRecommendationsList from "./Lists/FilteredRecommendationsList";
+
+import { AddUser } from "./Buttons/IconButtons";
+
+import ProfileCard from "./Atomic/ProfileCard";
 
 import useTheme from "../hooks/useTheme";
 
-import ActivityIndicatorCentered from "./Atomic/ActivityIndicatorCentered";
 import FollowUnfollowButton from "./Buttons/FollowUnfollowButton";
+import { useNavigation } from "@react-navigation/native";
 
-export default function ProfileTabContent({
-  userId,
-  activeTab,
-  fetchMorePosts,
-  refreshPosts,
-  loadingPosts,
-  refreshingPosts,
-  posts,
-  followers,
-  following,
-}) {
+export default function ProfileTabContent({ userId, followers, following }) {
   const theme = useTheme();
+  const navigation = useNavigation();
 
-  switch (activeTab) {
-    case "Posts":
-      return !posts ? (
-        <ActivityIndicatorCentered />
-      ) : (
-        <FilteredRecommendationsList
-          loading={loadingPosts}
-          refresh={refreshPosts}
-          refreshing={refreshingPosts}
-          fetchMore={fetchMorePosts}
-          recommendations={posts}
-        />
-      );
+  return (
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={{
+        width: theme.windowWidth,
+      }}
+    >
+      <ListList userId={userId} privateList={true} />
 
-    case "Lists":
-      return <ListList userId={userId} />;
-    case "Followers":
-      return (
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{
-            width: theme.windowWidth,
-          }}
-        >
-          {followers.map((u) => (
-            <UserListItem key={u._id} user={u}>
-              <FollowUnfollowButton userId={u._id} />
-            </UserListItem>
-          ))}
-        </ScrollView>
-      );
-    case "Following":
-      return (
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{
-            width: theme.windowWidth,
-          }}
-        >
+      <ListList userId={userId} privateList={false} />
+
+      <ProfileCard
+        title="Following"
+        renderRightChild={() => (
+          <AddUser onPress={() => navigation.navigate("Search Users")} />
+        )}
+      >
+        <View>
           {following.map((u) => (
             <UserListItem key={u._id} user={u}>
               <FollowUnfollowButton userId={u._id} />
             </UserListItem>
           ))}
-        </ScrollView>
-      );
-    default:
-      return <Text>Nada</Text>;
-  }
+        </View>
+      </ProfileCard>
+
+      <ProfileCard title="Followers">
+        <View>
+          {followers.map((u) => (
+            <UserListItem key={u._id} user={u}>
+              <FollowUnfollowButton userId={u._id} />
+            </UserListItem>
+          ))}
+        </View>
+      </ProfileCard>
+    </ScrollView>
+  );
 }

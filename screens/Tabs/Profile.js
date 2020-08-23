@@ -8,6 +8,7 @@ import ProfileTabsContainer from "../../components/ProfileTabsContainer";
 import ProfileMainHeader from "../../components/ProfileMainHeader";
 import ProfileSettings from "../../components/ProfileSettings";
 import FollowUserByUsernameInput from "../../components/Inputs/FollowUserByUsernameInput";
+import Screen from "../../components/Wrappers/Screen";
 
 // Actual Component
 export default function ProfileScreen() {
@@ -24,27 +25,15 @@ export default function ProfileScreen() {
   );
 
   return (
-    <View
-      style={{
-        paddingTop: 32,
-        backgroundColor: theme.wallbg,
-        flex: 1,
-        alignItems: "center",
-      }}
-    >
-      <FollowUserByUsernameInput
-        inputFocus={inputFocus}
+    <Screen center={true}>
+      <ProfileMainHeader
+        user={user}
+        showSettings={showSettings}
+        setShowSettings={setShowSettings}
         setInputFocus={setInputFocus}
+        inputFocus={inputFocus}
       />
-      {!inputFocus && (
-        <ProfileMainHeader
-          user={user}
-          theme={theme}
-          showSettings={showSettings}
-          setShowSettings={setShowSettings}
-        />
-      )}
       {!inputFocus && MainContent}
-    </View>
+    </Screen>
   );
 }

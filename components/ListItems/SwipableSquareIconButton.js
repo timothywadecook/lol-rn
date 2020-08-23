@@ -28,7 +28,7 @@ export default function SwipableSquareIconButton({
           style={{ padding: 8 }}
           name="md-trash"
           size={24}
-          color={theme.primary}
+          color={theme.white}
         />
       </TouchableOpacity>
     );

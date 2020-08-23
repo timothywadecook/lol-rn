@@ -5,6 +5,10 @@ import { refreshFeedAsync, fetchMoreFeedAsync } from "../../store/feedSlice";
 import { fetchFollowsAsync } from "../../store/followsSlice";
 import { listsService } from "../../services/feathersClient";
 import { addLoadedLists } from "../../store/listsSlice";
+import FilterMenu from "../../components/FilterMenu";
+
+//
+import Screen from "../../components/Wrappers/Screen";
 
 export default function HomeScreen() {
   const feed = useSelector((state) => state.feed.list);
@@ -38,14 +42,17 @@ export default function HomeScreen() {
   }, []);
 
   return (
-    <FilteredRecommendationsList
-      recommendations={feed}
-      loading={loading}
-      refreshing={refreshing}
-      refresh={componentDidMount}
-      fetchMore={fetchMore}
-      filterable={true}
-      topPad={true}
-    />
+    <Screen fullscreen={false}>
+      <FilterMenu />
+      <FilteredRecommendationsList
+        recommendations={feed}
+        loading={loading}
+        refreshing={refreshing}
+        refresh={componentDidMount}
+        fetchMore={fetchMore}
+        filterable={true}
+        topPad={false}
+      />
+    </Screen>
   );
 }

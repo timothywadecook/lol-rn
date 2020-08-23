@@ -6,7 +6,8 @@ import useTheme from "../hooks/useTheme";
 import FriendDetailsHeader from "../components/FriendDetailsHeader";
 import FriendDetailsTabsContainer from "../components/FriendDetailsTabsContainer";
 import ActivityIndicatorCentered from "../components/Atomic/ActivityIndicatorCentered";
-import { usersService } from "../services/feathersClient";
+
+import Screen from "../components/Wrappers/Screen";
 
 ////////////////////////////////////////////////////////////////////////////////
 // navigation.navigate("FriendDetails", { friendId });
@@ -21,14 +22,7 @@ export default function FriendDetailsScreen({ navigation, route }) {
 
   const theme = useTheme();
   return (
-    <View
-      style={{
-        paddingTop: 32,
-        backgroundColor: theme.wallbg,
-        flex: 1,
-        alignItems: "center",
-      }}
-    >
+    <Screen center={true}>
       <View
         style={{
           width: theme.windowWidth,
@@ -47,12 +41,12 @@ export default function FriendDetailsScreen({ navigation, route }) {
 
       {friend ? (
         <React.Fragment>
-          <FriendDetailsHeader user={friend} theme={theme} />
+          <FriendDetailsHeader user={friend} />
           <FriendDetailsTabsContainer user={friend} />
         </React.Fragment>
       ) : (
         <ActivityIndicatorCentered />
       )}
-    </View>
+    </Screen>
   );
 }

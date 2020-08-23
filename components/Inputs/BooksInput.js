@@ -219,13 +219,3 @@ const getStyles = (theme, itemChosen) =>
     subtitle: { color: theme.iconDefault },
     subsubtitle: { color: theme.purple },
   });
-
-// const [items, setItems] = useState([]);
-// const findItem = () => {
-//   if (query === "") {
-//     setItems([]);
-//   }
-//   const regex = new RegExp(`${query.trim()}`, "i");
-//   setItems(data.filter((item) => item.title.search(regex) >= 0));
-// };
-// useEffect(findItem, [query, data]);

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import {
   View,
   TextInput,
@@ -9,8 +8,8 @@ import {
   ActivityIndicator,
   Keyboard,
 } from "react-native";
-import { H2 } from "../Atomic/StyledText";
-import Avatar from "../Atomic/Avatar";
+import UserListItem from "../ListItems/UserListItem";
+import FollowUnfollowButton from "../Buttons/FollowUnfollowButton";
 import Autocomplete from "react-native-autocomplete-input";
 import useDebounce from "../../hooks/useDebounce";
 import useTheme from "../../hooks/useTheme";
@@ -18,12 +17,7 @@ import useTheme from "../../hooks/useTheme";
 import { useNavigation } from "@react-navigation/native";
 import { usersService } from "../../services/feathersClient";
 
-export default function FollowUserByUsernameInput({
-  setInputFocus,
-  inputFocus,
-}) {
-  const navigation = useNavigation();
-
+export default function SearchUsersByUsername({ withFollowButton = true }) {
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
@@ -59,23 +53,17 @@ export default function FollowUserByUsernameInput({
   const reset = () => {
     setQuery("");
     setData([]);
-    setInputFocus(false);
   };
 
-  const onViewProfile = (item) => {
-    reset();
-    navigation.navigate("FriendDetails", { friend: item });
-  };
-
+  const navigation = useNavigation();
   const onCancel = () => {
     reset();
+    navigation.goBack();
     Keyboard.dismiss();
   };
 
   useEffect(() => {
-    if (query.length > 0) {
-      setInputFocus(true);
-    } else {
+    if (query.length === 0) {
       reset();
     }
   }, [query]);
@@ -89,16 +77,10 @@ export default function FollowUserByUsernameInput({
         data={data}
         defaultValue={query}
         keyExtractor={(item) => item._id}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            onPress={() => {
-              onViewProfile(item);
-            }}
-            style={styles.row}
-          >
-            <Avatar style={{ margin: 10 }} size={30} user={item} />
-            <H2 style={styles.listItemTitle}>{item.username}</H2>
-          </TouchableOpacity>
+        renderItem={({ item: u }) => (
+          <UserListItem key={u._id} user={u}>
+            {withFollowButton && <FollowUnfollowButton userId={u._id} />}
+          </UserListItem>
         )}
         renderTextInput={() => (
           <CustomTextInput
@@ -110,7 +92,6 @@ export default function FollowUserByUsernameInput({
             styles={styles}
             value={query}
             onCancel={onCancel}
-            inputFocus={inputFocus}
           />
         )}
       />
@@ -118,15 +99,13 @@ export default function FollowUserByUsernameInput({
   );
 }
 
-function CustomTextInput({ onChange, value, loading, onCancel, inputFocus }) {
+function CustomTextInput({ onChange, value, loading, onCancel }) {
   const theme = useTheme();
 
   return (
     <View
       style={{
-        // width: inputFocus ? theme.contentWidth : theme.contentWidth * 0.65,
         width: "100%",
-        // flex: 1,
         alignSelf: "center",
         paddingHorizontal: 20,
         margin: 7,
@@ -150,13 +129,9 @@ function CustomTextInput({ onChange, value, loading, onCancel, inputFocus }) {
         placeholderTextColor={theme.iconDefault}
         placeholder="Find friends by username..."
         onSubmit={onCancel}
+        autoFocus={true}
       />
-      {value.length > 0 &&
-        (loading ? (
-          <ActivityIndicator color={theme.primary} size="small" />
-        ) : (
-          <Button title="Cancel" color={theme.iconDefault} onPress={onCancel} />
-        ))}
+      {loading && <ActivityIndicator color={theme.primary} size="small" />}
     </View>
   );
 }

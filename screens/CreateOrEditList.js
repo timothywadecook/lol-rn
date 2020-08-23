@@ -6,6 +6,8 @@ import SubmitButton from "../components/Buttons/SubmitButton";
 
 import { Title, H2G, H2 } from "../components/Atomic/StyledText";
 
+import Screen from "../components/Wrappers/Screen";
+
 import useTheme from "../hooks/useTheme";
 
 import UserListItem from "../components/ListItems/UserListItem";
@@ -18,22 +20,26 @@ export default function CreateOrEditList({ navigation, route }) {
   navigation.setOptions({
     headerShown: false,
   });
-  const { list } = route.params;
+  const { list, isEdit } = route.params;
   const theme = useTheme();
-  const isEditMode = !!list;
   const sessionUserId = useSelector((state) => state.user._id);
   const dispatch = useDispatch();
 
   // local form state. field = name, participants, isPrivate
+  const [processing, setProcessing] = React.useState(false);
   const [name, setName] = React.useState("");
   const [isPrivate, setIsPrivate] = React.useState(false);
   const [participants, setParticipants] = React.useState([sessionUserId]);
 
   const ifEditMode = () => {
-    if (isEditMode) {
+    console.log("isEdit", isEdit);
+    console.log("participants", participants);
+    if (isEdit) {
       setName(list.name);
       setIsPrivate(list.isPrivate);
       setParticipants(list.participants);
+    } else {
+      setIsPrivate(list.isPrivate);
     }
   };
   React.useEffect(ifEditMode, []);
@@ -50,7 +56,8 @@ export default function CreateOrEditList({ navigation, route }) {
   };
 
   const onSubmit = async () => {
-    if (isEditMode) {
+    setProcessing(true);
+    if (isEdit) {
       try {
         const updatedList = await listsService.patch(list._id, {
           name,
@@ -86,14 +93,13 @@ export default function CreateOrEditList({ navigation, route }) {
         );
       }
     }
+    setProcessing(false);
     onNavBack();
   };
 
   return (
-    <View
-      style={{ flex: 1, backgroundColor: theme.wallbg, alignItems: "center" }}
-    >
-      <EditListHeader isEditMode={isEditMode} onNavBack={onNavBack} />
+    <Screen center={true}>
+      <EditListHeader isEditMode={isEdit} onNavBack={onNavBack} />
       <EditName name={name} setName={setName} />
       <ToggleIsPrivate
         isPrivate={isPrivate}
@@ -106,10 +112,11 @@ export default function CreateOrEditList({ navigation, route }) {
         onRemoveParticipant={onRemoveParticipant}
       />
       <EditListFooter
-        show={name.length > 0 && participants.length > 0}
+        show={!!name && name.length > 0 && participants.length > 0}
         onSubmit={onSubmit}
+        processing={processing}
       />
-    </View>
+    </Screen>
   );
 }
 
@@ -118,7 +125,10 @@ function EditListHeader({ onNavBack, isEditMode }) {
   return (
     <View
       style={{
-        paddingTop: 50,
+        // paddingTop: 50,
+        paddingBottom: 5,
+        borderBottomWidth: 1,
+        borderBottomColor: theme.bg,
         paddingHorizontal: 10,
         flexDirection: "row",
         alignItems: "center",
@@ -135,12 +145,17 @@ function EditListHeader({ onNavBack, isEditMode }) {
   );
 }
 
-function EditListFooter({ show, onSubmit }) {
+function EditListFooter({ show, onSubmit, processing }) {
   const theme = useTheme();
   return (
     show && (
       <View style={{ paddingBottom: 30, width: theme.contentWidth }}>
-        <SubmitButton intent="primary" title="Save List" onPress={onSubmit} />
+        <SubmitButton
+          isProcessing={processing}
+          intent="primary"
+          title="Save List"
+          onPress={onSubmit}
+        />
       </View>
     )
   );
@@ -196,10 +211,12 @@ function SelectableUserList({
   const sessionUserFollowing = useSelector((state) => state.follows.following);
   // fetch candidates and set state
   React.useEffect(() => {
+    console.log("participants", participants);
     const candidateIds = [
       ...participants,
-      sessionUserFollowing.filter((uId) => !participants.includes(uId)),
+      ...sessionUserFollowing.filter((uId) => !participants.includes(uId)),
     ];
+    console.log("candidates", candidateIds);
     const fetchCandidates = async () => {
       try {
         const res = await usersService.find({
@@ -211,7 +228,7 @@ function SelectableUserList({
       }
     };
     fetchCandidates();
-  }, []);
+  }, [participants]);
 
   return (
     <View style={{ flex: 1, width: theme.contentWidth }}>

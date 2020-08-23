@@ -9,7 +9,7 @@ import { refreshPostsAsync, fetchMorePostsAsync } from "../store/postsSlice";
 import { useSelector, useDispatch } from "react-redux";
 
 export default function ProfileTabsContainer({ user }) {
-  const [activeTab, setActiveTab] = useState("Posts");
+  const [activeTab, setActiveTab] = useState("Lists");
 
   const posts = useSelector((state) => state.posts.list);
   const followingIds = useSelector((state) => state.follows.following);
@@ -67,17 +67,11 @@ export default function ProfileTabsContainer({ user }) {
 
   return (
     <View style={{ flex: 1, alignItems: "center" }}>
-      <ProfileTabMenu
-        // count={{
-        //   Posts: postsCount,
-        //   Lists: lists.length,
-        //   Followers: followers.length,
-        //   Following: following.length,
-        // }}
+      {/* <ProfileTabMenu
         activeTab={activeTab}
         setActiveTab={setActiveTab}
-        options={["Posts", "Lists", "Followers", "Following"]}
-      />
+        options={["Lists", "Posts", "Followers", "Following"]}
+      /> */}
 
       <ProfileTabContent
         userId={user._id}

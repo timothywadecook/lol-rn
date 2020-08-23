@@ -3,13 +3,15 @@ import { useSelector } from "react-redux";
 import { View, TouchableOpacity } from "react-native";
 import { H3, H2 } from "./StyledText";
 import { useNavigation } from "@react-navigation/native";
-import UserAvatar from "react-native-user-avatar";
+import Avatar from "./Avatar";
+import useTheme from "../../hooks/useTheme";
 
 const UsernameNavToFriendDetails = ({
   friend,
   withAvatar = true,
   withName = false,
 }) => {
+  const theme = useTheme();
   const navigation = useNavigation();
   const activeUserId = useSelector((state) => state.user._id);
 
@@ -27,15 +29,7 @@ const UsernameNavToFriendDetails = ({
       onPress={handleOnPress}
       style={{ flexDirection: "row", alignItems: "center", marginRight: 5 }}
     >
-      {withAvatar && (
-        <UserAvatar
-          style={{ margin: 7, borderWidth: 0.5, borderColor: "white" }}
-          bgColor="black"
-          size={24}
-          name={friend.name}
-          src={friend.avatar}
-        />
-      )}
+      {withAvatar && <Avatar style={{ margin: 7 }} user={friend} />}
       <H2>{friend.username}</H2>
     </TouchableOpacity>
   );

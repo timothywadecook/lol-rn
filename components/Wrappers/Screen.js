@@ -7,7 +7,12 @@ export default function Screen(props) {
   return (
     <View
       style={[
-        { marginVertical: 30, backgroundColor: theme.wallbg, flex: 1 },
+        {
+          paddingTop: props.fullscreen ? 0 : 40,
+          backgroundColor: theme.wallbg,
+          flex: 1,
+          alignItems: props.center ? "center" : "flex-start",
+        },
         props.style,
       ]}
       {...props}

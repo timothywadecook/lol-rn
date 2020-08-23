@@ -32,7 +32,7 @@ export default function UserListItem({
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        paddingVertical: lean ? 15 : 24,
+        paddingVertical: 15,
         paddingHorizontal: 10,
       }}
     >

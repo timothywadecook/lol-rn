@@ -6,9 +6,10 @@ import SingleFilterButtonSpan from "../../components/SingleFilterButtonSpan";
 import AnimateExpand from "../../components/Wrappers/AnimateExpand";
 import DismissKeyboard from "../../components/Wrappers/DismissKeyboard";
 import SubmitButton from "../../components/Buttons/SubmitButton";
-import IconButtons from "../../components/Buttons/IconButtons";
 
-import Modal from "../../components/Modal";
+import MyModal from "../../components/Modal";
+import { ThingItemWithAddToList } from "../../components/ListItems/ThingItem";
+import SelectDirectRecipients from "../../components/Lists/SelectDirectRecipients";
 
 import MoviesAndShowsInput from "../../components/Inputs/MoviesAndShowsInput";
 import BooksInput from "../../components/Inputs/BooksInput";
@@ -17,8 +18,6 @@ import GooglePlacesInput from "../../components/Inputs/GooglePlacesInput";
 import useTheme from "../../hooks/useTheme";
 import usePrevious from "../../hooks/usePrevious";
 import { createRecommendationAsync } from "../../store/recommendationsSlice";
-import AddThingToListModal from "../../components/AddThingToListModal";
-import { thingsService } from "../../services/feathersClient";
 
 const MainInputField = ({ category, setItem, itemChosen, setItemChosen }) => {
   switch (category) {
@@ -87,12 +86,14 @@ export default function CreateScreen({ route }) {
   const userId = useSelector((state) => state.user._id);
   const dispatch = useDispatch();
 
+  const [processing, setProcessing] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [showAddToListModal, setShowAddToListModal] = useState(false);
   const [category, setCategory] = useState("");
   const prevCategory = usePrevious(category);
   const [itemChosen, setItemChosen] = useState(false);
   const [item, setItem] = useState({});
+  const [directRecipients, setDirectRecipients] = useState([]);
+  const [isPublic, setIsPublic] = useState(true);
 
   const resetState = () => {
     setItem({});
@@ -109,21 +110,19 @@ export default function CreateScreen({ route }) {
     }
   };
 
-  const addPhysicalLocationIfNeeded = (r) => {
-    const newRec = { ...r };
-    newRec.physical_location = newRec.physical_location || {
-      type: "Point",
-      coordinates: [34, -83],
-    };
-    return newRec;
-  };
-
   React.useEffect(receiveRepost, [route.params]);
 
-  const submitCreate = () => {
-    const newRec = { ...item, creator: userId };
-    const newRecWithLocation = addPhysicalLocationIfNeeded(newRec);
-    dispatch(createRecommendationAsync(newRecWithLocation));
+  const submitCreate = async () => {
+    setProcessing(true);
+    await dispatch(
+      createRecommendationAsync({
+        ...item,
+        directRecipients,
+        isPublic,
+        creator: userId,
+      })
+    );
+    setProcessing(false);
     resetState();
     setShowModal(true);
   };
@@ -135,49 +134,14 @@ export default function CreateScreen({ route }) {
     }
   }, [category]);
 
-  const getThingId = () => {
-    async function findOrCreateThing() {
-      const params = { category };
-      if (category === "Movie" || category === "Show") {
-        params.imdb = item.imdb;
-      }
-      if (category === "Place") {
-        params.place_id = item.place_id;
-      }
-      if (category === "Book") {
-        params.api_id = item.api_id;
-      }
-      const res = await thingsService.find({ query: params });
-      if (res.total === 1) {
-        return res.data[0]._id;
-      } else if (res.total === 0) {
-        console.log(
-          "Thing doesnt exist in database yet and in order to create it on the fly we need to move addPhysicalLocation to a before hook on create Things"
-        );
-      }
-    }
-    if (itemChosen && item.title && item.subtitle && item.category) {
-      findOrCreateThing();
-    }
-  };
-
-  console.log(item, itemChosen);
-
   return (
     <DismissKeyboard>
       <View style={styles.container}>
-        <Modal
+        <MyModal
           showModal={showModal}
           setShowModal={setShowModal}
           type="create"
         />
-        {/* {itemChosen && (
-          <AddThingToListModal
-            thingId={getThingId()}
-            showModal={showAddToListModal}
-            setShowModal={setShowAddToListModal}
-          />
-        )} */}
         <AnimateExpand doAnimation={!category} height={50}>
           <FancyH1 style={{ color: theme.purple }}>Like Out Loud</FancyH1>
         </AnimateExpand>
@@ -198,41 +162,7 @@ export default function CreateScreen({ route }) {
           }}
         >
           {itemChosen && (
-            <View
-              style={{
-                width: theme.contentWidth,
-                flexDirection: "row",
-                justifyContent: "space-between",
-                marginBottom: 20,
-              }}
-            >
-              <View style={{ flex: 1, flexDirection: "row" }}>
-                {item.image && (
-                  <Image
-                    source={{ uri: item.image }}
-                    style={{
-                      resizeMode: "cover",
-                      width: "10%",
-                      height: 40,
-                      borderRadius: 5,
-                      marginRight: 5,
-                      marginTop: 2,
-                    }}
-                  />
-                )}
-
-                <View style={{ flexDirection: "column", flex: 1 }}>
-                  <Title style={{ paddingBottom: 0 }}>{item.title}</Title>
-                  <H4 style={{ fontWeight: "bold" }}>{item.subtitle}</H4>
-                </View>
-              </View>
-
-              <View>
-                <IconButtons.AddCircle
-                // onPress={() => setShowAddToListModal(true)}
-                />
-              </View>
-            </View>
+            <ThingItemWithAddToList thing={item} onComplete={resetState} />
           )}
           {!itemChosen && (
             <MainInputField
@@ -240,6 +170,13 @@ export default function CreateScreen({ route }) {
               setItem={setItem}
               itemChosen={itemChosen}
               setItemChosen={setItemChosen}
+            />
+          )}
+
+          {itemChosen && (
+            <SelectDirectRecipients
+              directRecipients={directRecipients}
+              setDirectRecipients={setDirectRecipients}
             />
           )}
 
@@ -253,6 +190,7 @@ export default function CreateScreen({ route }) {
 
           {itemChosen && !!item.main_comment && (
             <SubmitButton
+              isProcessing={processing}
               intent="primary"
               title="Post"
               fullwidth={true}

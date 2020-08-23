@@ -44,7 +44,7 @@ function BottomTabNavigator({ navigation, isFocusing }) {
           tabBarLabel: "",
           tabBarVisible: isFocusing,
           tabBarIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="md-home" />
+            <TabBarIcon focused={focused} name="md-thumbs-up" />
           ),
         }}
       />

@@ -1,11 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { recommendationsService } from "../services/feathersClient";
+import * as Haptics from "expo-haptics";
 
 import { addLoadedRecommendations } from "./recommendationsSlice";
 
 const feedSlice = createSlice({
   name: "feed",
   initialState: {
+    query: {
+      $limit: 5,
+      creator: { $in: [] },
+      recommendation: { $in: [] },
+      $sort: { createdAt: -1 },
+    },
     loading: false,
     refreshing: false,
     moreToFetch: true,
@@ -30,6 +37,17 @@ const feedSlice = createSlice({
     addRecommendationToFeed(state, action) {
       state.list.unshift(action.payload);
     },
+    addCreatorToQuery(state, action) {
+      state.query.creator["$in"].push(action.payload);
+    },
+    removeCreatorFromQuery(state, action) {
+      state.query.creator["$in"] = state.query.creator["$in"].filter(
+        (id) => id !== action.payload
+      );
+    },
+    setRecommendationInQuery(state, action) {
+      state.query.recommendation["$in"] = [action.payload];
+    },
   },
 });
 
@@ -41,6 +59,9 @@ const {
   setRefreshing,
   setRefreshedData,
   setMoreToFetch,
+  addCreatorToQuery,
+  removeCreatorFromQuery,
+  setRecommendationInQuery,
 } = feedSlice.actions;
 
 // Useable action creators....
@@ -51,16 +72,16 @@ export const refreshFeedAsync = () => async (dispatch, getState) => {
   // start fetching first 10, set refreshing true
   dispatch(setRefreshing(true));
 
-  const feedIds = [...getState().follows.following];
-  feedIds.push(getState().user._id);
+  const stateQuery = getState().feed.query;
+  const sessionUserId = getState().user._id;
   try {
     const response = await recommendationsService.find({
       query: {
-        $limit: 5,
-        creator: { $in: feedIds },
-        $sort: { createdAt: -1 },
+        ...stateQuery,
+        // $or: [{ isPublic: true }, { directRecipients: sessionUserId }],
       },
     });
+    console.log("feed response.data", response.data);
 
     dispatch(addLoadedRecommendations(response.data));
     dispatch(setRefreshedData(response.data.map((r) => r._id)));
@@ -78,17 +99,17 @@ export const fetchMoreFeedAsync = () => async (dispatch, getState) => {
   const refreshing = getState().feed.refreshing;
   if (moreToFetch && !loading && !refreshing) {
     dispatch(setLoading(true));
-    const feedIds = [...getState().follows.following];
-    feedIds.push(getState().user._id);
+
+    const stateQuery = getState().feed.query;
+    const sessionUserId = getState().user._id;
 
     const skip = getState().feed.list.length;
     try {
       const response = await recommendationsService.find({
         query: {
+          ...stateQuery,
+          // $or: [{ isPublic: true }, { directRecipients: sessionUserId }],
           $skip: skip,
-          $limit: 5,
-          creator: { $in: feedIds },
-          $sort: { createdAt: -1 },
         },
       });
 
@@ -102,4 +123,25 @@ export const fetchMoreFeedAsync = () => async (dispatch, getState) => {
       dispatch(setLoading(false));
     }
   }
+};
+
+export const addCreatorToQueryAndRefresh = (creatorId) => async (dispatch) => {
+  dispatch(addCreatorToQuery(creatorId));
+  dispatch(refreshFeedAsync());
+};
+
+export const removeCreatorFromQueryAndRefresh = (creatorId) => async (
+  dispatch
+) => {
+  dispatch(removeCreatorFromQuery(creatorId));
+  dispatch(refreshFeedAsync());
+  Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+};
+
+export const setRecommendationInQueryAndRefresh = (recId) => async (
+  dispatch
+) => {
+  dispatch(setRecommendationInQuery(recId));
+  dispatch(refreshFeedAsync());
+  Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
 };

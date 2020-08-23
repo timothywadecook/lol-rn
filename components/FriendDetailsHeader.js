@@ -2,10 +2,13 @@ import React from "react";
 import { View } from "react-native";
 import { Title, H2G } from "./Atomic/StyledText";
 
-import UserAvatar from "react-native-user-avatar";
+import Avatar from "./Atomic/Avatar";
 import FollowUnfollowButton from "./Buttons/FollowUnfollowButton";
 
-const FriendDetailsHeader = ({ user, theme }) => {
+import useTheme from "../hooks/useTheme";
+
+const FriendDetailsHeader = ({ user }) => {
+  const theme = useTheme();
   return (
     <View>
       <View
@@ -24,17 +27,7 @@ const FriendDetailsHeader = ({ user, theme }) => {
             justifyContent: "flex-start",
           }}
         >
-          <UserAvatar
-            style={{
-              marginRight: 10,
-              borderWidth: 1,
-              borderColor: "white",
-            }}
-            size={50}
-            name={user.name}
-            bgColor={"black"}
-            src={user.avatar}
-          />
+          <Avatar style={{ marginRight: 10 }} size={50} user={user} />
           <View>
             <Title>{user.username}</Title>
             <H2G>{user.name}</H2G>

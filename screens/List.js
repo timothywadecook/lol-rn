@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { View, Button, Image, ScrollView } from "react-native";
+import { View, Button, Image, ScrollView, FlatList } from "react-native";
 import { Title, H4, H2 } from "../components/Atomic/StyledText";
 
 import { listsService, thingsService } from "../services/feathersClient";
@@ -9,8 +9,11 @@ import Swipeable from "react-native-gesture-handler/Swipeable";
 import SquareIconButton from "../components/ListItems/SwipableSquareIconButton";
 
 import ActivityIndicatorCentered from "../components/Atomic/ActivityIndicatorCentered";
+import FlatListItemSeparator from "../components/Atomic/FlatListItemSeparator";
 
 import useTheme from "../hooks/useTheme";
+
+import Screen from "../components/Wrappers/Screen";
 
 import { updateList } from "../store/listsSlice";
 
@@ -42,7 +45,7 @@ export default function List({ route, navigation }) {
   };
 
   const onOpenEditList = () => {
-    navigation.navigate("CreateOrEditList", { list });
+    navigation.navigate("CreateOrEditList", { list, isEdit: true });
   };
 
   const onNavBack = () => {
@@ -50,7 +53,7 @@ export default function List({ route, navigation }) {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: theme.wallbg }}>
+    <Screen>
       <ListHeader
         name={list.name}
         onNavBack={onNavBack}
@@ -61,7 +64,7 @@ export default function List({ route, navigation }) {
       ) : (
         <ActivityIndicatorCentered size="small" />
       )}
-    </View>
+    </Screen>
   );
 }
 
@@ -70,7 +73,11 @@ function ListHeader({ name, onNavBack, onOpenEditList }) {
   return (
     <View
       style={{
-        paddingTop: 50,
+        // paddingTop: 50,
+        paddingBottom: 5,
+        borderBottomWidth: 1,
+        borderBottomColor: theme.bg,
+        width: theme.windowWidth,
         paddingHorizontal: 10,
         flexDirection: "row",
         justifyContent: "space-between",
@@ -91,6 +98,7 @@ function ListHeader({ name, onNavBack, onOpenEditList }) {
 
 function ThingList({ thingIds, onDeleteThing }) {
   const [things, setThings] = React.useState([]);
+  const theme = useTheme();
 
   React.useEffect(() => {
     const fetchThings = async () => {
@@ -110,16 +118,26 @@ function ThingList({ thingIds, onDeleteThing }) {
   }, [thingIds]);
 
   return (
-    <View style={{ flex: 1 }}>
-      <ScrollView>
-        {things.map((t) => (
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: theme.wallbg,
+        width: theme.windowWidth,
+      }}
+    >
+      <FlatList
+        data={things}
+        renderItem={({ item }) => (
           <ThingListItem
-            key={t._id}
-            thing={t}
-            onDeleteThing={() => onDeleteThing(t._id)}
+            thing={item}
+            onDeleteThing={() => onDeleteThing(item._id)}
           />
-        ))}
-      </ScrollView>
+        )}
+        initialNumToRender={20}
+        keyExtractor={(item) => item._id}
+        showsVerticalScrollIndicator={false}
+        ItemSeparatorComponent={FlatListItemSeparator}
+      />
     </View>
   );
 }
@@ -128,15 +146,16 @@ function ThingListItem({ thing, onDeleteThing }) {
   const theme = useTheme();
   return (
     <Swipeable
-      renderRightActions={() => (
+      renderLeftActions={() => (
         <View style={{ width: "25%" }}>
-          <SquareIconButton icon="Delete" color="red" onPress={onDeleteThing} />
+          <SquareIconButton icon="delete" color="red" onPress={onDeleteThing} />
         </View>
       )}
     >
       <View
         style={{
-          width: theme.contentWidth,
+          backgroundColor: theme.wallbg,
+          width: theme.windowWidth,
           flex: 1,
           flexDirection: "row",
           paddingVertical: 15,

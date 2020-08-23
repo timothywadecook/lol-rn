@@ -42,14 +42,16 @@ const iconButtonCreator = (iconName) => ({
 export const LikeButton = iconButtonCreator("md-heart");
 export const CommentButton = iconButtonCreator("md-text");
 export const RepostButton = iconButtonCreator("md-repeat");
-export const AddCircle = iconButtonCreator("md-add-circle-outline");
+export const AddCircle = iconButtonCreator("md-add-circle");
 export const RemoveCircle = iconButtonCreator("md-remove-circle-outline");
 export const CheckmarkCircle = iconButtonCreator("md-checkmark-circle");
+export const AddUser = iconButtonCreator("md-person-add");
 
 export const Delete = iconButtonCreator("md-trash");
 export const IsShared = iconButtonCreator("md-people");
 
 const IconButtons = {
+  AddUser,
   CheckmarkCircle,
   Delete,
   IsShared,

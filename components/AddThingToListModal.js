@@ -6,6 +6,7 @@ import SubmitButton from "./Buttons/SubmitButton";
 import useTheme from "../hooks/useTheme";
 import { listsService } from "../services/feathersClient";
 import ActivityIndicatorCentered from "./Atomic/ActivityIndicatorCentered";
+import MyModal from "./Modal";
 //
 import { updateList } from "../store/listsSlice";
 
@@ -13,7 +14,9 @@ export default function AddThingToListModal({
   showModal,
   setShowModal,
   thingId,
+  onComplete,
 }) {
+  const [modalMessage, setModalMessage] = React.useState("");
   const theme = useTheme();
   const dispatch = useDispatch();
   const sessionUserId = useSelector((state) => state.user._id);
@@ -24,23 +27,35 @@ export default function AddThingToListModal({
     )
   );
 
+  const lists = useSelector((state) => state.lists);
+
   const onAddThingToList = async (listId) => {
     try {
       const updatedList = await listsService.patch(listId, {
         $addToSet: { things: thingId },
       });
+      setModalMessage(`Added to\n${lists[listId].name}`);
       dispatch(updateList(updatedList));
     } catch (error) {
+      setModalMessage("Houston, we had a problem :/");
       console.log("Error adding thing to list", thingId, listId, error);
     }
-    setShowModal(false);
+    if (onComplete) {
+      onComplete();
+    }
   };
 
-  return (
+  return !!modalMessage ? (
+    <MyModal
+      showModal={!!modalMessage}
+      setShowModal={setShowModal}
+      message={modalMessage}
+    />
+  ) : (
     <Modal
       animationType="fade"
       transparent={true}
-      visible={showModal}
+      visible={showModal && !modalMessage}
       onRequestClose={() => setShowModal(false)}
       onDismiss={() => setShowModal(false)}
     >
@@ -75,8 +90,9 @@ export default function AddThingToListModal({
                     }}
                   >
                     <SubmitButton
+                      fullwidth={true}
                       intent="secondary"
-                      title={useSelector((state) => state.lists[listId].name)}
+                      title={lists[listId].name}
                       onPress={() => onAddThingToList(listId)}
                     />
                   </View>
@@ -95,7 +111,11 @@ export default function AddThingToListModal({
               borderTopColor: theme.bg,
             }}
           >
-            <SubmitButton title="Dismiss" onPress={() => setShowModal(false)} />
+            <SubmitButton
+              fullwidth={true}
+              title="Dismiss"
+              onPress={() => setShowModal(false)}
+            />
           </View>
         </View>
       </View>

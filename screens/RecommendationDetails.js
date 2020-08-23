@@ -5,6 +5,7 @@ import ActivityIndicatorCentered from "../components/Atomic/ActivityIndicatorCen
 import UsernameNavToFriendDetails from "../components/Atomic/UsernameNavToFriendDetails";
 import ListItem from "../components/ListItems/ListItem";
 import { P, FancyH1, H2 } from "../components/Atomic/StyledText";
+import Screen from "../components/Wrappers/Screen";
 // Services
 import { commentsService, usersService } from "../services/feathersClient";
 // Hooks
@@ -28,14 +29,7 @@ export default function RecommendationDetails({ navigation, route }) {
   });
 
   return (
-    <View
-      style={{
-        paddingTop: 32,
-        backgroundColor: theme.wallbg,
-        flex: 1,
-        alignItems: "center",
-      }}
-    >
+    <Screen center={true}>
       <View
         style={{
           width: theme.windowWidth,
@@ -67,7 +61,7 @@ export default function RecommendationDetails({ navigation, route }) {
           showsVerticalScrollIndicator={false}
         />
       </View>
-    </View>
+    </Screen>
   );
 }
 
