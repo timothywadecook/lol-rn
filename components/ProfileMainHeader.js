@@ -2,6 +2,7 @@ import React from "react";
 import { View, TouchableOpacity } from "react-native";
 import Avatar from "./Atomic/Avatar";
 import FollowUserByUsernameInput from "./Inputs/FollowUserByUsernameInput";
+import BackButton from "./Atomic/BackButton";
 
 import useTheme from "../hooks/useTheme";
 
@@ -17,12 +18,14 @@ const ProfileMainHeader = ({
     <View>
       <View
         style={{
-          width: theme.contentWidth,
+          width: theme.windowWidth,
           flexDirection: "row",
+          alignItems: "center",
           paddingBottom: 10,
           paddingHorizontal: 10,
         }}
       >
+        {!inputFocus && <BackButton />}
         <FollowUserByUsernameInput
           inputFocus={inputFocus}
           setInputFocus={setInputFocus}

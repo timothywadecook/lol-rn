@@ -5,8 +5,8 @@ import useTheme from "../hooks/useTheme";
 // Components
 import SearchUsersByUsername from "../components/Inputs/SearchUsersByUsername";
 import Screen from "../components/Wrappers/Screen";
-import { Feather } from "@expo/vector-icons";
-import { TouchableOpacity } from "react-native-gesture-handler";
+
+import BackButton from "../components/Atomic/BackButton";
 
 // Actual Component
 export default function SearchUsers({ navigation }) {
@@ -24,15 +24,7 @@ export default function SearchUsers({ navigation }) {
           alignItems: "center",
         }}
       >
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Feather
-            name="chevron-left"
-            size={30}
-            color={theme.iconDefault}
-            style={{ paddingHorizontal: 10 }}
-          />
-        </TouchableOpacity>
-
+        <BackButton />
         <SearchUsersByUsername />
       </View>
     </Screen>

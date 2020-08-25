@@ -40,7 +40,7 @@ export default function SelectableUser({
           style={{ height: size }}
           name="md-checkmark-circle"
           size={size}
-          color={theme.purple}
+          color={theme.white}
         />
       ) : (
         <Avatar

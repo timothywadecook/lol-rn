@@ -19,6 +19,7 @@ const mapState = (state) => ({
 function BottomTabNavigator({ navigation, isFocusing }) {
   navigation.setOptions({
     headerShown: false,
+    tabBarVisible: false,
   });
 
   const theme = useTheme();

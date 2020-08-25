@@ -2,11 +2,13 @@ import React from "react";
 import { View, Modal, ScrollView, ActivityIndicator } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 
+import * as T from "./Atomic/StyledText";
 import SubmitButton from "./Buttons/SubmitButton";
 import useTheme from "../hooks/useTheme";
 import { listsService } from "../services/feathersClient";
 import ActivityIndicatorCentered from "./Atomic/ActivityIndicatorCentered";
 import MyModal from "./Modal";
+import ListListItem from "./ListItems/ListListItem";
 //
 import { updateList } from "../store/listsSlice";
 
@@ -53,7 +55,7 @@ export default function AddThingToListModal({
     />
   ) : (
     <Modal
-      animationType="fade"
+      animationType="slide"
       transparent={true}
       visible={showModal && !modalMessage}
       onRequestClose={() => setShowModal(false)}
@@ -64,17 +66,19 @@ export default function AddThingToListModal({
 
         <View
           style={{
-            marginBottom: 20,
+            paddingBottom: 25,
+            backgroundColor: theme.wallbg,
           }}
         >
           <View
             style={{
-              backgroundColor: theme.bg,
-              paddingVertical: 10,
-              marginBottom: 8,
-              borderRadius: 40,
+              paddingVertical: 20,
+              paddingHorizontal: 10,
             }}
           >
+            <View style={{ alignSelf: "center" }}>
+              <T.Title>Add to List</T.Title>
+            </View>
             <ScrollView>
               {listIds.length < 0 ? (
                 <View style={{ height: 100 }}>
@@ -82,29 +86,19 @@ export default function AddThingToListModal({
                 </View>
               ) : (
                 listIds.map((listId) => (
-                  <View
+                  <ListListItem
                     key={listId}
-                    style={{
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    <SubmitButton
-                      fullwidth={true}
-                      intent="secondary"
-                      title={lists[listId].name}
-                      onPress={() => onAddThingToList(listId)}
-                    />
-                  </View>
+                    listId={listId}
+                    swipable={false}
+                    showArrow={false}
+                    onPress={() => onAddThingToList(listId)}
+                  />
                 ))
               )}
             </ScrollView>
           </View>
           <View
             style={{
-              borderRadius: 40,
-              backgroundColor: theme.bg,
-              // flex: 1,
               justifyContent: "center",
               alignItems: "center",
               borderTopWidth: 1,

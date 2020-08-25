@@ -14,6 +14,9 @@ import RecommendationDetails from "./screens/RecommendationDetails";
 import CreateOrEditList from "./screens/CreateOrEditList";
 import SearchUsers from "./screens/SearchUsers";
 import List from "./screens/List";
+import Home from "./screens/Tabs/Home";
+import Profile from "./screens/Tabs/Profile";
+import Create from "./screens/Tabs/Create";
 import Modal from "./screens/Modal";
 // Actions
 import { login, setAppIsReady } from "./store/userSlice";
@@ -54,10 +57,10 @@ const Router = ({ appIsReady, isAuthenticated, login, setAppIsReady }) => {
   }
   return (
     <NavigationContainer linking={LinkingConfiguration}>
-      <Stack.Navigator initialRouteName={isAuthenticated && "Tabs"}>
+      <Stack.Navigator initialRouteName={isAuthenticated && "Home"}>
         {isAuthenticated ? (
           <React.Fragment>
-            <Stack.Screen name="Tabs" component={BottomTabNavigator} />
+            {/* <Stack.Screen name="Tabs" component={BottomTabNavigator} /> */}
             <Stack.Screen
               name="RecommendationDetails"
               component={RecommendationDetails}
@@ -67,6 +70,9 @@ const Router = ({ appIsReady, isAuthenticated, login, setAppIsReady }) => {
               name="CreateOrEditList"
               component={CreateOrEditList}
             />
+            <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen name="Profile" component={Profile} />
+            <Stack.Screen name="Create" component={Create} />
             <Stack.Screen name="Search Users" component={SearchUsers} />
             <Stack.Screen name="List" component={List} />
             <Stack.Screen name="Modal" component={Modal} />

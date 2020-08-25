@@ -21,7 +21,12 @@ import Avatar from "../Atomic/Avatar";
 
 import { removeDeletedList, updateList } from "../../store/listsSlice";
 
-export default function ListListItem({ privateList, listId }) {
+export default function ListListItem({
+  showArrow = true,
+  swipable = true,
+  onPress = null,
+  listId,
+}) {
   const navigation = useNavigation();
   const theme = useTheme();
   const dispatch = useDispatch();
@@ -30,7 +35,11 @@ export default function ListListItem({ privateList, listId }) {
   const { name, isPrivate, participants } = list;
 
   const onViewList = () => {
-    navigation.navigate("List", { listId });
+    if (onPress) {
+      onPress();
+    } else {
+      navigation.navigate("List", { listId });
+    }
   };
 
   const onDeleteList = async () => {
@@ -73,7 +82,7 @@ export default function ListListItem({ privateList, listId }) {
   return (
     <Swipeable
       renderLeftActions={() =>
-        !canEdit() ? null : (
+        !canEdit() || !swipable ? null : (
           <View
             style={{ width: theme.windowWidth * 0.43, flexDirection: "row" }}
           >
@@ -105,7 +114,7 @@ export default function ListListItem({ privateList, listId }) {
         style={{
           width: "100%",
           paddingHorizontal: 10,
-          backgroundColor: theme.bg,
+          backgroundColor: theme.wallbg,
           flexDirection: "row",
           justifyContent: "space-between",
           alignItems: "center",
@@ -131,12 +140,14 @@ export default function ListListItem({ privateList, listId }) {
           }}
         >
           <ParticipantsRow participants={participants} />
-          <Feather
-            name="chevron-right"
-            size={30}
-            color={theme.iconDefault}
-            style={{ paddingHorizontal: 10 }}
-          />
+          {showArrow && (
+            <Feather
+              name="chevron-right"
+              size={30}
+              color={theme.iconDefault}
+              style={{ paddingHorizontal: 10 }}
+            />
+          )}
         </View>
       </TouchableWithoutFeedback>
     </Swipeable>
@@ -180,5 +191,10 @@ function ParticipantAvatar({ participantId }) {
     return <ActivityIndicator size="small" />;
   }
 
-  return <Avatar style={{ marginHorizontal: 4 }} user={user} />;
+  return (
+    <Avatar
+      style={{ marginHorizontal: 4, backgroundColor: "transparent" }}
+      user={user}
+    />
+  );
 }

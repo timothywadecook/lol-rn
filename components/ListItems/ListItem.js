@@ -24,7 +24,7 @@ export default function ListItem({
   spaced = false,
   disableLink = false,
   recId,
-  category,
+  categories,
 }) {
   const theme = useTheme();
   const dispatch = useDispatch();
@@ -58,8 +58,8 @@ export default function ListItem({
 
   const listStyle = spaced ? { flex: 1, marginVertical: 4 } : null;
   // FILTER BY CATEGORY
-  if (category) {
-    const show = category === "All" || category.includes(r.thing.category);
+  if (categories.length > 0) {
+    const show = categories.includes(r.thing.category + "s");
     if (!show) {
       return null;
     }
@@ -141,7 +141,7 @@ const CardContent = (props) => {
       style={{
         width: theme.windowWidth,
         paddingHorizontal: 10,
-        paddingBottom: 20,
+        paddingVertical: 15,
         borderBottomColor: theme.wallbg,
         borderBottomWidth: 1,
       }}

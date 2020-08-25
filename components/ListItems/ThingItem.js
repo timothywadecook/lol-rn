@@ -19,7 +19,7 @@ export default function ThingItem({ thing, children, border }) {
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        marginBottom: 20,
+        marginVertical: 5,
         borderWidth: border ? 1 : 0,
         borderColor: theme.wallbg,
         borderRadius: 8,

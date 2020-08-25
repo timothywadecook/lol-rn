@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { StyleSheet, View, FlatList } from "react-native";
-// import { FlatList } from "react-native-gesture-handler";
-import SingleFilterButtonSpan from "../SingleFilterButtonSpan";
 import ListItem from "../ListItems/ListItem";
 
 import ActivityIndicatorCentered from "../Atomic/ActivityIndicatorCentered";
+import FilterMenu from "../FilterMenu";
+import * as T from "../Atomic/StyledText";
 
 import useTheme from "../../hooks/useTheme";
 
@@ -16,10 +16,9 @@ const FilteredRecommendationsList = ({
   recommendations,
   filterable = false,
   topPad = false,
+  categories,
   horizontal = false,
 }) => {
-  const [category, setCategory] = useState("All");
-
   const theme = useTheme();
   const styles = getStyles(theme);
 
@@ -40,7 +39,7 @@ const FilteredRecommendationsList = ({
             horizontal={horizontal}
             spaced={true}
             recId={item}
-            category={category}
+            categories={categories}
           />
         )}
         initialNumToRender={4}
@@ -50,23 +49,6 @@ const FilteredRecommendationsList = ({
         ListFooterComponent={() =>
           loading ? <ActivityIndicatorCentered size="small" /> : null
         }
-        ListHeaderComponent={() => (
-          <View
-            style={{
-              paddingTop: topPad ? 40 : 0,
-              alignItems: "center",
-              paddingBottom: 20,
-            }}
-          >
-            {filterable && (
-              <SingleFilterButtonSpan
-                options={["All", "Movies", "Shows", "Books", "Places"]}
-                filter={category}
-                setFilter={setCategory}
-              />
-            )}
-          </View>
-        )}
       />
     </View>
   );

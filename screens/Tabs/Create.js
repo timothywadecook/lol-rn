@@ -6,6 +6,7 @@ import SingleFilterButtonSpan from "../../components/SingleFilterButtonSpan";
 import AnimateExpand from "../../components/Wrappers/AnimateExpand";
 import DismissKeyboard from "../../components/Wrappers/DismissKeyboard";
 import SubmitButton from "../../components/Buttons/SubmitButton";
+import BackButton from "../../components/Atomic/BackButton";
 
 import MyModal from "../../components/Modal";
 import { ThingItemWithAddToList } from "../../components/ListItems/ThingItem";
@@ -18,6 +19,8 @@ import GooglePlacesInput from "../../components/Inputs/GooglePlacesInput";
 import useTheme from "../../hooks/useTheme";
 import usePrevious from "../../hooks/usePrevious";
 import { createRecommendationAsync } from "../../store/recommendationsSlice";
+
+import Screen from "../../components/Wrappers/Screen";
 
 const MainInputField = ({ category, setItem, itemChosen, setItemChosen }) => {
   switch (category) {
@@ -80,7 +83,10 @@ const MainCommentField = ({ hide, styles, theme, item, setItem }) =>
     </AnimateExpand>
   );
 
-export default function CreateScreen({ route }) {
+export default function CreateScreen({ navigation, route }) {
+  navigation.setOptions({
+    headerShown: false,
+  });
   const theme = useTheme();
   const styles = getStyles(theme);
   const userId = useSelector((state) => state.user._id);
@@ -107,6 +113,8 @@ export default function CreateScreen({ route }) {
       setCategory(repost.category);
       setItem(repost);
       setItemChosen(true);
+    } else {
+      setCategory("Movie");
     }
   };
 
@@ -135,78 +143,81 @@ export default function CreateScreen({ route }) {
   }, [category]);
 
   return (
-    <DismissKeyboard>
-      <View style={styles.container}>
-        <MyModal
-          showModal={showModal}
-          setShowModal={setShowModal}
-          type="create"
-        />
-        <AnimateExpand doAnimation={!category} height={50}>
-          <FancyH1 style={{ color: theme.purple }}>Like Out Loud</FancyH1>
-        </AnimateExpand>
-
-        <SingleFilterButtonSpan
-          options={["Movie", "Show", "Book", "Place"]}
-          setFilter={setCategory}
-          filter={category}
-        />
-
-        <AnimateExpand
-          doAnimation={!!category}
-          height={550}
-          style={{
-            marginVertical: 10,
-            alignItems: "center",
-            justifyContent: "flex-start",
-          }}
-        >
-          {itemChosen && (
-            <ThingItemWithAddToList thing={item} onComplete={resetState} />
-          )}
-          {!itemChosen && (
-            <MainInputField
-              category={category}
-              setItem={setItem}
-              itemChosen={itemChosen}
-              setItemChosen={setItemChosen}
-            />
-          )}
-
-          {itemChosen && (
-            <SelectDirectRecipients
-              directRecipients={directRecipients}
-              setDirectRecipients={setDirectRecipients}
-            />
-          )}
-
-          <MainCommentField
-            hide={!itemChosen}
-            styles={styles}
-            theme={theme}
-            item={item}
-            setItem={setItem}
+    <Screen>
+      <DismissKeyboard>
+        <View style={styles.container}>
+          <MyModal
+            showModal={showModal}
+            setShowModal={(value) => {
+              setShowModal(value);
+              navigation.goBack();
+            }}
+            type="create"
           />
 
-          {itemChosen && !!item.main_comment && (
-            <SubmitButton
-              isProcessing={processing}
-              intent="primary"
-              title="Post"
-              fullwidth={true}
-              onPress={submitCreate}
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <BackButton />
+            <SingleFilterButtonSpan
+              options={["Movie", "Show", "Book", "Place"]}
+              setFilter={setCategory}
+              filter={category}
             />
-          )}
-          {itemChosen && (
-            <SubmitButton
-              title="Cancel"
-              fullwidth={true}
-              onPress={resetState}
+          </View>
+
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "flex-start",
+              alignItems: "center",
+            }}
+          >
+            {itemChosen && (
+              <ThingItemWithAddToList thing={item} onComplete={resetState} />
+            )}
+            {!itemChosen && !!category && (
+              <MainInputField
+                category={category}
+                setItem={setItem}
+                itemChosen={itemChosen}
+                setItemChosen={setItemChosen}
+              />
+            )}
+
+            {itemChosen && (
+              <SelectDirectRecipients
+                directRecipients={directRecipients}
+                setDirectRecipients={setDirectRecipients}
+              />
+            )}
+
+            <MainCommentField
+              hide={!itemChosen}
+              styles={styles}
+              theme={theme}
+              item={item}
+              setItem={setItem}
             />
-          )}
-        </AnimateExpand>
-      </View>
-    </DismissKeyboard>
+
+            {itemChosen && !!item.main_comment && (
+              <SubmitButton
+                isProcessing={processing}
+                intent="primary"
+                title="Post"
+                fullwidth={true}
+                onPress={submitCreate}
+              />
+            )}
+            {itemChosen && (
+              <SubmitButton
+                title="Cancel"
+                fullwidth={true}
+                onPress={resetState}
+              />
+            )}
+          </View>
+        </View>
+      </DismissKeyboard>
+    </Screen>
   );
 }
 

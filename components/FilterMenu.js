@@ -7,18 +7,28 @@ import SelectableUserAddNew from "./ListItems/SelectableUserAddNew";
 
 import { usersService } from "../services/feathersClient";
 
+import MultiSelectFilterButtons from "./MultiSelectFilterButtons";
+
 import useTheme from "../hooks/useTheme";
 
-export default function FilterMenu() {
+export default function FilterMenu({ categories, setCategories }) {
   const theme = useTheme();
   return (
     <View
       style={{
+        paddingVertical: 10,
         width: theme.windowWidth,
         flexDirection: "column",
+        borderBottomWidth: 1,
+        borderBottomColor: theme.bg,
       }}
     >
       <ListSelectableUsersWithUnreadCountAndAddNew />
+      <MultiSelectFilterButtons
+        options={["Movies", "Shows", "Books", "Places"]}
+        selected={categories}
+        setSelected={setCategories}
+      />
     </View>
   );
 }

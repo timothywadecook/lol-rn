@@ -14,7 +14,7 @@ const SingleFilterButtonSpan = React.memo(({ options, setFilter, filter }) => {
         flexDirection: "row",
         marginBottom: 0,
         justifyContent: "space-evenly",
-        width: theme.windowWidth,
+        width: theme.windowWidth * 0.9,
         paddingHorizontal: 5,
         zIndex: 3,
         elevation: 3,

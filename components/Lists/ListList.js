@@ -1,14 +1,10 @@
 import React from "react";
-import { View, FlatList, SectionList } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 
 import { useNavigation } from "@react-navigation/native";
 
 import ListListItem from "../ListItems/ListListItem";
-import { AddCircle } from "../Buttons/IconButtons";
-import FlatListItemSeparator from "../Atomic/FlatListItemSeparator";
-import * as T from "../Atomic/StyledText";
-import IconButtons from "../Buttons/IconButtons";
+import { Add } from "../Buttons/IconButtons";
 import ProfileCard from "../Atomic/ProfileCard";
 //
 import useTheme from "../../hooks/useTheme";
@@ -52,7 +48,7 @@ export default function ListList({ userId, privateList }) {
         renderRightChild={
           canCreate()
             ? () => (
-                <AddCircle
+                <Add
                   onPress={() =>
                     navigation.navigate("CreateOrEditList", {
                       list: { isPrivate: true },
@@ -63,15 +59,9 @@ export default function ListList({ userId, privateList }) {
             : null
         }
       >
-        <FlatList
-          data={privateListIds}
-          renderItem={({ item }) => <ListListItem listId={item} />}
-          keyExtractor={(item) => item}
-          ItemSeparatorComponent={(props) => (
-            <FlatListItemSeparator {...props} />
-          )}
-          showsVerticalScrollIndicator={false}
-        />
+        {privateListIds.map((listId) => (
+          <ListListItem key={listId} listId={listId} />
+        ))}
       </ProfileCard>
     );
   }
@@ -90,7 +80,7 @@ export default function ListList({ userId, privateList }) {
       renderRightChild={
         canCreate()
           ? () => (
-              <AddCircle
+              <Add
                 onPress={() =>
                   navigation.navigate("CreateOrEditList", {
                     list: { isPrivate: false },
@@ -101,13 +91,9 @@ export default function ListList({ userId, privateList }) {
           : null
       }
     >
-      <FlatList
-        data={publicListIds}
-        renderItem={({ item }) => <ListListItem listId={item} />}
-        keyExtractor={(item) => item}
-        ItemSeparatorComponent={(props) => <FlatListItemSeparator {...props} />}
-        showsVerticalScrollIndicator={false}
-      />
+      {publicListIds.map((listId) => (
+        <ListListItem key={listId} listId={listId} />
+      ))}
     </ProfileCard>
   );
 }

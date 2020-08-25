@@ -7,11 +7,13 @@ import useTheme from "../../hooks/useTheme";
 import ProfileTabsContainer from "../../components/ProfileTabsContainer";
 import ProfileMainHeader from "../../components/ProfileMainHeader";
 import ProfileSettings from "../../components/ProfileSettings";
-import FollowUserByUsernameInput from "../../components/Inputs/FollowUserByUsernameInput";
 import Screen from "../../components/Wrappers/Screen";
 
 // Actual Component
-export default function ProfileScreen() {
+export default function ProfileScreen({ navigation }) {
+  navigation.setOptions({
+    headerShown: false,
+  });
   const user = useSelector((state) => state.user);
   const theme = useTheme();
 

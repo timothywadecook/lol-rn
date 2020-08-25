@@ -3,19 +3,29 @@ import { TouchableOpacity } from "react-native";
 import { H2 } from "../Atomic/StyledText";
 import useTheme from "../../hooks/useTheme";
 
-const SingleFilterButton = ({ text, setFilter, filter }) => {
+export default function MutliSelectFilterButton({
+  text,
+  setSelected,
+  selected,
+}) {
   const theme = useTheme();
-  const isActive = filter === text;
+  const isActive = selected.includes(text);
+
+  const removeFromSelected = () => {
+    setSelected(selected.filter((t) => t !== text));
+  };
+
+  const addToSelected = () => {
+    setSelected([...selected, text]);
+  };
 
   return (
     <TouchableOpacity
-      onPress={() => {
-        setFilter(filter === text ? "" : text);
-      }}
+      onPress={() => (isActive ? removeFromSelected() : addToSelected())}
       style={{
         paddingVertical: 10,
         paddingHorizontal: 10,
-        // height: 30,
+        marginHorizontal: 10,
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 15,
@@ -33,6 +43,4 @@ const SingleFilterButton = ({ text, setFilter, filter }) => {
       </H2>
     </TouchableOpacity>
   );
-};
-
-export default SingleFilterButton;
+}

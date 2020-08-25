@@ -10,9 +10,9 @@ export default Card = (props) => {
     <View
       style={[
         {
-          borderWidth: 3,
+          borderWidth: 1,
           borderColor: theme.wallbg,
-          paddingVertical: 10,
+          // paddingVertical: 10,
           marginBottom: 40,
           width: theme.windowWidth,
           backgroundColor: theme.bg,
