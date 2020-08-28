@@ -29,9 +29,9 @@ export default function MutliSelectFilterButton({
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 15,
-        backgroundColor: isActive ? theme.activeButtonBg : theme.wallbg,
-        borderColor: isActive ? theme.activeButtonBg : theme.iconDefault,
-        borderWidth: 1,
+        backgroundColor: isActive ? theme.activeButtonBg : "transparent",
+        borderColor: theme.wallbg,
+        borderWidth: isActive ? 1 : 0,
       }}
     >
       <H2

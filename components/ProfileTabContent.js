@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, ScrollView, View } from "react-native";
+import { ScrollView, View } from "react-native";
 import UserListItem from "./ListItems/UserListItem";
 import ListList from "./Lists/ListList";
 
@@ -21,6 +21,8 @@ export default function ProfileTabContent({ userId, followers, following }) {
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{
         width: theme.windowWidth,
+        paddingTop: 10,
+        paddingBottom: 60,
       }}
     >
       <ListList userId={userId} privateList={true} />

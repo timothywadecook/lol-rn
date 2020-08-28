@@ -27,11 +27,13 @@ export default function List({ route, navigation }) {
   const { listId } = route.params;
 
   const list = useSelector((state) => state.lists[listId]);
+  const sessionUserId = useSelector((state) => state.user._id);
+  const canEdit = list.participants.includes(sessionUserId);
 
   const onDeleteThing = async (thingId) => {
     try {
       const updatedList = await listsService.patch(listId, {
-        things: { $pull: thingId },
+        $pull: { things: thingId },
       });
       dispatch(updateList(updatedList));
     } catch (error) {
@@ -58,6 +60,7 @@ export default function List({ route, navigation }) {
         name={list.name}
         onNavBack={onNavBack}
         onOpenEditList={onOpenEditList}
+        canEdit={canEdit}
       />
       {list.things ? (
         <ThingList thingIds={list.things} onDeleteThing={onDeleteThing} />
@@ -68,7 +71,7 @@ export default function List({ route, navigation }) {
   );
 }
 
-function ListHeader({ name, onNavBack, onOpenEditList }) {
+function ListHeader({ name, onNavBack, onOpenEditList, canEdit }) {
   const theme = useTheme();
   return (
     <View
@@ -87,11 +90,15 @@ function ListHeader({ name, onNavBack, onOpenEditList }) {
       <Button title="Back" onPress={onNavBack} color={theme.purple}></Button>
       <H2>{name}</H2>
 
-      <Button
-        title="Edit"
-        onPress={onOpenEditList}
-        color={theme.purple}
-      ></Button>
+      {canEdit ? (
+        <Button
+          title="Edit"
+          onPress={onOpenEditList}
+          color={theme.purple}
+        ></Button>
+      ) : (
+        <View style={{ width: 56 }}></View>
+      )}
     </View>
   );
 }

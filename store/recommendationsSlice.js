@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   recommendationsService,
   likesService,
+  dislikesService,
 } from "../services/feathersClient";
 import { addRecommendationToFeed } from "./feedSlice";
 import { addRecommendationToPosts } from "./postsSlice";
@@ -36,6 +37,14 @@ const recommendationsSlice = createSlice({
       state[action.payload].likes.liked = false;
       state[action.payload].likes.total -= 1;
     },
+    dislikeByRecId(state, action) {
+      state[action.payload].dislikes.disliked = true;
+      state[action.payload].dislikes.total += 1;
+    },
+    undislikeByRecId(state, action) {
+      state[action.payload].dislikes.disliked = false;
+      state[action.payload].dislikes.total -= 1;
+    },
     addCommentByRecId(state, action) {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       state[action.payload].comments.total += 1;
@@ -62,6 +71,8 @@ const {
   addCreatedRecommendation,
   unlikeByRecId,
   likeByRecId,
+  dislikeByRecId,
+  undislikeByRecId,
 } = recommendationsSlice.actions;
 
 export const {
@@ -69,6 +80,47 @@ export const {
   clearData,
   addCommentByRecId,
 } = recommendationsSlice.actions;
+
+export const dislikeByRecIdAsync = (recId) => async (dispatch, getState) => {
+  console.log("In dislike", recId);
+  Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+  dispatch(dislikeByRecId(recId));
+  const userId = getState().user._id;
+  try {
+    console.log("in try dislike");
+    dislikesService.create({ creator: userId, recommendation: recId });
+  } catch (error) {
+    console.log(
+      "Error disliking by rec id async",
+      "recId",
+      recId,
+      "userId",
+      userId,
+      error
+    );
+  }
+};
+
+export const undislikeByRecIdAsync = (recId) => async (dispatch, getState) => {
+  Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+  dispatch(undislikeByRecId(recId));
+  const userId = getState().user._id;
+  try {
+    const existingDislike = await dislikesService.find({
+      query: { recommendation: recId, creator: userId },
+    });
+    dislikesService.remove(existingDislike.data[0]._id);
+  } catch (error) {
+    console.log(
+      "Error undisliking by rec id async",
+      "recId",
+      recId,
+      "userId",
+      userId,
+      error
+    );
+  }
+};
 
 export const likeByRecIdAsync = (recId) => async (dispatch, getState) => {
   // Vibration.vibrate();
@@ -115,12 +167,13 @@ export const createRecommendationAsync = (rec) => async (
   dispatch,
   getState
 ) => {
+  console.log("creating this...", rec);
   try {
     const r = await recommendationsService.create(rec);
     dispatch(addCreatedRecommendation(r));
     dispatch(addRecommendationToFeed(r._id));
     dispatch(addRecommendationToPosts(r._id));
   } catch (error) {
-    console.log("Error creating recommendation", error);
+    console.log("Error creating recommendation", error, error.message);
   }
 };

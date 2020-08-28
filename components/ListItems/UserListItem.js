@@ -68,7 +68,7 @@ export default function UserListItem({
             {!lean && <T.H2G>{name}</T.H2G>}
           </View>
         </TouchableOpacity>
-        {!!adjacentText && <T.H4>{adjacentText}</T.H4>}
+        {!!adjacentText && adjacentText()}
       </View>
       {children}
     </View>

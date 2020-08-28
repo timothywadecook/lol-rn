@@ -5,7 +5,11 @@ import { View, Button, TextInput } from "react-native";
 import { H3, H4 } from "./Atomic/StyledText";
 import LightModeDarkModeButton from "../components/Buttons/LightModeDarkModeButton";
 
-import { logoutAsync } from "../store/userSlice";
+import {
+  logoutAsync,
+  saveUsernameAsync,
+  saveNameAsync,
+} from "../store/userSlice";
 
 const ProfileSettings = ({ user, theme }) => {
   const dispatch = useDispatch();
@@ -46,24 +50,34 @@ const ProfileSettings = ({ user, theme }) => {
           }}
         />
         {changed && (
-          <Button title="Save" color={theme.purple} onPress={onSave} />
+          <Button
+            title="Save"
+            color={theme.purple}
+            onPress={() => onSave(value)}
+          />
         )}
       </View>
     );
   }
 
   return (
-    <View style={{ width: theme.contentWidth, flexDirection: "column" }}>
+    <View
+      style={{
+        width: theme.contentWidth,
+        flexDirection: "column",
+        paddingTop: 15,
+      }}
+    >
       <H3>Edit Name:</H3>
       <EditableTextField
         initialValue={user.name}
-        onSave={() => console.log("Name Changed")}
+        onSave={(value) => dispatch(saveNameAsync(value))}
       />
 
       <H3>Edit Handle:</H3>
       <EditableTextField
         initialValue={user.username}
-        onSave={() => console.log("Username Changed")}
+        onSave={(value) => dispatch(saveUsernameAsync(value))}
         lowercase={true}
       />
 

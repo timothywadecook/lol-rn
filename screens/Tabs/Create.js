@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { View, TextInput, StyleSheet, Image } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { FancyH1, Title, H4 } from "../../components/Atomic/StyledText";
 import SingleFilterButtonSpan from "../../components/SingleFilterButtonSpan";
 import AnimateExpand from "../../components/Wrappers/AnimateExpand";
 import DismissKeyboard from "../../components/Wrappers/DismissKeyboard";
@@ -155,13 +154,21 @@ export default function CreateScreen({ navigation, route }) {
             type="create"
           />
 
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              width: theme.windowWidth,
+            }}
+          >
             <BackButton />
-            <SingleFilterButtonSpan
-              options={["Movie", "Show", "Book", "Place"]}
-              setFilter={setCategory}
-              filter={category}
-            />
+            <View style={{ flex: 1, paddingRight: 10 }}>
+              <SingleFilterButtonSpan
+                options={["Movie", "Show", "Book", "Place"]}
+                setFilter={setCategory}
+                filter={category}
+              />
+            </View>
           </View>
 
           <View
@@ -172,7 +179,11 @@ export default function CreateScreen({ navigation, route }) {
             }}
           >
             {itemChosen && (
-              <ThingItemWithAddToList thing={item} onComplete={resetState} />
+              <ThingItemWithAddToList
+                pad={true}
+                thing={item}
+                onComplete={resetState}
+              />
             )}
             {!itemChosen && !!category && (
               <MainInputField

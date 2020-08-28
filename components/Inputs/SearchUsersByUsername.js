@@ -16,6 +16,7 @@ import useTheme from "../../hooks/useTheme";
 //
 import { useNavigation } from "@react-navigation/native";
 import { usersService } from "../../services/feathersClient";
+import BackButton from "../Atomic/BackButton";
 
 export default function SearchUsersByUsername({ withFollowButton = true }) {
   const [query, setQuery] = useState("");
@@ -105,33 +106,42 @@ function CustomTextInput({ onChange, value, loading, onCancel }) {
   return (
     <View
       style={{
-        width: "100%",
-        alignSelf: "center",
-        paddingHorizontal: 20,
-        margin: 7,
         flexDirection: "row",
-        justifyContent: "space-between",
-        backgroundColor: theme.bg,
-        borderRadius: 20,
-        height: 38,
+        alignItems: "center",
+        width: theme.windowWidth,
       }}
     >
-      <TextInput
+      <BackButton />
+
+      <View
         style={{
           flex: 1,
-          color: theme.primary,
+          alignSelf: "center",
+          paddingHorizontal: 20,
+          flexDirection: "row",
+          justifyContent: "space-between",
+          backgroundColor: theme.bg,
+          borderRadius: 20,
+          height: 38,
         }}
-        value={value}
-        onChange={onChange}
-        autoCorrect={false}
-        keyboardAppearance={theme.theme}
-        // placeholderTextColor="#5d5d5d"
-        placeholderTextColor={theme.iconDefault}
-        placeholder="Find friends by username..."
-        onSubmit={onCancel}
-        autoFocus={true}
-      />
-      {loading && <ActivityIndicator color={theme.primary} size="small" />}
+      >
+        <TextInput
+          style={{
+            flex: 1,
+            color: theme.primary,
+          }}
+          value={value}
+          onChange={onChange}
+          autoCorrect={false}
+          keyboardAppearance={theme.theme}
+          // placeholderTextColor="#5d5d5d"
+          placeholderTextColor={theme.iconDefault}
+          placeholder="Find friends by username..."
+          onSubmit={onCancel}
+          autoFocus={true}
+        />
+        {loading && <ActivityIndicator color={theme.primary} size="small" />}
+      </View>
     </View>
   );
 }
@@ -139,11 +149,11 @@ function CustomTextInput({ onChange, value, loading, onCancel }) {
 const getStyles = (theme) =>
   StyleSheet.create({
     container: {
-      // width: theme.contentWidth,
       flex: 1,
     },
     autocompleteContainer: {
       backgroundColor: "transparent",
+      flex: 1,
       borderWidth: 0,
     },
     inputContainer: {

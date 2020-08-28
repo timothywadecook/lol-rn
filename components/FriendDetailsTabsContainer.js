@@ -1,28 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
 import { View } from "react-native";
 import ProfileTabContent from "./ProfileTabContent";
-import ProfileTabMenu from "./ProfileTabMenu";
-import {
-  recommendationsService,
-  usersService,
-  followsService,
-} from "../services/feathersClient";
-
-import { addLoadedRecommendations } from "../store/recommendationsSlice";
+import { usersService, followsService } from "../services/feathersClient";
 
 export default function FriendDetailsTabsContainer({ user }) {
-  const dispatch = useDispatch();
-
-  const [activeTab, setActiveTab] = useState("Lists");
-  const [refreshing, setRefreshing] = useState(false);
-
-  const [posts, setPosts] = useState([]);
   const [followers, setFollowers] = useState([]);
   const [following, setFollowing] = useState([]);
 
   useEffect(() => {
-    refreshPosts();
     fetchFollowers();
     fetchFollowing();
   }, [user._id]);
@@ -76,39 +61,12 @@ export default function FriendDetailsTabsContainer({ user }) {
     }
   };
 
-  const refreshPosts = () => {
-    setRefreshing(true);
-    recommendationsService
-      .find({
-        query: {
-          creator: user._id,
-          $limit: 1000,
-          $sort: { createdAt: -1 },
-        },
-      })
-      .then((response) => {
-        dispatch(addLoadedRecommendations(response.data));
-        setPosts(response.data.map((r) => r._id));
-        setRefreshing(false);
-      });
-  };
-
   return (
     <View style={{ flex: 1, alignItems: "center" }}>
-      <ProfileTabMenu
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        options={["Lists", "Posts", "Followers", "Following"]}
-      />
-
       <ProfileTabContent
-        posts={posts}
-        refreshPosts={refreshPosts}
-        refreshingPosts={refreshing}
         userId={user._id}
         following={following}
         followers={followers}
-        activeTab={activeTab}
       />
     </View>
   );

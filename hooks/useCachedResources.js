@@ -1,4 +1,4 @@
-import { Ionicons, Feather } from "@expo/vector-icons";
+import { Ionicons, Feather, Entypo, MaterialIcons } from "@expo/vector-icons";
 import * as Font from "expo-font";
 import { Asset } from "expo-asset";
 import * as SplashScreen from "expo-splash-screen";
@@ -20,6 +20,7 @@ export default function useCachedResources() {
         await Font.loadAsync({
           ...Ionicons.font,
           ...Feather.font,
+          ...Entypo.font,
         });
       } catch (e) {
         // We might want to provide this error information to an error reporting service

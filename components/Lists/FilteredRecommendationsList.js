@@ -1,11 +1,15 @@
 import React, { useState } from "react";
 import { StyleSheet, View, FlatList } from "react-native";
 import ListItem from "../ListItems/ListItem";
-
+// Animation
+import Animated from "react-native-reanimated";
+import { onScrollEvent } from "react-native-redash";
+import { HEIGHT } from "../FilterMenu";
+const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
+// Components
 import ActivityIndicatorCentered from "../Atomic/ActivityIndicatorCentered";
-import FilterMenu from "../FilterMenu";
 import * as T from "../Atomic/StyledText";
-
+// Hooks
 import useTheme from "../../hooks/useTheme";
 
 const FilteredRecommendationsList = ({
@@ -14,45 +18,80 @@ const FilteredRecommendationsList = ({
   refresh,
   refreshing,
   recommendations,
-  filterable = false,
   topPad = false,
   categories,
-  horizontal = false,
+  y,
 }) => {
   const theme = useTheme();
   const styles = getStyles(theme);
 
+  const renderItem = ({ item }) => (
+    <ListItem spaced={true} recId={item} categories={categories} />
+  );
+
+  const renderFooter = () => (
+    <View
+      style={{
+        paddingVertical: 30,
+        width: theme.windowWidth,
+        alignItems: "center",
+      }}
+    >
+      {loading ? (
+        <ActivityIndicatorCentered size="small" />
+      ) : recommendations.length > 0 ? (
+        <T.H2>The End</T.H2>
+      ) : null}
+    </View>
+  );
+
+  // const onScroll = Animated.event([{ nativeEvent: { contentOffset: { y } } }], {
+  //   useNativeDriver: true,
+  // });
+
+  const onScroll = onScrollEvent({ y: y });
+
   return (
     <View style={styles.container}>
-      <FlatList
-        snapToAlignment={horizontal ? "center" : null}
-        snapToInterval={horizontal ? theme.windowWidth : null}
-        decelerationRate={horizontal ? "fast" : null}
-        horizontal={horizontal}
+      <AnimatedFlatList
         onEndReached={fetchMore}
         onEndReachedThreshold={0.5}
         onRefresh={refresh}
         refreshing={refreshing}
         data={recommendations}
-        renderItem={({ item }) => (
-          <ListItem
-            horizontal={horizontal}
-            spaced={true}
-            recId={item}
-            categories={categories}
-          />
-        )}
+        renderItem={renderItem}
         initialNumToRender={4}
         keyExtractor={(item) => item}
         showsVerticalScrollIndicator={false}
-        // stickyHeaderIndices={[0]}
-        ListFooterComponent={() =>
-          loading ? <ActivityIndicatorCentered size="small" /> : null
-        }
+        ListFooterComponent={renderFooter}
+        bounces={true}
+        // onScrollEndDrag={onScroll}
+        onScroll={onScroll}
+        scrollEventThrottle={16}
+        maintainVisibleContentPosition={{
+          minIndexForVisible: 1,
+          autoscrollToTopThreshold: 3,
+        }}
+        contentContainerStyle={{ paddingTop: topPad ? HEIGHT + 100 : 0 }}
+        // renderScrollComponent={(props) => (
+        //   <Animated.ScrollView
+        //     {...props}
+        //     onScroll={Animated.event(
+        //       [{ nativeEvent: { contentOffset: { y } } }],
+        //       {
+        //         useNativeDriver: true,
+        //       }
+        //     )}
+        //     scrollEventThrottle={16}
+        //     contentContainerStyle={{ paddingTop: topPad ? HEIGHT + 10 : 0 }}
+        //   />
+        // )}
       />
     </View>
   );
 };
+
+// onScrollEvent({ y: y })
 
 export default FilteredRecommendationsList;
 

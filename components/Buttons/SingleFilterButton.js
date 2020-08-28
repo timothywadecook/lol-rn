@@ -15,13 +15,12 @@ const SingleFilterButton = ({ text, setFilter, filter }) => {
       style={{
         paddingVertical: 10,
         paddingHorizontal: 10,
-        // height: 30,
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 15,
         backgroundColor: isActive ? theme.activeButtonBg : theme.wallbg,
         borderColor: isActive ? theme.activeButtonBg : theme.iconDefault,
-        borderWidth: 1,
+        borderWidth: 0,
       }}
     >
       <H2

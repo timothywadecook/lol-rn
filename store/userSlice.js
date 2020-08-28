@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
-import client from "../services/feathersClient";
+import client, { usersService } from "../services/feathersClient";
 import * as SplashScreen from "expo-splash-screen";
+import * as Haptics from "expo-haptics";
 
 const userSlice = createSlice({
   name: "user",
@@ -23,6 +24,9 @@ const userSlice = createSlice({
       state.theme_preference =
         state.theme_preference === "light" ? "dark" : "light";
     },
+    updateUser(state, action) {
+      return { ...state, ...action.payload };
+    },
   },
 });
 
@@ -32,6 +36,7 @@ export const {
   appIsReady,
   setAppIsReady,
   toggleTheme,
+  updateUser,
 } = userSlice.actions;
 
 export default userSlice.reducer;
@@ -39,4 +44,28 @@ export default userSlice.reducer;
 export const logoutAsync = () => async (dispatch, getState) => {
   dispatch(logout());
   client.logout();
+};
+
+export const saveNameAsync = (name) => async (dispatch, getState) => {
+  dispatch(updateUser({ name }));
+  const sessionUserId = getState().user._id;
+  Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+
+  return usersService
+    .patch(sessionUserId, { name })
+    .catch((e) =>
+      console.log("Error saving new name for user", sessionUserId, name)
+    );
+};
+
+export const saveUsernameAsync = (username) => async (dispatch, getState) => {
+  dispatch(updateUser({ username }));
+  const sessionUserId = getState().user._id;
+  Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+
+  return usersService
+    .patch(sessionUserId, { username })
+    .catch((e) =>
+      console.log("Error saving new username for user", sessionUserId, username)
+    );
 };

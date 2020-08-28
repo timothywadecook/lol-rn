@@ -171,7 +171,8 @@ function EditName({ name, setName }) {
 
       <TextInput
         style={{ fontSize: 26, fontWeight: "bold", color: theme.primary }}
-        placeholder="List name..."
+        placeholder="Type a name..."
+        placeholderTextColor="#A8A8A8"
         value={name}
         onChangeText={(text) => setName(text)}
         autoFocus={false}
@@ -191,7 +192,7 @@ function ToggleIsPrivate({ isPrivate, toggleIsPrivate }) {
   return (
     <View style={{ width: theme.contentWidth }}>
       <View style={{ paddingTop: 30, paddingBottom: 15 }}>
-        <H2G>Private List</H2G>
+        <H2G>Secret List</H2G>
       </View>
 
       <Switch value={isPrivate} onValueChange={toggleIsPrivate} />
@@ -239,9 +240,13 @@ function SelectableUserList({
         {candidates.map((u) => (
           <UserListItem key={u._id} user={u}>
             {!isParticipant(u._id) ? (
-              <IconButtons.AddCircle onPress={() => onAddParticipant(u._id)} />
+              <IconButtons.Circle
+                size={30}
+                onPress={() => onAddParticipant(u._id)}
+              />
             ) : (
               <IconButtons.CheckmarkCircle
+                size={30}
                 active={true}
                 onPress={() => onRemoveParticipant(u._id)}
               />

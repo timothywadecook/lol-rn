@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   View,
   Image,
+  Keyboard,
 } from "react-native";
 import Autocomplete from "react-native-autocomplete-input";
 import useDebounce from "../../hooks/useDebounce";
@@ -40,17 +41,6 @@ export default function BooksInput({ setItem, itemChosen, setItemChosen }) {
       })
       .catch((e) => console.log("Error: ", e));
   };
-
-  // const lookupData = async () => {
-  //   if (!debouncedQuery || itemChosen) return;
-  //   const data = await lookupService.find({
-  //     query: {
-  //       category: "Book",
-  //       query: debouncedQuery,
-  //     },
-  //   });
-  //   setData(data);
-  // };
 
   const clearSelection = () => {
     setData([]);
@@ -95,59 +85,62 @@ export default function BooksInput({ setItem, itemChosen, setItemChosen }) {
     }
   }, [query]);
 
+  const renderItem = ({ item }) => (
+    <TouchableOpacity
+      onPress={() => {
+        handleItemSelection(item);
+      }}
+      style={styles.row}
+    >
+      {item.volumeInfo.imageLinks && (
+        <Image
+          source={{ uri: item.volumeInfo.imageLinks.thumbnail }}
+          style={styles.listItemImage}
+        />
+      )}
+      <Text style={styles.listItemTitle}>
+        {item.volumeInfo.title}
+        {item.volumeInfo.authors ? (
+          <Text style={styles.subtitle}>
+            {" "}
+            {item.volumeInfo.authors.join(" ")}
+          </Text>
+        ) : (
+          ""
+        )}
+        <Text style={styles.subsubtitle}>
+          {" " +
+            (item.volumeInfo.publishedDate
+              ? item.volumeInfo.publishedDate.substring(0, 4)
+              : null)}
+        </Text>
+      </Text>
+    </TouchableOpacity>
+  );
+
+  const renderTextInput = () => (
+    <CustomTextInput
+      onChange={(e) => {
+        setQuery(e.nativeEvent.text);
+      }}
+      theme={theme}
+      styles={styles}
+      value={query}
+    />
+  );
+
   return (
-    <View style={styles.container}>
-      <Autocomplete
-        containerStyle={styles.autocompleteContainer}
-        inputContainerStyle={styles.inputContainer}
-        listStyle={styles.list}
-        data={itemChosen ? [] : data}
-        defaultValue={query}
-        keyExtractor={(item) => item.id + Math.random()}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            onPress={() => {
-              handleItemSelection(item);
-            }}
-            style={styles.row}
-          >
-            {item.volumeInfo.imageLinks && (
-              <Image
-                source={{ uri: item.volumeInfo.imageLinks.thumbnail }}
-                style={styles.listItemImage}
-              />
-            )}
-            <Text style={styles.listItemTitle}>
-              {item.volumeInfo.title}
-              {item.volumeInfo.authors ? (
-                <Text style={styles.subtitle}>
-                  {" "}
-                  {item.volumeInfo.authors.join(" ")}
-                </Text>
-              ) : (
-                ""
-              )}
-              <Text style={styles.subsubtitle}>
-                {" " +
-                  (item.volumeInfo.publishedDate
-                    ? item.volumeInfo.publishedDate.substring(0, 4)
-                    : null)}
-              </Text>
-            </Text>
-          </TouchableOpacity>
-        )}
-        renderTextInput={() => (
-          <CustomTextInput
-            onChange={(e) => {
-              setQuery(e.nativeEvent.text);
-            }}
-            theme={theme}
-            styles={styles}
-            value={query}
-          />
-        )}
-      />
-    </View>
+    <Autocomplete
+      containerStyle={styles.container}
+      inputContainerStyle={styles.inputContainer}
+      listStyle={styles.list}
+      data={itemChosen ? [] : data}
+      defaultValue={query}
+      keyExtractor={(item) => item.id + Math.random()}
+      renderItem={renderItem}
+      renderTextInput={renderTextInput}
+      onStartShouldSetResponderCapture={() => Keyboard.dismiss()}
+    />
   );
 }
 
@@ -157,9 +150,11 @@ const CustomTextInput = ({ theme, styles, onChange, value }) => {
       style={styles.inputText}
       autoCorrect={false}
       placeholder="Search by title"
+      placeholderTextColor="#A8A8A8"
       clearButtonMode="always"
       clearTextOnFocus={true}
       onChange={onChange}
+      blurOnSubmit={false}
       value={value}
       underlineColorAndroid="transparent"
       keyboardAppearance={theme.theme}
@@ -172,10 +167,7 @@ const getStyles = (theme, itemChosen) =>
   StyleSheet.create({
     container: {
       width: theme.contentWidth,
-    },
-    autocompleteContainer: {
-      backgroundColor: "transparent",
-      borderWidth: 0,
+      alignItems: "stretch",
     },
     inputContainer: {
       borderWidth: 0,
@@ -183,8 +175,8 @@ const getStyles = (theme, itemChosen) =>
     list: {
       borderWidth: 0,
       borderRadius: 5,
-      backgroundColor: "transparent",
-      height: theme.windowHeight * 0.4,
+      padding: 5,
+      height: theme.windowHeight * 0.8,
     },
     row: { flexDirection: "row", alignItems: "center", paddingVertical: 4 },
     listItemImage: {

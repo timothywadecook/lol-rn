@@ -7,7 +7,7 @@ import FollowUnfollowButton from "./Buttons/FollowUnfollowButton";
 
 import useTheme from "../hooks/useTheme";
 
-const FriendDetailsHeader = ({ user }) => {
+export default function FriendDetailsHeader({ user }) {
   const theme = useTheme();
   return (
     <View>
@@ -16,7 +16,9 @@ const FriendDetailsHeader = ({ user }) => {
           width: theme.contentWidth,
           flexDirection: "row",
           justifyContent: "space-between",
-          paddingVertical: 30,
+          paddingVertical: 20,
+          borderBottomColor: theme.bg,
+          borderBottomWidth: 1,
         }}
       >
         <View
@@ -27,7 +29,7 @@ const FriendDetailsHeader = ({ user }) => {
             justifyContent: "flex-start",
           }}
         >
-          <Avatar style={{ marginRight: 10 }} size={50} user={user} />
+          <Avatar style={{ marginHorizontal: 10 }} size={50} user={user} />
           <View>
             <Title>{user.username}</Title>
             <H2G>{user.name}</H2G>
@@ -46,6 +48,4 @@ const FriendDetailsHeader = ({ user }) => {
       </View>
     </View>
   );
-};
-
-export default FriendDetailsHeader;
+}

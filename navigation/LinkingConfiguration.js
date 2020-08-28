@@ -14,8 +14,5 @@ export default {
     FriendDetails: {
       path: "friend",
     },
-    Modal: {
-      path: "modal",
-    },
   },
 };

@@ -1,63 +1,45 @@
 import React from "react";
-import { View, TouchableOpacity } from "react-native";
-import Avatar from "./Atomic/Avatar";
+import { View } from "react-native";
+import WindowWidthRow from "./Wrappers/WindowWidthRow";
 import FollowUserByUsernameInput from "./Inputs/FollowUserByUsernameInput";
 import BackButton from "./Atomic/BackButton";
+import IconButtons from "./Buttons/IconButtons";
 
 import useTheme from "../hooks/useTheme";
 
-const ProfileMainHeader = ({
-  user,
-  showSettings,
-  setShowSettings,
-  setInputFocus,
-  inputFocus,
-}) => {
+export default function ProfileMainHeader({ showSettings, setShowSettings }) {
   const theme = useTheme();
   return (
-    <View>
-      <View
-        style={{
-          width: theme.windowWidth,
-          flexDirection: "row",
-          alignItems: "center",
-          paddingBottom: 10,
-          paddingHorizontal: 10,
-        }}
-      >
-        {!inputFocus && <BackButton />}
-        <FollowUserByUsernameInput
-          inputFocus={inputFocus}
-          setInputFocus={setInputFocus}
-        />
+    <WindowWidthRow>
+      <BackButton />
 
-        {!inputFocus && (
-          <View
-            style={{
-              flexDirection: "row",
-              flex: 0.25,
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <TouchableOpacity
-              activeOpacity={0.5}
-              onPress={() => setShowSettings(!showSettings)}
-            >
-              <Avatar
-                style={{
-                  marginRight: 15,
-                  marginLeft: 10,
-                }}
-                size={30}
-                user={user}
-              />
-            </TouchableOpacity>
-          </View>
-        )}
-      </View>
+      <FollowUserByUsernameInput />
+
+      <ToggleableSettingsButton
+        showSettings={showSettings}
+        setShowSettings={setShowSettings}
+      />
+    </WindowWidthRow>
+  );
+}
+
+function ToggleableSettingsButton({ showSettings, setShowSettings }) {
+  return (
+    <View
+      style={{
+        flex: 0.25,
+        paddingTop: 2,
+      }}
+    >
+      {showSettings ? (
+        <IconButtons.Close
+          onPress={() => setShowSettings(false)}
+          active={true}
+          size={30}
+        />
+      ) : (
+        <IconButtons.Settings size={30} onPress={() => setShowSettings(true)} />
+      )}
     </View>
   );
-};
-
-export default ProfileMainHeader;
+}

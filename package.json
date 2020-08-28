@@ -39,6 +39,8 @@
     "react-native-autocomplete-input": "^4.2.0",
     "react-native-gesture-handler": "~1.6.0",
     "react-native-google-places-autocomplete": "^1.7.1",
+    "react-native-reanimated": "~1.7.0",
+    "react-native-redash": "^14.2.4",
     "react-native-safe-area-context": "0.7.3",
     "react-native-screens": "~2.2.0",
     "react-native-social-buttons": "^1.1.5",

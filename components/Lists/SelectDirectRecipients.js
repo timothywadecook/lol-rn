@@ -46,25 +46,23 @@ export default function SelectDirectRecipients({
   };
 
   return (
-    <View style={{ width: theme.windowWidth }}>
-      <View style={{ paddingVertical: 10 }}>
-        <T.H2G>Direct Recipients</T.H2G>
+    <View style={{ width: theme.windowWidth, padding: 10 }}>
+      <T.H2G>Direct Recipients</T.H2G>
 
-        <FlatList
-          data={following}
-          renderItem={({ item: user }) => (
-            <SelectableUser
-              user={user}
-              onSelect={() => onSelect(user._id)}
-              onUnselect={() => onUnselect(user._id)}
-            />
-          )}
-          ListFooterComponent={() => <SelectableUserAddNew />}
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-          keyExtractor={(item) => item._id}
-        />
-      </View>
+      <FlatList
+        data={following}
+        renderItem={({ item: user }) => (
+          <SelectableUser
+            user={user}
+            onSelect={() => onSelect(user._id)}
+            onUnselect={() => onUnselect(user._id)}
+          />
+        )}
+        ListFooterComponent={() => <SelectableUserAddNew />}
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}
+        keyExtractor={(item) => item._id}
+      />
     </View>
   );
 }

@@ -10,13 +10,12 @@ export default Card = (props) => {
     <View
       style={[
         {
-          borderWidth: 1,
-          borderColor: theme.wallbg,
-          // paddingVertical: 10,
-          marginBottom: 40,
+          // borderWidth: 1,
+          // borderColor: theme.wallbg,
+          // marginBottom: 40,
           width: theme.windowWidth,
           backgroundColor: theme.bg,
-          borderRadius: 25,
+          // borderRadius: 25,
           overflow: "hidden",
         },
         props.style,

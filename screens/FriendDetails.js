@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { View, Button } from "react-native";
 import useTheme from "../hooks/useTheme";
 
@@ -8,10 +8,6 @@ import FriendDetailsTabsContainer from "../components/FriendDetailsTabsContainer
 import ActivityIndicatorCentered from "../components/Atomic/ActivityIndicatorCentered";
 
 import Screen from "../components/Wrappers/Screen";
-
-////////////////////////////////////////////////////////////////////////////////
-// navigation.navigate("FriendDetails", { friendId });
-////////////////////////////////////////////////////////////////////////////////
 
 export default function FriendDetailsScreen({ navigation, route }) {
   navigation.setOptions({

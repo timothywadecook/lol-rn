@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { View } from "react-native";
 import { useSelector } from "react-redux";
 import useTheme from "../../hooks/useTheme";
 
@@ -8,6 +7,7 @@ import ProfileTabsContainer from "../../components/ProfileTabsContainer";
 import ProfileMainHeader from "../../components/ProfileMainHeader";
 import ProfileSettings from "../../components/ProfileSettings";
 import Screen from "../../components/Wrappers/Screen";
+import FriendDetailsHeader from "../../components/FriendDetailsHeader";
 
 // Actual Component
 export default function ProfileScreen({ navigation }) {
@@ -18,13 +18,6 @@ export default function ProfileScreen({ navigation }) {
   const theme = useTheme();
 
   const [showSettings, setShowSettings] = useState(false);
-  const [inputFocus, setInputFocus] = useState(false);
-
-  const MainContent = showSettings ? (
-    <ProfileSettings user={user} theme={theme} />
-  ) : (
-    <ProfileTabsContainer user={user} />
-  );
 
   return (
     <Screen center={true}>
@@ -32,10 +25,16 @@ export default function ProfileScreen({ navigation }) {
         user={user}
         showSettings={showSettings}
         setShowSettings={setShowSettings}
-        setInputFocus={setInputFocus}
-        inputFocus={inputFocus}
       />
-      {!inputFocus && MainContent}
+
+      <FriendDetailsHeader user={user} />
+
+      {showSettings ? (
+        <ProfileSettings user={user} theme={theme} />
+      ) : (
+        <ProfileTabsContainer user={user} />
+      )}
+      {MainContent}
     </Screen>
   );
 }

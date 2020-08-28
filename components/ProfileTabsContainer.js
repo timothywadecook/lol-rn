@@ -1,17 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { View } from "react-native";
 import ProfileTabContent from "./ProfileTabContent";
-import ProfileTabMenu from "./ProfileTabMenu";
 import { usersService } from "../services/feathersClient";
 
-import { refreshPostsAsync, fetchMorePostsAsync } from "../store/postsSlice";
-
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 export default function ProfileTabsContainer({ user }) {
-  const [activeTab, setActiveTab] = useState("Lists");
-
-  const posts = useSelector((state) => state.posts.list);
   const followingIds = useSelector((state) => state.follows.following);
   const followerIds = useSelector((state) => state.follows.followers);
 
@@ -54,35 +48,12 @@ export default function ProfileTabsContainer({ user }) {
     fetchFollowing();
   }, [followingIds]);
 
-  const dispatch = useDispatch();
-  const fetchMorePosts = () => dispatch(fetchMorePostsAsync());
-  const refreshPosts = () => dispatch(refreshPostsAsync());
-
-  const loadingPosts = useSelector((state) => state.posts.loading);
-  const refreshingPosts = useSelector((state) => state.posts.refreshing);
-
-  useEffect(() => {
-    refreshPosts();
-  }, []);
-
   return (
     <View style={{ flex: 1, alignItems: "center" }}>
-      {/* <ProfileTabMenu
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        options={["Lists", "Posts", "Followers", "Following"]}
-      /> */}
-
       <ProfileTabContent
         userId={user._id}
-        fetchMorePosts={fetchMorePosts}
-        refreshPosts={refreshPosts}
-        loadingPosts={loadingPosts}
-        refreshingPosts={refreshingPosts}
-        posts={posts}
         following={following}
         followers={followers}
-        activeTab={activeTab}
       />
     </View>
   );

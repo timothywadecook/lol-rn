@@ -4,18 +4,19 @@ import { View, Button, Image } from "react-native";
 import * as T from "../Atomic/StyledText";
 import IconButtons from "../Buttons/IconButtons";
 import AddThingToListModal from "../AddThingToListModal";
+import { Entypo } from "@expo/vector-icons";
 // hooks
 import useTheme from "../../hooks/useTheme";
 import { thingsService } from "../../services/feathersClient";
 
-export default function ThingItem({ thing, children, border }) {
+export default function ThingItem({ thing, children, border, pad }) {
   const theme = useTheme();
   const { image, title, subtitle } = thing;
 
   return (
     <View
       style={{
-        width: theme.contentWidth,
+        width: "100%",
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
@@ -23,12 +24,12 @@ export default function ThingItem({ thing, children, border }) {
         borderWidth: border ? 1 : 0,
         borderColor: theme.wallbg,
         borderRadius: 8,
-        padding: 6,
+        padding: pad ? 10 : 0,
         alignSelf: "center",
       }}
     >
       <View style={{ flex: 1, flexDirection: "row" }}>
-        {image && (
+        {image ? (
           <Image
             source={{ uri: image }}
             style={{
@@ -36,11 +37,13 @@ export default function ThingItem({ thing, children, border }) {
               width: "10%",
               height: 40,
               borderRadius: 5,
-              marginRight: 5,
+              marginRight: 6,
               marginTop: 2,
             }}
           />
-        )}
+        ) : thing.category === "Place" ? (
+          <PlaceIcon />
+        ) : null}
 
         <View style={{ flexDirection: "column", flex: 1 }}>
           <T.Title style={{ paddingBottom: 0 }}>{title}</T.Title>
@@ -53,27 +56,29 @@ export default function ThingItem({ thing, children, border }) {
   );
 }
 
-export function ThingItemWithAddToList({ thing, onComplete, border }) {
+export function ThingItemWithAddToList({ thing, onComplete, border, pad }) {
   const [showModal, setShowModal] = React.useState(false);
   const [thingId, setThingId] = React.useState(null);
   // if no thingId then fetch thing Id when thing is loaded
   React.useEffect(() => {
-    if (thing._id) {
-      setThingId(thing._id);
-    } else {
-      getThingId(thing)
-        .then((id) => setThingId(id))
-        .catch((e) =>
-          console.log(
-            "Error getting thingId for ThingItemWithAddToList",
-            e.message
-          )
-        );
+    if (!thingId) {
+      if (thing._id) {
+        setThingId(thing._id);
+      } else if (thing.category) {
+        getThingId(thing)
+          .then((id) => setThingId(id))
+          .catch((e) =>
+            console.log(
+              "Error getting thingId for ThingItemWithAddToList",
+              e.message
+            )
+          );
+      }
     }
   }, [thing]);
 
   return (
-    <ThingItem border={border} thing={thing}>
+    <ThingItem pad={pad} border={border} thing={thing}>
       {showModal && (
         <AddThingToListModal
           onComplete={onComplete}
@@ -82,7 +87,7 @@ export function ThingItemWithAddToList({ thing, onComplete, border }) {
           thingId={thingId}
         />
       )}
-      <IconButtons.AddCircle
+      <IconButtons.AddToList
         active={showModal}
         onPress={() => setShowModal(true)}
       />
@@ -105,3 +110,16 @@ const getThingId = async (thing) => {
     return newThing._id;
   }
 };
+
+function PlaceIcon() {
+  const theme = useTheme();
+
+  return (
+    <Entypo
+      style={{ width: 30, marginRight: 8, marginLeft: -8 }}
+      name="location-pin"
+      size={40}
+      color={theme.iconDefault}
+    />
+  );
+}

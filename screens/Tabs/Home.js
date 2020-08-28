@@ -1,21 +1,27 @@
 import React, { useEffect } from "react";
+import { Image } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
-import { View, TouchableOpacity, Image } from "react-native";
+// Components
+import Screen from "../../components/Wrappers/Screen";
 import FilteredRecommendationsList from "../../components/Lists/FilteredRecommendationsList";
+import FilterMenu from "../../components/FilterMenu";
+import QuickActionCreateButton from "../../components/Buttons/QuickActionCreateButton";
+import QuickActionProfileButton from "../../components/Buttons/QuickActionProfileButton";
+import QuickActionBg from "../../components/Buttons/QuickActionBg";
+// State Management
 import { refreshFeedAsync, fetchMoreFeedAsync } from "../../store/feedSlice";
 import { fetchFollowsAsync } from "../../store/followsSlice";
-import { listsService } from "../../services/feathersClient";
 import { addLoadedLists } from "../../store/listsSlice";
-
-import FilterMenu from "../../components/FilterMenu";
-
+// Services
+import { listsService } from "../../services/feathersClient";
+// Animation
+import Animated from "react-native-reanimated";
+import { HEIGHT } from "../../components/FilterMenu";
+// LOL
+import * as T from "../../components/Atomic/StyledText";
+import logo from "../../assets/logo.png";
+// Hooks
 import useTheme from "../../hooks/useTheme";
-// quick action
-import { Feather, Ionicons } from "@expo/vector-icons";
-
-//
-import Screen from "../../components/Wrappers/Screen";
-import { useNavigation } from "@react-navigation/native";
 
 export default function HomeScreen({ navigation }) {
   navigation.setOptions({
@@ -53,10 +59,11 @@ export default function HomeScreen({ navigation }) {
   }, []);
 
   const [categories, setCategories] = React.useState([]);
+  const y = React.useMemo(() => new Animated.Value(0), []);
   return (
-    <Screen fullscreen={false}>
-      {/* <FeedHeader showFilter={showFilter} setShowFilter={setShowFilter} /> */}
-      <FilterMenu categories={categories} setCategories={setCategories} />
+    <Screen fullscreen={true}>
+      <FilterMenu y={y} categories={categories} setCategories={setCategories} />
+      <AnimatedLOL y={y} />
       <FilteredRecommendationsList
         recommendations={feed}
         loading={loading}
@@ -64,66 +71,45 @@ export default function HomeScreen({ navigation }) {
         refresh={componentDidMount}
         fetchMore={fetchMore}
         filterable={true}
-        topPad={false}
+        topPad={true}
         categories={categories}
+        y={y}
       />
-      <QuickActionProfileButton />
-      <QuickActionCreateButton />
+      <QuickActionProfileButton y={y} />
+      <QuickActionCreateButton y={y} />
     </Screen>
   );
 }
 
-function QuickActionCreateButton() {
+function AnimatedLOL({ y }) {
   const theme = useTheme();
-  const navigation = useNavigation();
   return (
-    <TouchableOpacity
+    <Animated.View
       style={{
-        backgroundColor: theme.purple,
-        shadowColor: theme.wallbg,
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.3,
-        shadowRadius: 3,
+        width: theme.windowWidth,
         alignItems: "center",
         justifyContent: "center",
-        height: 60,
-        width: 60,
-        borderRadius: 30,
+        flexDirection: "row",
+        padding: 20,
         position: "absolute",
-        right: 40,
-        bottom: 40,
-        zIndex: 3,
-        elevation: 3,
+        top: HEIGHT,
+        zIndex: 2,
+        opacity: Animated.interpolate(y, {
+          inputRange: [0, 50],
+          outputRange: [1, 0],
+        }),
+        transform: [
+          {
+            translateY: Animated.interpolate(y, {
+              inputRange: [0, 400],
+              outputRange: [0, -200],
+            }),
+          },
+        ],
       }}
-      onPress={() => navigation.navigate("Create")}
     >
-      <Ionicons name="md-create" size={30} color={theme.white} />
-    </TouchableOpacity>
-  );
-}
-
-function QuickActionProfileButton() {
-  const theme = useTheme();
-  const navigation = useNavigation();
-  return (
-    <TouchableOpacity
-      style={{
-        backgroundColor: theme.iconDefault,
-        marginHorizontal: 10,
-        alignItems: "center",
-        justifyContent: "center",
-        height: 40,
-        width: 40,
-        borderRadius: 20,
-        position: "absolute",
-        right: 40,
-        bottom: 120,
-        zIndex: 3,
-        elevation: 3,
-      }}
-      onPress={() => navigation.navigate("Profile")}
-    >
-      <Feather name="user" size={28} color={theme.white} />
-    </TouchableOpacity>
+      <Image source={logo} style={{ width: 44, height: 44, paddingTop: 5 }} />
+      <T.FancyH1 style={{ color: theme.purple }}>Like Out Loud</T.FancyH1>
+    </Animated.View>
   );
 }

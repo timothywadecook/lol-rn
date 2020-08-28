@@ -10,7 +10,7 @@ export default ProfileCard = (props) => {
   const theme = useTheme();
 
   return (
-    <Card style={{ padding: 10, backgroundColor: theme.wallbg }}>
+    <Card style={{ padding: 10, marginVertical: 4 }}>
       <CardHeader
         title={props.title}
         renderRightChild={
@@ -38,7 +38,7 @@ function CardHeader({ title, renderRightChild }) {
         // paddingHorizontal: 10,
         paddingBottom: 10,
         borderBottomWidth: 1,
-        borderBottomColor: theme.bg,
+        borderBottomColor: theme.wallbg,
       }}
     >
       <T.Title>{title}</T.Title>

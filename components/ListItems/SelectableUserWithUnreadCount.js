@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { TouchableWithoutFeedback, View } from "react-native";
 import SelectableUser from "./SelectableUser";
 import * as T from "../Atomic/StyledText";
@@ -14,11 +14,15 @@ import {
 
 export default function SelectableUserWithUnreadCount({ user }) {
   const dispatch = useDispatch();
+  const sessionUserId = useSelector((state) => state.user._id);
   const [unread, setUnread] = React.useState([]);
 
   const getUnread = async () => {
     const response = await recommendationsService.find({
-      query: { directRecipientsUnread: user._id },
+      query: {
+        creator: user._id,
+        directRecipientsUnread: sessionUserId,
+      },
     });
     setUnread(response.data);
   };
@@ -27,10 +31,11 @@ export default function SelectableUserWithUnreadCount({ user }) {
   }, []);
 
   const onPress = async () => {
+    console.log("onPress fired, unread =", unread);
     if (unread.length > 0) {
       unread.forEach((rec) => {
         recommendationsService.patch(rec._id, {
-          directRecipientsUnread: { $pull: user._id },
+          $pull: { directRecipientsUnread: sessionUserId },
         });
       });
       setUnread([]);
@@ -43,19 +48,14 @@ export default function SelectableUserWithUnreadCount({ user }) {
 
   const onSelect = () => {
     dispatch(addCreatorToQueryAndRefresh(user._id));
+    onPress();
   };
 
   return (
-    <TouchableWithoutFeedback onPress={onPress}>
-      <View>
-        <CountBubble count={unread.length} />
-        <SelectableUser
-          user={user}
-          onSelect={onSelect}
-          onUnselect={onUnselect}
-        />
-      </View>
-    </TouchableWithoutFeedback>
+    <View>
+      <CountBubble count={unread.length} />
+      <SelectableUser user={user} onSelect={onSelect} onUnselect={onUnselect} />
+    </View>
   );
 }
 

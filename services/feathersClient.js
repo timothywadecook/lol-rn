@@ -19,5 +19,6 @@ export let commentsService = client.service("comments");
 export let usersService = client.service("users");
 export let listsService = client.service("lists");
 export let thingsService = client.service("things");
+export let dislikesService = client.service("dislikes");
 
 export default client;

@@ -13,7 +13,6 @@ const followsSlice = createSlice({
       return { ...state, followers: [...action.payload] };
     },
     unFollowById(state, action) {
-      state.following = state.following.filter((id) => id !== action.payload);
       return {
         ...state,
         following: state.following.filter((id) => id !== action.payload),

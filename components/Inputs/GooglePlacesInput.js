@@ -43,6 +43,7 @@ const GooglePlacesInput = ({ itemChosen, setItemChosen, setItem }) => {
 
   return (
     <GooglePlacesAutocomplete
+      blurOnSubmit={false}
       clearTextOnFocus={true}
       autoFocus={true}
       keyboardAppearance={theme.theme}
@@ -66,7 +67,7 @@ const GooglePlacesInput = ({ itemChosen, setItemChosen, setItem }) => {
                 subtitle: structured_formatting.secondary_text,
                 list_of_tags: types,
                 api: "GooglePlaces",
-                api_id: id,
+                api_id: place_id,
                 physical_location: {
                   type: "Point",
                   coordinates: [lat, lng],

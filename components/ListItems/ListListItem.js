@@ -81,6 +81,7 @@ export default function ListListItem({
   }
   return (
     <Swipeable
+      style={{ alignSelf: "stretch" }}
       renderLeftActions={() =>
         !canEdit() || !swipable ? null : (
           <View
@@ -88,13 +89,13 @@ export default function ListListItem({
           >
             {isPrivate ? (
               <SquareIconButton
-                color={theme.bg}
+                color={theme.wallbg}
                 text="Make Public"
                 onPress={onMakePublic}
               />
             ) : (
               <SquareIconButton
-                color={theme.bg}
+                color={theme.wallbg}
                 text="Make Private"
                 onPress={onMakePrivate}
               />
@@ -112,9 +113,11 @@ export default function ListListItem({
       <TouchableWithoutFeedback
         onPress={onViewList}
         style={{
-          width: "100%",
+          // width: "100%",
+          flex: 1,
+          // alignSelf: "stretch",
           paddingHorizontal: 10,
-          backgroundColor: theme.wallbg,
+          backgroundColor: theme.bg,
           flexDirection: "row",
           justifyContent: "space-between",
           alignItems: "center",
@@ -125,11 +128,10 @@ export default function ListListItem({
           style={{
             flexDirection: "column",
             justifyContent: "center",
-            // alignItems: "center",
           }}
         >
           <H2 style={{ marginVertical: 4 }}>{name}</H2>
-          <H4>14 items</H4>
+          <H4>{list.things.length} items</H4>
         </View>
 
         <View
@@ -155,13 +157,13 @@ export default function ListListItem({
 }
 
 function ParticipantsRow({ participants }) {
-  // return a horizontal list, flex 1, scrollable
+  const sessionUserId = useSelector((state) => state.user._id);
 
   return (
     <View style={{ flexGrow: 0 }}>
       <FlatList
         horizontal={true}
-        data={participants}
+        data={participants.filter((uId) => uId !== sessionUserId)}
         renderItem={({ item }) => <ParticipantAvatar participantId={item} />}
         initialNumToRender={5}
         keyExtractor={(item) => item}
