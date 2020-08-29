@@ -26,7 +26,7 @@ export default function FilterMenu({ y, categories, setCategories }) {
   return (
     <Animated.View
       style={{
-        paddingTop: 30,
+        paddingTop: 40,
         height: HEIGHT,
         position: "absolute",
         zIndex: 2,

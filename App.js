@@ -1,5 +1,4 @@
 import React from "react";
-import { StatusBar } from "react-native";
 import useCachedResources from "./hooks/useCachedResources";
 import store from "./store/configureStore";
 import { Provider } from "react-redux";
@@ -14,7 +13,6 @@ export default function App() {
   } else {
     return (
       <Provider store={store}>
-        <StatusBar hidden />
         <Router />
       </Provider>
     );

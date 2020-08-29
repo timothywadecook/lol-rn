@@ -34,7 +34,6 @@ export default function ProfileScreen({ navigation }) {
       ) : (
         <ProfileTabsContainer user={user} />
       )}
-      {MainContent}
     </Screen>
   );
 }

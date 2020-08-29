@@ -20,7 +20,7 @@
     "icon": "./assets/logo.png",
     "scheme": "myapp",
     "splash": {
-      "image": "./assets/logo.png",
+      "image": "./assets/images/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#000000"
     },
@@ -36,6 +36,7 @@
     "android": { "package": "app.likeoutloud", "versionCode": 1 },
     "web": {
       "favicon": "./assets/images/favicon.png"
-    }
+    },
+    "primaryColor": "#20B6D9"
   }
 }

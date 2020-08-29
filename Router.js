@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-
+import { StatusBar } from "react-native";
 import LinkingConfiguration from "./navigation/LinkingConfiguration";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
@@ -24,6 +24,7 @@ const Stack = createStackNavigator();
 const mapState = (state) => ({
   appIsReady: state.user.appIsReady,
   isAuthenticated: state.user.isAuthenticated,
+  theme: state.user.theme_preference,
 });
 
 const mapDispatch = {
@@ -31,7 +32,13 @@ const mapDispatch = {
   setAppIsReady,
 };
 
-const Router = ({ appIsReady, isAuthenticated, login, setAppIsReady }) => {
+const Router = ({
+  appIsReady,
+  isAuthenticated,
+  login,
+  setAppIsReady,
+  theme,
+}) => {
   const handleAuthenticated = async (response) => {
     login(response.user);
     setAppIsReady();
@@ -55,6 +62,9 @@ const Router = ({ appIsReady, isAuthenticated, login, setAppIsReady }) => {
   }
   return (
     <NavigationContainer linking={LinkingConfiguration}>
+      <StatusBar
+        barStyle={theme === "dark" ? "light-content" : "dark-content"}
+      />
       <Stack.Navigator initialRouteName={isAuthenticated && "Home"}>
         {isAuthenticated ? (
           <React.Fragment>
