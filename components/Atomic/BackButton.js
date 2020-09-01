@@ -13,7 +13,7 @@ export default function BackButton() {
       <Feather
         name="chevron-left"
         size={30}
-        color={theme.iconDefault}
+        color={theme.purple}
         style={{ paddingHorizontal: 10 }}
       />
     </TouchableOpacity>

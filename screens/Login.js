@@ -9,10 +9,7 @@ import useTheme from "../hooks/useTheme";
 
 import logo from "../assets/logo.png";
 
-export default function LoginScreen({ navigation }) {
-  navigation.setOptions({
-    headerShown: false,
-  });
+export default function LoginScreen() {
   useEffect(() => {
     SplashScreen.hideAsync();
   }, []);
@@ -47,7 +44,7 @@ export default function LoginScreen({ navigation }) {
         <Image source={logo} style={{ width: 200, height: 200 }} />
         <FancyH1 style={{ color: theme.purple }}>Like Out Loud</FancyH1>
         <H4 style={{ color: theme.primary }}>
-          Recommend with Friends {"\u00A9"}
+          Everything you like in one place. {"\u00A9"}
         </H4>
       </View>
 

@@ -1,4 +1,7 @@
 import Layout from "./Layout";
+import { Platform } from "react-native";
+
+const isIphoneXOrGreater = Platform.OS === "ios" && Layout.window.height > 800;
 
 const base = {
   white: "#fafafa",
@@ -13,6 +16,7 @@ const base = {
   warningBackground: "#EAEB5E",
   warningText: "#666804",
   noticeText: "#fff",
+  topPad: isIphoneXOrGreater ? 40 : 5,
 };
 
 export const themes = {

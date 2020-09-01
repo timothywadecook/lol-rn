@@ -6,14 +6,11 @@ import useTheme from "../hooks/useTheme";
 import FriendDetailsHeader from "../components/FriendDetailsHeader";
 import FriendDetailsTabsContainer from "../components/FriendDetailsTabsContainer";
 import ActivityIndicatorCentered from "../components/Atomic/ActivityIndicatorCentered";
+import BackButton from "../components/Atomic/BackButton";
 
 import Screen from "../components/Wrappers/Screen";
 
-export default function FriendDetailsScreen({ navigation, route }) {
-  navigation.setOptions({
-    headerShown: false,
-  });
-
+export default function FriendDetailsScreen({ route }) {
   const { friend } = route.params;
 
   const theme = useTheme();
@@ -23,16 +20,9 @@ export default function FriendDetailsScreen({ navigation, route }) {
         style={{
           width: theme.windowWidth,
           alignItems: "flex-start",
-          paddingHorizontal: 10,
         }}
       >
-        <Button
-          title="Back"
-          onPress={() => {
-            navigation.goBack();
-          }}
-          color={theme.purple}
-        ></Button>
+        <BackButton />
       </View>
 
       {friend ? (

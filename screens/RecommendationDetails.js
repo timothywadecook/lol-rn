@@ -6,6 +6,8 @@ import UsernameNavToFriendDetails from "../components/Atomic/UsernameNavToFriend
 import ListItem from "../components/ListItems/ListItem";
 import { P, FancyH1, H2 } from "../components/Atomic/StyledText";
 import Screen from "../components/Wrappers/Screen";
+import BackButton from "../components/Atomic/BackButton";
+
 // Services
 import { commentsService, usersService } from "../services/feathersClient";
 // Hooks
@@ -15,14 +17,11 @@ import { FlatList } from "react-native-gesture-handler";
 import { useSelector, useDispatch } from "react-redux";
 import { addCommentByRecId } from "../store/recommendationsSlice";
 
-export default function RecommendationDetails({ navigation, route }) {
-  navigation.setOptions({
-    headerShown: false,
-  });
-
+export default function RecommendationDetails({ route }) {
   const theme = useTheme();
 
   const { recId } = route.params;
+  console.log("rec details run", recId);
   const comments = useService(commentsService, {
     recommendation: recId,
   });
@@ -33,16 +32,9 @@ export default function RecommendationDetails({ navigation, route }) {
         style={{
           width: theme.windowWidth,
           alignItems: "flex-start",
-          paddingHorizontal: 10,
         }}
       >
-        <Button
-          title="Back"
-          onPress={() => {
-            navigation.goBack();
-          }}
-          color={theme.purple}
-        ></Button>
+        <BackButton />
       </View>
 
       <ListItem disableLink={true} recId={recId} />

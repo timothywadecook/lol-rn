@@ -65,7 +65,16 @@ const Router = ({
       <StatusBar
         barStyle={theme === "dark" ? "light-content" : "dark-content"}
       />
-      <Stack.Navigator initialRouteName={isAuthenticated && "Home"}>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+          gestureResponseDistance: {
+            horizontal: 350,
+            vertical: 500,
+          },
+        }}
+        initialRouteName={isAuthenticated && "Home"}
+      >
         {isAuthenticated ? (
           <React.Fragment>
             <Stack.Screen

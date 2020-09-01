@@ -96,17 +96,14 @@ export function ThingItemWithAddToList({ thing, onComplete, border, pad }) {
 }
 
 const getThingId = async (thing) => {
-  console.log("get thingId for", thing);
   const { category, api, api_id } = thing;
   const params = { category, api_id, api };
 
   const res = await thingsService.find({ query: params });
   if (res.total === 1) {
-    console.log("thing found", res.data[0]._id);
     return res.data[0]._id;
   } else if (res.total === 0) {
     const newThing = await thingsService.create(thing);
-    console.log("thing made", newThing);
     return newThing._id;
   }
 };

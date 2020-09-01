@@ -7,7 +7,6 @@ import FilteredRecommendationsList from "../../components/Lists/FilteredRecommen
 import FilterMenu from "../../components/FilterMenu";
 import QuickActionCreateButton from "../../components/Buttons/QuickActionCreateButton";
 import QuickActionProfileButton from "../../components/Buttons/QuickActionProfileButton";
-import QuickActionBg from "../../components/Buttons/QuickActionBg";
 // State Management
 import { refreshFeedAsync, fetchMoreFeedAsync } from "../../store/feedSlice";
 import { fetchFollowsAsync } from "../../store/followsSlice";
@@ -23,11 +22,7 @@ import logo from "../../assets/logo.png";
 // Hooks
 import useTheme from "../../hooks/useTheme";
 
-export default function HomeScreen({ navigation }) {
-  navigation.setOptions({
-    headerShown: false,
-  });
-
+export default function HomeScreen() {
   const feed = useSelector((state) => state.feed.list);
   const loading = useSelector((state) => state.feed.loading);
   const refreshing = useSelector((state) => state.feed.refreshing);
@@ -50,6 +45,7 @@ export default function HomeScreen({ navigation }) {
   };
 
   const componentDidMount = async () => {
+    console.log("do we even have sessionUserId?", sessionUserId);
     await fetchFollows();
     refresh();
     fetchLists();

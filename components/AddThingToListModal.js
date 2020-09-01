@@ -41,7 +41,6 @@ export default function AddThingToListModal({
   const lists = useSelector((state) => state.lists);
 
   React.useEffect(() => {
-    console.log("listidswiththing", listIdsWithThing);
     setSelected(listIdsWithThing);
   }, [lists]);
 
@@ -54,7 +53,6 @@ export default function AddThingToListModal({
             $addToSet: { things: thingId },
           });
           dispatch(updateList(updatedList));
-          console.log("updated list", updatedList);
         } catch (error) {
           modalMessage = "Houston, we had a problem :/";
           console.log("Error adding thing to list", thingId, listId, error);
@@ -135,7 +133,11 @@ export default function AddThingToListModal({
                         listId={listId}
                         swipable={false}
                         showArrow={false}
-                        onPress={() => console.log("what to do now dad")}
+                        onPress={() =>
+                          console.log(
+                            "List Item pressed but for adding to list instead of add circle"
+                          )
+                        }
                       />
                     </View>
                   </View>

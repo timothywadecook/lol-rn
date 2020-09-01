@@ -10,6 +10,8 @@ import SquareIconButton from "../components/ListItems/SwipableSquareIconButton";
 
 import ActivityIndicatorCentered from "../components/Atomic/ActivityIndicatorCentered";
 import FlatListItemSeparator from "../components/Atomic/FlatListItemSeparator";
+import BackButton from "../components/Atomic/BackButton";
+import IconButtons from "../components/Buttons/IconButtons";
 
 import useTheme from "../hooks/useTheme";
 
@@ -20,7 +22,10 @@ import { updateList } from "../store/listsSlice";
 //
 export default function List({ route, navigation }) {
   navigation.setOptions({
-    headerShown: false,
+    gestureResponseDistance: {
+      horizontal: 80,
+      vertical: 100,
+    },
   });
   const theme = useTheme();
   const dispatch = useDispatch();
@@ -76,28 +81,22 @@ function ListHeader({ name, onNavBack, onOpenEditList, canEdit }) {
   return (
     <View
       style={{
-        // paddingTop: 50,
         paddingBottom: 5,
         borderBottomWidth: 1,
         borderBottomColor: theme.bg,
         width: theme.windowWidth,
-        paddingHorizontal: 10,
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
       }}
     >
-      <Button title="Back" onPress={onNavBack} color={theme.purple}></Button>
+      <BackButton />
       <H2>{name}</H2>
 
       {canEdit ? (
-        <Button
-          title="Edit"
-          onPress={onOpenEditList}
-          color={theme.purple}
-        ></Button>
+        <IconButtons.ThreeDots onPress={onOpenEditList} active={true} />
       ) : (
-        <View style={{ width: 56 }}></View>
+        <View style={{ width: 22 }}></View>
       )}
     </View>
   );
@@ -153,7 +152,7 @@ function ThingListItem({ thing, onDeleteThing }) {
   const theme = useTheme();
   return (
     <Swipeable
-      renderLeftActions={() => (
+      renderRightActions={() => (
         <View style={{ width: "25%" }}>
           <SquareIconButton icon="delete" color="red" onPress={onDeleteThing} />
         </View>

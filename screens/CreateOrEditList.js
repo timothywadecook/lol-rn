@@ -5,6 +5,7 @@ import IconButtons from "../components/Buttons/IconButtons";
 import SubmitButton from "../components/Buttons/SubmitButton";
 
 import { Title, H2G, H2 } from "../components/Atomic/StyledText";
+import BackButton from "../components/Atomic/BackButton";
 
 import Screen from "../components/Wrappers/Screen";
 
@@ -17,9 +18,6 @@ import { usersService, listsService } from "../services/feathersClient";
 import { updateList, addCreatedList } from "../store/listsSlice";
 
 export default function CreateOrEditList({ navigation, route }) {
-  navigation.setOptions({
-    headerShown: false,
-  });
   const { list, isEdit } = route.params;
   const theme = useTheme();
   const sessionUserId = useSelector((state) => state.user._id);
@@ -32,8 +30,6 @@ export default function CreateOrEditList({ navigation, route }) {
   const [participants, setParticipants] = React.useState([sessionUserId]);
 
   const ifEditMode = () => {
-    console.log("isEdit", isEdit);
-    console.log("participants", participants);
     if (isEdit) {
       setName(list.name);
       setIsPrivate(list.isPrivate);
@@ -50,10 +46,6 @@ export default function CreateOrEditList({ navigation, route }) {
     setParticipants([...participants, userId]);
   const onRemoveParticipant = (userId) =>
     setParticipants(participants.filter((id) => id !== userId));
-
-  const onNavBack = () => {
-    navigation.goBack();
-  };
 
   const onSubmit = async () => {
     setProcessing(true);
@@ -94,12 +86,12 @@ export default function CreateOrEditList({ navigation, route }) {
       }
     }
     setProcessing(false);
-    onNavBack();
+    navigation.goBack();
   };
 
   return (
     <Screen center={true}>
-      <EditListHeader isEditMode={isEdit} onNavBack={onNavBack} />
+      <EditListHeader isEditMode={isEdit} />
       <EditName name={name} setName={setName} />
       <ToggleIsPrivate
         isPrivate={isPrivate}
@@ -120,22 +112,20 @@ export default function CreateOrEditList({ navigation, route }) {
   );
 }
 
-function EditListHeader({ onNavBack, isEditMode }) {
+function EditListHeader({ isEditMode }) {
   const theme = useTheme();
   return (
     <View
       style={{
-        // paddingTop: 50,
         paddingBottom: 5,
         borderBottomWidth: 1,
         borderBottomColor: theme.bg,
-        paddingHorizontal: 10,
         flexDirection: "row",
         alignItems: "center",
       }}
     >
       <View style={{ flex: 1, alignItems: "flex-start" }}>
-        <Button title="Back" onPress={onNavBack} color={theme.purple}></Button>
+        <BackButton />
       </View>
       <View style={{ flex: 2, alignItems: "center" }}>
         <H2>{isEditMode ? "Edit List" : "Create List"}</H2>
@@ -212,12 +202,10 @@ function SelectableUserList({
   const sessionUserFollowing = useSelector((state) => state.follows.following);
   // fetch candidates and set state
   React.useEffect(() => {
-    console.log("participants", participants);
     const candidateIds = [
       ...participants,
       ...sessionUserFollowing.filter((uId) => !participants.includes(uId)),
     ];
-    console.log("candidates", candidateIds);
     const fetchCandidates = async () => {
       try {
         const res = await usersService.find({

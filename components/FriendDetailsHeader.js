@@ -18,7 +18,7 @@ export default function FriendDetailsHeader({ user }) {
           justifyContent: "space-between",
           paddingVertical: 20,
           borderBottomColor: theme.bg,
-          borderBottomWidth: 1,
+          borderBottomWidth: 0,
         }}
       >
         <View

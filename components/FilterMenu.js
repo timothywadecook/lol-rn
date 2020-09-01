@@ -26,7 +26,7 @@ export default function FilterMenu({ y, categories, setCategories }) {
   return (
     <Animated.View
       style={{
-        paddingTop: 40,
+        paddingTop: theme.topPad,
         height: HEIGHT,
         position: "absolute",
         zIndex: 2,
@@ -52,7 +52,7 @@ export default function FilterMenu({ y, categories, setCategories }) {
         style={{
           borderRadius: 15,
           margin: 5,
-
+          elevation: 5,
           flexDirection: "column",
           backgroundColor: theme.wallbg,
           shadowRadius: 3,

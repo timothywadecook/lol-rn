@@ -74,18 +74,13 @@ export const refreshFeedAsync = () => async (dispatch, getState) => {
 
   const stateQuery = getState().feed.query;
   const sessionUserId = getState().user._id;
-  console.log("query", stateQuery);
   try {
     const response = await recommendationsService.find({
       query: {
         ...stateQuery,
-        // $or: [{ isPublic: true }, { directRecipients: sessionUserId }],
+        $or: [{ isPublic: true }, { directRecipients: sessionUserId }],
       },
     });
-    console.log(
-      "feed response.data",
-      response.data.map((obj) => obj.creator.email)
-    );
 
     dispatch(addLoadedRecommendations(response.data));
     dispatch(setRefreshedData(response.data.map((r) => r._id)));
@@ -111,7 +106,7 @@ export const fetchMoreFeedAsync = () => async (dispatch, getState) => {
       const response = await recommendationsService.find({
         query: {
           ...stateQuery,
-          // $or: [{ isPublic: true }, { directRecipients: sessionUserId }],
+          $or: [{ isPublic: true }, { directRecipients: sessionUserId }],
           $skip: skip,
         },
       });

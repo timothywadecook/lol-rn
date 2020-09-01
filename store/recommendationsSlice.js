@@ -82,12 +82,10 @@ export const {
 } = recommendationsSlice.actions;
 
 export const dislikeByRecIdAsync = (recId) => async (dispatch, getState) => {
-  console.log("In dislike", recId);
   Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
   dispatch(dislikeByRecId(recId));
   const userId = getState().user._id;
   try {
-    console.log("in try dislike");
     dislikesService.create({ creator: userId, recommendation: recId });
   } catch (error) {
     console.log(
@@ -167,7 +165,6 @@ export const createRecommendationAsync = (rec) => async (
   dispatch,
   getState
 ) => {
-  console.log("creating this...", rec);
   try {
     const r = await recommendationsService.create(rec);
     dispatch(addCreatedRecommendation(r));

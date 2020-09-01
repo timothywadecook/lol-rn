@@ -30,7 +30,7 @@ export default function QuickActionCreateButton({ y }) {
         right: 40,
         bottom: BOTTOM,
         zIndex: 3,
-        elevation: 3,
+
         opacity: interpolate(diffClampY, {
           inputRange: [250, 300],
           outputRange: [1, 0],
@@ -48,6 +48,8 @@ export default function QuickActionCreateButton({ y }) {
     >
       <TouchableOpacity
         style={{
+          padding: 10,
+          elevation: 3,
           backgroundColor: theme.purple,
           shadowColor: theme.wallbg,
           shadowOffset: { width: 0, height: 1 },

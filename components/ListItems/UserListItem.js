@@ -21,7 +21,6 @@ export default function UserListItem({
     if (user._id === sessionUserId) {
       navigation.navigate("Profile");
     } else {
-      console.log("user ?", user);
       navigation.navigate("FriendDetails", { friend: user });
     }
   };

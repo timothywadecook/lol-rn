@@ -21,13 +21,11 @@ export default function GoogleLogin(props) {
       });
 
       if (type === "success") {
-        console.log("success!");
         const res = await client.authenticate({
           strategy: "google",
           access_token: accessToken,
           profile: user,
         });
-        console.log("auth response? ", res);
       } else {
         console.log("Google Login Cancelled");
         return { cancelled: true };

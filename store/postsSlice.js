@@ -81,7 +81,6 @@ export const fetchMorePostsAsync = () => async (dispatch, getState) => {
   const loading = getState().posts.loading;
   const refreshing = getState().posts.refreshing;
   if (moreToFetch && !loading && !refreshing) {
-    // console.log("MORE BEING FETCHED");
     dispatch(setLoading(true));
     const creator = getState().user._id;
     const skip = getState().posts.list.length;

@@ -12,7 +12,10 @@ import FriendDetailsHeader from "../../components/FriendDetailsHeader";
 // Actual Component
 export default function ProfileScreen({ navigation }) {
   navigation.setOptions({
-    headerShown: false,
+    gestureResponseDistance: {
+      horizontal: 80,
+      vertical: 100,
+    },
   });
   const user = useSelector((state) => state.user);
   const theme = useTheme();

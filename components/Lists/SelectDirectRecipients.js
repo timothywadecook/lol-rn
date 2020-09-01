@@ -47,9 +47,10 @@ export default function SelectDirectRecipients({
 
   return (
     <View style={{ width: theme.windowWidth, padding: 10 }}>
-      <T.H2G>Direct Recipients</T.H2G>
+      <T.H2G>Select Direct Recipients</T.H2G>
 
       <FlatList
+        keyboardShouldPersistTaps="handled"
         data={following}
         renderItem={({ item: user }) => (
           <SelectableUser
@@ -58,7 +59,7 @@ export default function SelectDirectRecipients({
             onUnselect={() => onUnselect(user._id)}
           />
         )}
-        ListFooterComponent={() => <SelectableUserAddNew />}
+        // ListFooterComponent={() => <SelectableUserAddNew />}
         horizontal={true}
         showsHorizontalScrollIndicator={false}
         keyExtractor={(item) => item._id}

@@ -55,11 +55,13 @@ export const AddUser = iconButtonCreator("md-person-add");
 export const Add = iconButtonCreator("md-add");
 export const DownVote = iconButtonCreator("arrow-down", Entypo);
 export const UpVote = iconButtonCreator("arrow-up", Entypo);
+export const ThreeDots = iconButtonCreator("dots-three-vertical", Entypo);
 
 export const Delete = iconButtonCreator("md-trash");
 export const IsShared = iconButtonCreator("md-people");
 
 const IconButtons = {
+  ThreeDots,
   Settings,
   Close,
   Circle,

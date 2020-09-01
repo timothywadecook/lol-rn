@@ -83,9 +83,6 @@ const MainCommentField = ({ hide, styles, theme, item, setItem }) =>
   );
 
 export default function CreateScreen({ navigation, route }) {
-  navigation.setOptions({
-    headerShown: false,
-  });
   const theme = useTheme();
   const styles = getStyles(theme);
   const userId = useSelector((state) => state.user._id);

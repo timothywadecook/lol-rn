@@ -30,7 +30,7 @@ export default function QuickActionProfileButton({ y }) {
         right: 47,
         bottom: BOTTOM,
         zIndex: 3,
-        elevation: 3,
+
         opacity: interpolate(diffClampY, {
           inputRange: [250, 300],
           outputRange: [1, 0],
@@ -48,6 +48,7 @@ export default function QuickActionProfileButton({ y }) {
     >
       <TouchableOpacity
         style={{
+          elevation: 3,
           backgroundColor: theme.iconDefault,
           alignItems: "center",
           justifyContent: "center",

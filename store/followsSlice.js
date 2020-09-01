@@ -55,7 +55,7 @@ export const fetchFollowsAsync = () => async (dispatch, getState) => {
     console.log("getfollowers.data", getFollowers.data);
     dispatch(setFollowers(getFollowers.data.map((f) => f.follower)));
   } catch {
-    console.log("Error fetching follows");
+    console.log("Error fetching follows", userId);
   }
 };
 

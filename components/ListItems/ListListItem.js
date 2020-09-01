@@ -82,11 +82,17 @@ export default function ListListItem({
   return (
     <Swipeable
       style={{ alignSelf: "stretch" }}
-      renderLeftActions={() =>
+      renderRightActions={() =>
         !canEdit() || !swipable ? null : (
           <View
             style={{ width: theme.windowWidth * 0.43, flexDirection: "row" }}
           >
+            <SquareIconButton
+              icon="delete"
+              color="red"
+              onPress={onDeleteList}
+            />
+
             {isPrivate ? (
               <SquareIconButton
                 color={theme.wallbg}
@@ -100,12 +106,6 @@ export default function ListListItem({
                 onPress={onMakePrivate}
               />
             )}
-
-            <SquareIconButton
-              icon="delete"
-              color="red"
-              onPress={onDeleteList}
-            />
           </View>
         )
       }

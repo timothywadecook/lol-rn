@@ -31,7 +31,6 @@ export default function SelectableUserWithUnreadCount({ user }) {
   }, []);
 
   const onPress = async () => {
-    console.log("onPress fired, unread =", unread);
     if (unread.length > 0) {
       unread.forEach((rec) => {
         recommendationsService.patch(rec._id, {
