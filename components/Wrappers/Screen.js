@@ -8,7 +8,7 @@ export default function Screen(props) {
     <View
       style={[
         {
-          paddingTop: theme.topPad,
+          paddingTop: props.fullscreen ? 0 : theme.topPad,
           backgroundColor: theme.wallbg,
           flex: 1,
           alignItems: props.center ? "center" : "flex-start",

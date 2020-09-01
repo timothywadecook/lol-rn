@@ -134,9 +134,11 @@ export default function AddThingToListModal({
                         swipable={false}
                         showArrow={false}
                         onPress={() =>
-                          console.log(
-                            "List Item pressed but for adding to list instead of add circle"
-                          )
+                          selected.includes(listId)
+                            ? setSelected(
+                                selected.filter((id) => id !== listId)
+                              )
+                            : setSelected([...selected, listId])
                         }
                       />
                     </View>
