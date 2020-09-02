@@ -130,7 +130,14 @@ export default function ListListItem({
             justifyContent: "center",
           }}
         >
-          <H2 style={{ marginVertical: 4 }}>{name}</H2>
+          <H2
+            style={{
+              marginVertical: 4,
+              fontWeight: "normal",
+            }}
+          >
+            {name}
+          </H2>
           <H4>{list.things.length} items</H4>
         </View>
 

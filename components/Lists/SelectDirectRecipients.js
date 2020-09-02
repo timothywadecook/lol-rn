@@ -47,7 +47,7 @@ export default function SelectDirectRecipients({
 
   return (
     <View style={{ width: theme.windowWidth, padding: 10 }}>
-      <T.H2G>Select Direct Recipients</T.H2G>
+      <T.H2G>Direct Recipients</T.H2G>
 
       <FlatList
         keyboardShouldPersistTaps="handled"

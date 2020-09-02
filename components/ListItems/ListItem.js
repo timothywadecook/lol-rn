@@ -67,13 +67,17 @@ export default function ListItem({
 
   const directShareText = () => {
     if (r.directRecipients && r.directRecipients.includes(sessionUserId)) {
-      return <H4 style={{ color: theme.purple }}>thinks you would like...</H4>;
+      return (
+        <H4 style={{ color: theme.purple }}>
+          {`recommends a ${r.thing.category}`}
+        </H4>
+      );
     }
     return <H4>{`likes a ${r.thing.category}`}</H4>;
   };
 
   const listStyle = spaced
-    ? { flex: 1, marginVertical: 4, backgroundColor: theme.bg }
+    ? { flex: 1, marginVertical: 4, backgroundColor: theme.wallbg }
     : null;
   // FILTER BY CATEGORY
   if (categories && categories.length > 0) {
@@ -173,11 +177,11 @@ const CardContent = (props) => {
   return (
     <View
       style={{
-        width: theme.windowWidth,
+        // width: theme.windowWidth,
         paddingHorizontal: 15,
         paddingVertical: 15,
-        borderBottomColor: theme.wallbg,
-        borderBottomWidth: 1,
+        // borderBottomColor: theme.wallbg,
+        // borderBottomWidth: 1,
       }}
     >
       {props.children}

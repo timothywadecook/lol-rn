@@ -35,10 +35,10 @@ function CardHeader({ title, renderRightChild }) {
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        // paddingHorizontal: 10,
+        paddingHorizontal: 10,
         paddingBottom: 10,
-        borderBottomWidth: 1,
-        borderBottomColor: theme.wallbg,
+        // borderBottomWidth: 1,
+        // borderBottomColor: theme.wallbg,
       }}
     >
       <T.Title>{title}</T.Title>
