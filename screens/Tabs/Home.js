@@ -104,7 +104,7 @@ function AnimatedLOL({ y }) {
         ],
       }}
     >
-      <Image source={logo} style={{ width: 44, height: 44, paddingTop: 5 }} />
+      {/* <Image source={logo} style={{ width: 44, height: 44, paddingTop: 5 }} /> */}
       <T.FancyH1 style={{ color: theme.purple }}>Like Out Loud</T.FancyH1>
     </Animated.View>
   );
