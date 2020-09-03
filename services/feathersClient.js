@@ -8,8 +8,8 @@ import axios from "axios";
 const client = feathers();
 
 // Configure RESTful Client Application
-const restClient = rest("http://192.168.1.72:3030");
-// const restClient = rest("https://www.likeoutloud.app");
+// const restClient = rest("http://192.168.1.72:3030");
+const restClient = rest("https://www.likeoutloud.app");
 client.configure(restClient.axios(axios));
 client.configure(auth({ storage: AsyncStorage }));
 
