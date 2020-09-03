@@ -8,7 +8,7 @@ export const useAnimation = ({ doAnimation, duration }) => {
     Animated.timing(animation, {
       toValue: doAnimation ? 1 : 0,
       duration,
-      // useNativeDriver: true,
+      useNativeDriver: false,
     }).start();
   }, [doAnimation]);
 
