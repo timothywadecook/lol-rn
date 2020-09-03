@@ -177,6 +177,7 @@ const getStyles = (theme, itemChosen) =>
       borderRadius: 5,
       padding: 5,
       height: theme.windowHeight * 0.8,
+      backgroundColor: "transparent",
     },
     row: { flexDirection: "row", alignItems: "center", paddingVertical: 4 },
     listItemImage: {

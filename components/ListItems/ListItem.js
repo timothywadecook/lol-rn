@@ -93,7 +93,7 @@ export default function ListItem({
         <H4>{moment(r.createdAt).fromNow()}</H4>
       </UserListItem>
 
-      <Card>
+      <Card bottomMargin={spaced}>
         <CardContent>
           <ThingItemWithAddToList border={false} thing={r.thing} />
           <TouchableWithoutFeedback

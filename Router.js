@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { StatusBar } from "react-native";
+import { StatusBar, Text } from "react-native";
 import LinkingConfiguration from "./navigation/LinkingConfiguration";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
@@ -41,7 +41,6 @@ const Router = ({
 }) => {
   const handleAuthenticated = async (response) => {
     login(response.user);
-    setAppIsReady();
   }; // done
 
   React.useEffect(() => {
@@ -58,7 +57,12 @@ const Router = ({
   }, []);
 
   if (!appIsReady) {
-    return null;
+    return (
+      <Text style={{ marginTop: 50 }}>
+        We are in no man's land now. Close the app and reopen to get back to
+        normal.
+      </Text>
+    );
   }
   return (
     <NavigationContainer linking={LinkingConfiguration}>
@@ -73,10 +77,12 @@ const Router = ({
             vertical: 500,
           },
         }}
-        initialRouteName={isAuthenticated && "Home"}
+        initialRouteName={"Home"}
       >
         {isAuthenticated ? (
           <React.Fragment>
+            <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen name="Profile" component={Profile} />
             <Stack.Screen
               name="RecommendationDetails"
               component={RecommendationDetails}
@@ -86,8 +92,7 @@ const Router = ({
               name="CreateOrEditList"
               component={CreateOrEditList}
             />
-            <Stack.Screen name="Home" component={Home} />
-            <Stack.Screen name="Profile" component={Profile} />
+
             <Stack.Screen name="Create" component={Create} />
             <Stack.Screen name="Search Users" component={SearchUsers} />
             <Stack.Screen name="List" component={List} />

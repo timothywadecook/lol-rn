@@ -133,6 +133,7 @@ export default function ListListItem({
           <H2
             style={{
               marginVertical: 4,
+              fontSize: 14,
               fontWeight: "normal",
             }}
           >

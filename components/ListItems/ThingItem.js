@@ -59,20 +59,26 @@ export default function ThingItem({ thing, children, border, pad }) {
 export function ThingItemWithAddToList({ thing, onComplete, border, pad }) {
   const [showModal, setShowModal] = React.useState(false);
   const [thingId, setThingId] = React.useState(null);
+  const [loading, setLoading] = React.useState(false); // so we cant create while creating
   // if no thingId then fetch thing Id when thing is loaded
   React.useEffect(() => {
     if (!thingId) {
       if (thing._id) {
         setThingId(thing._id);
-      } else if (thing.category) {
+      } else if (thing.category && !loading) {
+        setLoading(true);
         getThingId(thing)
-          .then((id) => setThingId(id))
-          .catch((e) =>
+          .then((id) => {
+            setThingId(id);
+            setLoading(false);
+          })
+          .catch((e) => {
             console.log(
               "Error getting thingId for ThingItemWithAddToList",
               e.message
-            )
-          );
+            );
+            setLoading(false);
+          });
       }
     }
   }, [thing]);
@@ -100,9 +106,9 @@ const getThingId = async (thing) => {
   const params = { category, api_id, api };
 
   const res = await thingsService.find({ query: params });
-  if (res.total === 1) {
+  if (res.total) {
     return res.data[0]._id;
-  } else if (res.total === 0) {
+  } else {
     const newThing = await thingsService.create(thing);
     return newThing._id;
   }

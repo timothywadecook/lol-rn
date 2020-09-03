@@ -157,7 +157,7 @@ const CustomTextInput = ({ theme, onChange, value, styles }) => {
   );
 };
 
-const getStyles = (theme, itemChosen) =>
+const getStyles = (theme) =>
   StyleSheet.create({
     container: {
       width: theme.contentWidth,
@@ -171,6 +171,7 @@ const getStyles = (theme, itemChosen) =>
       borderRadius: 5,
       padding: 5,
       height: theme.windowHeight * 0.8,
+      backgroundColor: "transparent",
     },
     row: { flexDirection: "row", alignItems: "center", paddingVertical: 4 },
     listItemImage: {

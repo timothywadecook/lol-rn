@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import { Image } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
+import * as SplashScreen from "expo-splash-screen";
 // Components
 import Screen from "../../components/Wrappers/Screen";
 import FilteredRecommendationsList from "../../components/Lists/FilteredRecommendationsList";
@@ -45,10 +45,10 @@ export default function HomeScreen() {
   };
 
   const componentDidMount = async () => {
-    console.log("do we even have sessionUserId?", sessionUserId);
     await fetchFollows();
     refresh();
     fetchLists();
+    SplashScreen.hideAsync();
   };
   useEffect(() => {
     componentDidMount();

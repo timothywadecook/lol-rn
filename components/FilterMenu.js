@@ -75,7 +75,7 @@ export default function FilterMenu({ y, categories, setCategories }) {
 function ListSelectableUsersWithUnreadCountAndAddNew() {
   const following = useSelector((state) => state.follows.following);
   const sessionUserId = useSelector((state) => state.user._id);
-  const filterableUserIds = [sessionUserId, ...following];
+  const filterableUserIds = [...following, sessionUserId];
 
   const [userList, setUserList] = React.useState([]);
   React.useEffect(() => {

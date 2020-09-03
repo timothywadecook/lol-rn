@@ -45,6 +45,10 @@ export default function SelectDirectRecipients({
     setDirectRecipients(directRecipients.filter(uId !== userId));
   };
 
+  if (sessionUserFollowing.length < 1) {
+    return null;
+  }
+
   return (
     <View style={{ width: theme.windowWidth, padding: 10 }}>
       <T.H2G>Direct Recipients</T.H2G>

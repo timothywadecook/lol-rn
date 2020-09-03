@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import client, { usersService } from "../services/feathersClient";
-import * as SplashScreen from "expo-splash-screen";
 import * as Haptics from "expo-haptics";
 
 const userSlice = createSlice({
@@ -8,13 +7,17 @@ const userSlice = createSlice({
   initialState: { theme_preference: "dark" },
   reducers: {
     login(state, action) {
-      return { ...state, ...action.payload, isAuthenticated: true };
+      return {
+        ...state,
+        ...action.payload,
+        isAuthenticated: true,
+        appIsReady: true,
+      };
     },
     logout(state, action) {
       return { theme_preference: "dark", appIsReady: true };
     },
     setAppIsReady(state, action) {
-      SplashScreen.hideAsync();
       state.appIsReady = true;
     },
     toggleIsFocusing(state, action) {

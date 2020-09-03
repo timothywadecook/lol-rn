@@ -20,8 +20,10 @@ import { addCommentByRecId } from "../store/recommendationsSlice";
 export default function RecommendationDetails({ route }) {
   const theme = useTheme();
 
+  if (!route || !route.params || !route.params.recId) {
+    return null;
+  }
   const { recId } = route.params;
-  console.log("rec details run", recId);
   const comments = useService(commentsService, {
     recommendation: recId,
   });

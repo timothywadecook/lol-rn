@@ -67,11 +67,9 @@ export default function List({ route, navigation }) {
         onOpenEditList={onOpenEditList}
         canEdit={canEdit}
       />
-      {list.things ? (
+      {list.things && list.things.length ? (
         <ThingList thingIds={list.things} onDeleteThing={onDeleteThing} />
-      ) : (
-        <ActivityIndicatorCentered size="small" />
-      )}
+      ) : null}
     </Screen>
   );
 }
@@ -104,9 +102,11 @@ function ListHeader({ name, onNavBack, onOpenEditList, canEdit }) {
 
 function ThingList({ thingIds, onDeleteThing }) {
   const [things, setThings] = React.useState([]);
+  const [loading, setLoading] = React.useState(false);
   const theme = useTheme();
 
   React.useEffect(() => {
+    setLoading(true);
     const fetchThings = async () => {
       try {
         const res = await thingsService.find({
@@ -116,12 +116,18 @@ function ThingList({ thingIds, onDeleteThing }) {
           },
         });
         setThings(res.data);
+        setLoading(false);
       } catch (error) {
         console.log("Error fetching things with thingIds", thingIds, error);
+        setLoading(false);
       }
     };
     fetchThings();
   }, [thingIds]);
+
+  if (loading) {
+    return <ActivityIndicatorCentered size="small" />;
+  }
 
   return (
     <View

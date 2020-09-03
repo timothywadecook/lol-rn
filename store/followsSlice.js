@@ -52,7 +52,6 @@ export const fetchFollowsAsync = () => async (dispatch, getState) => {
         $limit: 1000,
       },
     });
-    console.log("getfollowers.data", getFollowers.data);
     dispatch(setFollowers(getFollowers.data.map((f) => f.follower)));
   } catch {
     console.log("Error fetching follows", userId);

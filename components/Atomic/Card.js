@@ -12,7 +12,7 @@ export default Card = (props) => {
         {
           borderWidth: 4,
           borderColor: theme.wallbg,
-          marginBottom: 40,
+          marginBottom: props.bottomMargin ? 40 : 0,
           borderRadius: 25,
           padding: 10,
           width: theme.windowWidth,
