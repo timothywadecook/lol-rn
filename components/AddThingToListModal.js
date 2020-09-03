@@ -85,6 +85,7 @@ export default function AddThingToListModal({
         <View
           style={{
             paddingBottom: 25,
+            elevation: 10,
             backgroundColor: theme.bg,
             shadowRadius: 25,
             shadowColor: "rgba(0,0,0)",

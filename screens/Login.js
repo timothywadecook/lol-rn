@@ -44,7 +44,7 @@ export default function LoginScreen() {
         <Image source={logo} style={{ width: 200, height: 200 }} />
         <FancyH1 style={{ color: theme.purple }}>Like Out Loud</FancyH1>
         <H4 style={{ color: theme.primary }}>
-          Everything you like in one place. {"\u00A9"}
+          Know what you like. Know yourself.{"\u00A9"}
         </H4>
       </View>
 
