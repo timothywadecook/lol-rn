@@ -17,6 +17,10 @@ export default function GoogleLogin(props) {
           "1056179560527-q7694rk6m43td4d8a3lajq29narasq7f.apps.googleusercontent.com",
         iosClientId:
           "1056179560527-q9do9dp5bv574eh91981nvp57i9lrsgc.apps.googleusercontent.com",
+        androidStandaloneAppClientId:
+          "1056179560527-cj0eh5gu1g34d3fumdnf7hsgii79km4v.apps.googleusercontent.com",
+        iosStandaloneAppClientId:
+          "1056179560527-7bl65ebn2e6f35ij65gcp7cugdha1l99.apps.googleusercontent.com",
         scopes: ["profile", "email"],
       });
 

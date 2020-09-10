@@ -31,9 +31,20 @@
     "ios": {
       "supportsTablet": true,
       "buildNumber": "1.0.0",
-      "bundleIdentifier": "app.likeoutloud"
+      "bundleIdentifier": "app.likeoutloud",
+      "config": {
+        "googleSignIn": {
+          "reservedClientId": "com.googleusercontent.apps.1056179560527-7bl65ebn2e6f35ij65gcp7cugdha1l99"
+        }
+      }
     },
-    "android": { "package": "app.likeoutloud", "versionCode": 1 },
+    "android": {
+      "package": "app.likeoutloud",
+      "versionCode": 1,
+      "config": {
+        "googleSignIn": { "apiKey": "AIzaSyAKhZhQTzambIjZZ4LRN-cBBWpa0yzqLa4" }
+      }
+    },
     "web": {
       "favicon": "./assets/images/favicon.png"
     },
