@@ -39,14 +39,18 @@ export default function RecommendationDetails({ route }) {
         <BackButton />
       </View>
 
-      <ListItem disableLink={true} recId={recId} />
-
       <View style={{ flex: 1, width: theme.windowWidth, paddingHorizontal: 6 }}>
-        <H2 style={{ padding: 10 }}>Comments</H2>
-        <CommentInput recId={recId} />
         <FlatList
-          ListHeaderComponent={<View style={{ height: 10 }}></View>}
-          ListFooterComponent={<View style={{ height: 30 }}></View>}
+          ListHeaderComponent={
+            <View style={{}}>
+              <ListItem disableLink={true} recId={recId} />
+              <H2 style={{ padding: 10 }}>Comments</H2>
+              <CommentInput recId={recId} />
+            </View>
+          }
+          ListFooterComponent={
+            <View style={{ height: theme.windowHeight / 2 }}></View>
+          }
           data={comments}
           renderItem={({ item }) => <Comment {...item} />}
           initialNumToRender={8}

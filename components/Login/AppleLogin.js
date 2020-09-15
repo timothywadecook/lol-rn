@@ -51,7 +51,7 @@ export default function AppleLogin() {
       buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
       buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
       cornerRadius={5}
-      style={{ width: theme.windowWidth * 0.8, height: 44 }}
+      style={{ width: theme.windowWidth * 0.8, height: 45 }}
       onPress={login}
     />
   );

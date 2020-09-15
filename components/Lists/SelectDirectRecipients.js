@@ -50,7 +50,9 @@ export default function SelectDirectRecipients({
   }
 
   return (
-    <View style={{ width: theme.windowWidth, padding: 10 }}>
+    <View
+      style={{ width: theme.windowWidth, paddingHorizontal: 10, paddingTop: 3 }}
+    >
       <T.H2G>Tap Direct Recipients</T.H2G>
 
       <FlatList
