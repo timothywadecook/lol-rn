@@ -4,6 +4,7 @@ import { View, StyleSheet, Image } from "react-native";
 import { H4, FancyH1 } from "../components/Atomic/StyledText";
 import FacebookLogin from "../components/Login/FacebookLogin";
 import GoogleLogin from "../components/Login/GoogleLogin";
+import AppleLogin from "../components/Login/AppleLogin";
 
 import useTheme from "../hooks/useTheme";
 
@@ -59,6 +60,7 @@ export default function LoginScreen() {
       >
         <FacebookLogin />
         <GoogleLogin />
+        <AppleLogin />
       </View>
     </View>
   );

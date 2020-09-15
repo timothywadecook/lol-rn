@@ -84,7 +84,7 @@ function CountBubble({ count, size = 20 }) {
         borderWidth: 0.5,
       }}
     >
-      <T.H3>{count}</T.H3>
+      <T.H3 style={{ color: theme.white }}>{count}</T.H3>
     </View>
   );
 }
