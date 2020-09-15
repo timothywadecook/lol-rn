@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "likeoutloud",
+    "name": "Like Out Loud",
     "slug": "lol",
     "description": "Recommendation network",
     "platforms": ["ios", "android", "web"],
