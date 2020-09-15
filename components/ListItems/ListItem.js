@@ -77,7 +77,7 @@ export default function ListItem({
   };
 
   const listStyle = spaced
-    ? { flex: 1, marginVertical: 4, backgroundColor: theme.wallbg }
+    ? { marginVertical: 4, backgroundColor: theme.wallbg }
     : null;
   // FILTER BY CATEGORY
   if (categories && categories.length > 0) {

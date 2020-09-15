@@ -72,26 +72,14 @@ const FilteredRecommendationsList = ({
           minIndexForVisible: 1,
           autoscrollToTopThreshold: 3,
         }}
-        contentContainerStyle={{ paddingTop: topPad ? HEIGHT + 100 : 0 }}
-        // renderScrollComponent={(props) => (
-        //   <Animated.ScrollView
-        //     {...props}
-        //     onScroll={Animated.event(
-        //       [{ nativeEvent: { contentOffset: { y } } }],
-        //       {
-        //         useNativeDriver: true,
-        //       }
-        //     )}
-        //     scrollEventThrottle={16}
-        //     contentContainerStyle={{ paddingTop: topPad ? HEIGHT + 10 : 0 }}
-        //   />
-        // )}
+        contentContainerStyle={{
+          paddingTop: topPad ? HEIGHT + 100 : 0,
+          alignItems: "center",
+        }}
       />
     </View>
   );
 };
-
-// onScrollEvent({ y: y })
 
 export default FilteredRecommendationsList;
 

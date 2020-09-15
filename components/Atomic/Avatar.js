@@ -7,10 +7,10 @@ export default function Avatar({ user, size = 24, style }) {
   const theme = useTheme();
   return (
     <UserAvatar
-      style={style}
+      style={{ borderWidth: 0.2, borderColor: theme.white, ...style }}
       size={size}
       name={user.name}
-      bgColor={theme.bg}
+      bgColor={theme.iconDefault}
       src={user.avatar}
     />
   );

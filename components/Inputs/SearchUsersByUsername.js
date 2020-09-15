@@ -109,6 +109,7 @@ function CustomTextInput({ onChange, value, loading, onCancel }) {
         flexDirection: "row",
         alignItems: "center",
         width: theme.windowWidth,
+        paddingRight: 10,
       }}
     >
       <BackButton />

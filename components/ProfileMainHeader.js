@@ -27,7 +27,7 @@ function ToggleableSettingsButton({ showSettings, setShowSettings }) {
   return (
     <View
       style={{
-        flex: 0.25,
+        width: 50,
         paddingTop: 2,
       }}
     >

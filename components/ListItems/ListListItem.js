@@ -202,9 +202,11 @@ function ParticipantAvatar({ participantId }) {
   }
 
   return (
-    <Avatar
-      style={{ marginHorizontal: 4, backgroundColor: "transparent" }}
-      user={user}
-    />
+    <View style={{ justifyContent: "center" }}>
+      <Avatar
+        style={{ marginHorizontal: 4, backgroundColor: "transparent" }}
+        user={user}
+      />
+    </View>
   );
 }

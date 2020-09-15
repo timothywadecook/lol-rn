@@ -6,6 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 import ListListItem from "../ListItems/ListListItem";
 import { Add } from "../Buttons/IconButtons";
 import ProfileCard from "../Atomic/ProfileCard";
+import * as T from "../Atomic/StyledText";
 //
 import useTheme from "../../hooks/useTheme";
 //
@@ -38,6 +39,7 @@ export default function ListList({ userId, privateList }) {
       Object.keys(state.lists).filter(
         (listId) =>
           state.lists[listId].participants.includes(userId) &&
+          state.lists[listId].participants.includes(sessionUserId) &&
           state.lists[listId].isPrivate
       )
     );
@@ -62,6 +64,11 @@ export default function ListList({ userId, privateList }) {
         {privateListIds.map((listId) => (
           <ListListItem key={listId} listId={listId} />
         ))}
+        {!privateListIds.length && (
+          <T.H2 style={{ fontWeight: "normal", padding: 10 }}>
+            0 lists currently available
+          </T.H2>
+        )}
       </ProfileCard>
     );
   }
@@ -94,6 +101,11 @@ export default function ListList({ userId, privateList }) {
       {publicListIds.map((listId) => (
         <ListListItem key={listId} listId={listId} />
       ))}
+      {!publicListIds.length && (
+        <T.H2 style={{ fontWeight: "normal", padding: 10 }}>
+          0 lists currently available
+        </T.H2>
+      )}
     </ProfileCard>
   );
 }

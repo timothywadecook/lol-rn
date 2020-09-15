@@ -14,6 +14,7 @@ export default function ProfileTabsContainer({ user }) {
 
   const fetchFollowing = () => {
     if (followingIds.length > 0) {
+      // this is necessary otherwise ALL users will be returned from empty array query
       usersService
         .find({
           query: {
@@ -25,6 +26,8 @@ export default function ProfileTabsContainer({ user }) {
           setFollowing(res.data);
         })
         .catch((e) => console.log("error getting friend details", e));
+    } else {
+      setFollowing([]);
     }
   };
   const fetchFollowers = () => {
@@ -40,13 +43,15 @@ export default function ProfileTabsContainer({ user }) {
           setFollowers(res.data);
         })
         .catch((e) => console.log("error getting followers", e));
+    } else {
+      setFollowers([]);
     }
   };
 
   useEffect(() => {
     fetchFollowers();
     fetchFollowing();
-  }, [followingIds]);
+  }, [followingIds, followerIds]);
 
   return (
     <View style={{ flex: 1, alignItems: "center" }}>

@@ -10,12 +10,12 @@ export default Card = (props) => {
     <View
       style={[
         {
-          borderWidth: 4,
-          borderColor: theme.wallbg,
+          borderWidth: 1,
+          borderColor: theme.borderColor,
           marginBottom: props.bottomMargin ? 40 : 0,
           borderRadius: 25,
           padding: 10,
-          width: theme.windowWidth,
+          width: theme.windowWidth * 0.97,
           backgroundColor: theme.bg,
 
           overflow: "hidden",

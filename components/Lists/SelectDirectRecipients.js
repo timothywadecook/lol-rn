@@ -14,28 +14,28 @@ export default function SelectDirectRecipients({
   directRecipients,
   setDirectRecipients,
 }) {
-  const sessionUserFollowing = useSelector((state) => state.follows.following);
-  const [following, setFollowing] = React.useState([]);
+  const sessionUserFollowers = useSelector((state) => state.follows.followers);
+  const [followers, setFollowers] = React.useState([]);
   const theme = useTheme();
 
   React.useEffect(() => {
-    const fetchFollowingUsers = async () => {
+    const fetchFollowersUsers = async () => {
       try {
         const res = await usersService.find({
-          query: { _id: { $in: sessionUserFollowing }, $limit: 1000 },
+          query: { _id: { $in: sessionUserFollowers }, $limit: 1000 },
         });
-        setFollowing(res.data);
+        setFollowers(res.data);
       } catch (error) {
         console.log(
-          "Error fetching following for participants",
-          sessionUserFollowing,
+          "Error fetching followers for direct recipients",
+          sessionUserFollowers,
           error.message,
           error
         );
       }
     };
-    fetchFollowingUsers();
-  }, [sessionUserFollowing]);
+    fetchFollowersUsers();
+  }, [sessionUserFollowers]);
 
   const onSelect = (userId) => {
     setDirectRecipients([...directRecipients, userId]);
@@ -45,17 +45,17 @@ export default function SelectDirectRecipients({
     setDirectRecipients(directRecipients.filter(uId !== userId));
   };
 
-  if (sessionUserFollowing.length < 1) {
+  if (sessionUserFollowers.length < 1) {
     return null;
   }
 
   return (
     <View style={{ width: theme.windowWidth, padding: 10 }}>
-      <T.H2G>Direct Recipients</T.H2G>
+      <T.H2G>Tap Direct Recipients</T.H2G>
 
       <FlatList
         keyboardShouldPersistTaps="handled"
-        data={following}
+        data={followers}
         renderItem={({ item: user }) => (
           <SelectableUser
             user={user}
@@ -63,7 +63,6 @@ export default function SelectDirectRecipients({
             onUnselect={() => onUnselect(user._id)}
           />
         )}
-        // ListFooterComponent={() => <SelectableUserAddNew />}
         horizontal={true}
         showsHorizontalScrollIndicator={false}
         keyExtractor={(item) => item._id}

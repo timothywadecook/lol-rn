@@ -1,8 +1,8 @@
 import React from "react";
-import { View, Image } from "react-native";
+import { View } from "react-native";
 import { useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
-
+import Avatar from "../Atomic/Avatar";
 import * as T from "../Atomic/StyledText";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
@@ -46,16 +46,10 @@ export default function UserListItem({
           style={{ flexDirection: "row", alignItems: "center" }}
           onPress={openFriendDetails}
         >
-          <Image
-            source={{
-              uri: user.avatar,
-            }}
-            style={{
-              width: lean ? 24 : 36,
-              height: lean ? 24 : 36,
-              borderRadius: 18,
-              marginRight: 10,
-            }}
+          <Avatar
+            user={user}
+            size={lean ? 24 : 36}
+            style={{ marginRight: 10 }}
           />
           <View
             style={{

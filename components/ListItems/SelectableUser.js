@@ -11,6 +11,7 @@ export default function SelectableUser({
   size = 40,
   onSelect,
   onUnselect,
+  selectable = true,
 }) {
   const theme = useTheme();
 
@@ -22,7 +23,9 @@ export default function SelectableUser({
       setSelected(false);
     } else {
       onSelect();
-      setSelected(true);
+      if (selectable) {
+        setSelected(true);
+      }
     }
   };
 

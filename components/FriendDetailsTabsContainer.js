@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { View } from "react-native";
 import ProfileTabContent from "./ProfileTabContent";
 import { usersService, followsService } from "../services/feathersClient";
@@ -7,10 +8,12 @@ export default function FriendDetailsTabsContainer({ user }) {
   const [followers, setFollowers] = useState([]);
   const [following, setFollowing] = useState([]);
 
+  const sessionUserFollowing = useSelector((state) => state.follows.following);
+
   useEffect(() => {
     fetchFollowers();
     fetchFollowing();
-  }, [user._id]);
+  }, [user._id, sessionUserFollowing]);
 
   const fetchFollowing = async () => {
     try {

@@ -55,7 +55,8 @@ export default function LoginScreen() {
           flex: 1,
           alignItems: "center",
           justifyContent: "center",
-          borderTopStartRadius: 80,
+          paddingTop: 20,
+          paddingBottom: 30,
         }}
       >
         <FacebookLogin />

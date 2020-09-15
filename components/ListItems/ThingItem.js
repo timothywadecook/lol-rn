@@ -34,8 +34,8 @@ export default function ThingItem({ thing, children, border, pad }) {
             source={{ uri: image }}
             style={{
               resizeMode: "cover",
-              width: "10%",
-              height: 40,
+              width: 30, //  100,
+              height: 40, // 140,
               borderRadius: 5,
               marginRight: 6,
               marginTop: 2,
@@ -45,7 +45,12 @@ export default function ThingItem({ thing, children, border, pad }) {
           <PlaceIcon />
         ) : null}
 
-        <View style={{ flexDirection: "column", flex: 1 }}>
+        <View
+          style={{
+            flexDirection: "column",
+            flex: 1,
+          }}
+        >
           <T.Title style={{ paddingBottom: 0 }}>{title}</T.Title>
           <T.H4 style={{ fontWeight: "bold" }}>{subtitle}</T.H4>
         </View>
