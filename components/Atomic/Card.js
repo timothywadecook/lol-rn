@@ -17,6 +17,7 @@ export default Card = (props) => {
           padding: 10,
           width: theme.windowWidth * 0.97,
           backgroundColor: theme.bg,
+          // backgroundColor: theme.iconBg,
 
           overflow: "hidden",
         },

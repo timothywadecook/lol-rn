@@ -31,70 +31,73 @@ export default function ProfileTabContent({ userId, followers, following }) {
   };
 
   return (
-    <ScrollView
-      showsVerticalScrollIndicator={false}
-      contentContainerStyle={{
-        width: theme.windowWidth,
-        alignItems: "center",
-        paddingTop: 10,
-        paddingBottom: 60,
-      }}
-    >
-      <ListList userId={userId} privateList={true} />
+    <View style={{ backgroundColor: theme.iconBg, flex: 1 }}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{
+          width: theme.windowWidth,
+          alignItems: "center",
+          paddingTop: 10,
+          paddingBottom: 60,
+        }}
+      >
+        <T.H4 style={{ padding: 10 }}>Friends</T.H4>
 
-      <ListList userId={userId} privateList={false} />
+        <ProfileCard title="Following">
+          <View>
+            <FlatList
+              data={following}
+              renderItem={({ item: user }) => (
+                <SelectableUser
+                  selectable={false}
+                  user={user}
+                  onSelect={() => openFriendDetails(user)}
+                  onUnselect={() => console.log("unselect")}
+                />
+              )}
+              ListFooterComponent={() =>
+                isSessionUser && <SelectableUserAddNew />
+              }
+              ListEmptyComponent={() =>
+                !isSessionUser && (
+                  <T.H2 style={{ fontWeight: "normal", padding: 10 }}>
+                    Following 0 Users
+                  </T.H2>
+                )
+              }
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              keyExtractor={(item) => item._id}
+            />
+          </View>
+        </ProfileCard>
 
-      <ProfileCard title="Following">
-        <View>
-          <FlatList
-            data={following}
-            renderItem={({ item: user }) => (
-              <SelectableUser
-                selectable={false}
-                user={user}
-                onSelect={() => openFriendDetails(user)}
-                onUnselect={() => console.log("unselect")}
-              />
-            )}
-            ListFooterComponent={() =>
-              isSessionUser && <SelectableUserAddNew />
-            }
-            ListEmptyComponent={() =>
-              !isSessionUser && (
+        <ProfileCard title="Followers">
+          <View>
+            <FlatList
+              data={followers}
+              renderItem={({ item: user }) => (
+                <SelectableUser
+                  selectable={false}
+                  user={user}
+                  onSelect={() => openFriendDetails(user)}
+                />
+              )}
+              ListEmptyComponent={() => (
                 <T.H2 style={{ fontWeight: "normal", padding: 10 }}>
-                  Following 0 Users
+                  0 Followers
                 </T.H2>
-              )
-            }
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            keyExtractor={(item) => item._id}
-          />
-        </View>
-      </ProfileCard>
+              )}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              keyExtractor={(item) => item._id}
+            />
+          </View>
+        </ProfileCard>
+        <T.H4 style={{ padding: 10 }}>Lists</T.H4>
 
-      <ProfileCard title="Followers">
-        <View>
-          <FlatList
-            data={followers}
-            renderItem={({ item: user }) => (
-              <SelectableUser
-                selectable={false}
-                user={user}
-                onSelect={() => openFriendDetails(user)}
-              />
-            )}
-            ListEmptyComponent={() => (
-              <T.H2 style={{ fontWeight: "normal", padding: 10 }}>
-                0 Followers
-              </T.H2>
-            )}
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            keyExtractor={(item) => item._id}
-          />
-        </View>
-      </ProfileCard>
-    </ScrollView>
+        <ListList userId={userId} privateList={true} />
+      </ScrollView>
+    </View>
   );
 }

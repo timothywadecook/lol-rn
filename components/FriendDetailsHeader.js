@@ -12,10 +12,11 @@ export default function FriendDetailsHeader({ user }) {
     <View>
       <View
         style={{
-          width: theme.contentWidth,
+          width: theme.windowWidth,
+          backgroundColor: theme.wallbg,
           paddingVertical: 20,
-          borderBottomColor: theme.bg,
-          borderBottomWidth: 0,
+          borderBottomLeftRadius: 20,
+          borderBottomRightRadius: 20,
         }}
       >
         <View

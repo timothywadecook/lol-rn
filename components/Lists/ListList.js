@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-
+import { View, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import ListListItem from "../ListItems/ListListItem";
@@ -12,6 +12,7 @@ import useTheme from "../../hooks/useTheme";
 //
 import { listsService } from "../../services/feathersClient";
 import { addLoadedLists } from "../../store/listsSlice";
+import HorizontalThingList from "./HorizontalThingList";
 
 export default function ListList({ userId, privateList }) {
   const theme = useTheme();
@@ -34,45 +35,14 @@ export default function ListList({ userId, privateList }) {
     fetchLists();
   }, []);
 
-  if (privateList) {
-    const privateListIds = useSelector((state) =>
-      Object.keys(state.lists).filter(
-        (listId) =>
-          state.lists[listId].participants.includes(userId) &&
-          state.lists[listId].participants.includes(sessionUserId) &&
-          state.lists[listId].isPrivate
-      )
-    );
-
-    return (
-      <ProfileCard
-        title="Secret Lists"
-        renderRightChild={
-          canCreate()
-            ? () => (
-                <Add
-                  onPress={() =>
-                    navigation.navigate("CreateOrEditList", {
-                      list: { isPrivate: true },
-                    })
-                  }
-                />
-              )
-            : null
-        }
-      >
-        {privateListIds.map((listId) => (
-          <ListListItem key={listId} listId={listId} />
-        ))}
-        {!privateListIds.length && (
-          <T.H2 style={{ fontWeight: "normal", padding: 10 }}>
-            0 lists currently available
-          </T.H2>
-        )}
-      </ProfileCard>
-    );
-  }
-
+  const privateListIds = useSelector((state) =>
+    Object.keys(state.lists).filter(
+      (listId) =>
+        state.lists[listId].participants.includes(userId) &&
+        state.lists[listId].participants.includes(sessionUserId) &&
+        state.lists[listId].isPrivate
+    )
+  );
   const publicListIds = useSelector((state) =>
     Object.keys(state.lists).filter(
       (listId) =>
@@ -82,30 +52,41 @@ export default function ListList({ userId, privateList }) {
   );
 
   return (
-    <ProfileCard
-      title="Public Lists"
-      renderRightChild={
-        canCreate()
-          ? () => (
-              <Add
-                onPress={() =>
-                  navigation.navigate("CreateOrEditList", {
-                    list: { isPrivate: false },
-                  })
-                }
-              />
-            )
-          : null
-      }
-    >
-      {publicListIds.map((listId) => (
-        <ListListItem key={listId} listId={listId} />
+    <View>
+      {privateListIds.map((listId) => (
+        <HorizontalThingList
+          key={listId}
+          listId={listId}
+          canCreate={canCreate()}
+        />
       ))}
-      {!publicListIds.length && (
-        <T.H2 style={{ fontWeight: "normal", padding: 10 }}>
-          0 lists currently available
-        </T.H2>
+      {publicListIds.map((listId) => (
+        <HorizontalThingList
+          key={listId}
+          listId={listId}
+          canCreate={canCreate()}
+        />
+      ))}
+      {canCreate() && (
+        <TouchableOpacity
+          style={{
+            width: theme.contentWidth,
+            height: 80,
+            backgroundColor: theme.wallbg,
+            justifyContent: "center",
+            alignItems: "center",
+            borderRadius: 20,
+            alignSelf: "center",
+          }}
+          onPress={() =>
+            navigation.navigate("CreateOrEditList", {
+              list: { isPrivate: false },
+            })
+          }
+        >
+          <Add active={true} />
+        </TouchableOpacity>
       )}
-    </ProfileCard>
+    </View>
   );
 }

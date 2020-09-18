@@ -45,7 +45,6 @@ export default SubmitButton = ({
               marginVertical: 10,
               borderRadius: 5,
               paddingVertical: 7.5,
-              paddingHorizontal: 20,
               width: fullwidth ? theme.contentWidth : null,
               alignItems: "center",
               justifyContent: "center",
@@ -58,6 +57,7 @@ export default SubmitButton = ({
         >
           <Title
             style={{
+              paddingHorizontal: 10,
               color: fontColor[intent],
               fontWeight: fontWeight[intent],
               fontSize: 20,
