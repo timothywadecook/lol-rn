@@ -1,4 +1,5 @@
 import React from "react";
+import { View } from "react-native";
 import * as AppleAuthentication from "expo-apple-authentication";
 import client from "../../services/feathersClient";
 
@@ -47,12 +48,14 @@ export default function AppleLogin() {
   }
 
   return (
-    <AppleAuthentication.AppleAuthenticationButton
-      buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
-      buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
-      cornerRadius={5}
-      style={{ width: theme.windowWidth * 0.8, height: 45 }}
-      onPress={login}
-    />
+    <View style={{ marginVertical: 5 }}>
+      <AppleAuthentication.AppleAuthenticationButton
+        buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
+        buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
+        cornerRadius={5}
+        style={{ width: theme.windowWidth * 0.8, height: 45 }}
+        onPress={login}
+      />
+    </View>
   );
 }
