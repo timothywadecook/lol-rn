@@ -91,6 +91,8 @@ export default function AddThingToListModal({
             shadowColor: "rgba(0,0,0)",
             shadowOffset: { width: 0, height: 1 },
             shadowOpacity: 0.8,
+            borderTopRightRadius: 20,
+            borderTopLeftRadius: 20,
           }}
         >
           <View
@@ -163,6 +165,7 @@ export default function AddThingToListModal({
             <SubmitButton
               fullwidth={true}
               title="Dismiss"
+              intent="secondary"
               onPress={() => setShowModal(false)}
             />
           </View>

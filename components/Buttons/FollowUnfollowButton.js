@@ -25,7 +25,7 @@ export default function FollowUnfollowButton({ userId }) {
       isProcessing={processing}
       onPress={() => toggleFollowing(userId)}
       intent={sessionUserFollowing.includes(userId) ? "info" : "primary"}
-      title={sessionUserFollowing.includes(userId) ? "Unfollow" : "Follow"}
+      title={sessionUserFollowing.includes(userId) ? "Following" : "Follow"}
     />
   );
 }

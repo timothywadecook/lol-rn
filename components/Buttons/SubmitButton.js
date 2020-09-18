@@ -16,7 +16,12 @@ export default SubmitButton = ({
   const bgColor = {
     secondary: "transparent",
     primary: theme.purple,
-    info: theme.bg,
+    info: "transparent",
+  };
+  const borderColor = {
+    secondary: "transparent",
+    primary: theme.purple,
+    info: theme.iconDefault,
   };
   const fontWeight = {
     primary: "normal",
@@ -45,6 +50,8 @@ export default SubmitButton = ({
               alignItems: "center",
               justifyContent: "center",
               backgroundColor: bgColor[intent],
+              borderColor: borderColor[intent],
+              borderWidth: 1,
             },
             style,
           ]}

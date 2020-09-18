@@ -43,7 +43,12 @@ export default function MyModal({ showModal, setShowModal, type, message }) {
         <View
           style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
         >
-          <SubmitButton title="Dismiss" onPress={() => setShowModal(false)} />
+          <SubmitButton
+            fullwidth={true}
+            title="Dismiss"
+            intent="primary"
+            onPress={() => setShowModal(false)}
+          />
         </View>
       </View>
     </Modal>

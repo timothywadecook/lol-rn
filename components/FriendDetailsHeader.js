@@ -1,21 +1,18 @@
 import React from "react";
 import { View } from "react-native";
 import { Title, H2G } from "./Atomic/StyledText";
-
 import Avatar from "./Atomic/Avatar";
-import FollowUnfollowButton from "./Buttons/FollowUnfollowButton";
 
 import useTheme from "../hooks/useTheme";
 
 export default function FriendDetailsHeader({ user }) {
   const theme = useTheme();
+
   return (
     <View>
       <View
         style={{
           width: theme.contentWidth,
-          flexDirection: "row",
-          justifyContent: "space-between",
           paddingVertical: 20,
           borderBottomColor: theme.bg,
           borderBottomWidth: 0,
@@ -23,27 +20,15 @@ export default function FriendDetailsHeader({ user }) {
       >
         <View
           style={{
-            flexDirection: "row",
-            flex: 2,
             alignItems: "center",
-            justifyContent: "flex-start",
+            justifyContent: "center",
           }}
         >
-          <Avatar style={{ marginHorizontal: 10 }} size={50} user={user} />
-          <View>
+          <Avatar style={{ marginHorizontal: 10 }} size={80} user={user} />
+          <View style={{ alignItems: "center" }}>
             <Title>{user.username}</Title>
             <H2G>{user.name}</H2G>
           </View>
-        </View>
-
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <FollowUnfollowButton userId={user._id} />
         </View>
       </View>
     </View>

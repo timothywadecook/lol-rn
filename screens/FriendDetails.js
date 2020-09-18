@@ -3,6 +3,7 @@ import { View, Button } from "react-native";
 import useTheme from "../hooks/useTheme";
 
 // Components
+import FollowUnfollowButton from "../components/Buttons/FollowUnfollowButton";
 import FriendDetailsHeader from "../components/FriendDetailsHeader";
 import FriendDetailsTabsContainer from "../components/FriendDetailsTabsContainer";
 import ActivityIndicatorCentered from "../components/Atomic/ActivityIndicatorCentered";
@@ -19,10 +20,22 @@ export default function FriendDetailsScreen({ route }) {
       <View
         style={{
           width: theme.windowWidth,
-          alignItems: "flex-start",
+          alignItems: "center",
+          justifyContent: "space-between",
+          flexDirection: "row",
         }}
       >
         <BackButton />
+
+        <View
+          style={{
+            paddingHorizontal: 10,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <FollowUnfollowButton userId={friend._id} />
+        </View>
       </View>
 
       {friend ? (

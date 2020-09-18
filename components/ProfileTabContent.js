@@ -26,7 +26,7 @@ export default function ProfileTabContent({ userId, followers, following }) {
     if (user._id === sessionUserId) {
       navigation.navigate("Profile");
     } else {
-      navigation.navigate("FriendDetails", { friend: user });
+      navigation.push("FriendDetails", { friend: user });
     }
   };
 
