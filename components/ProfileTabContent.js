@@ -94,7 +94,7 @@ export default function ProfileTabContent({ userId, followers, following }) {
             />
           </View>
         </ProfileCard>
-        <T.H4 style={{ padding: 10 }}>Lists</T.H4>
+        <T.H4 style={{ padding: 10 }}>Collections</T.H4>
 
         <ListList userId={userId} privateList={true} />
       </ScrollView>

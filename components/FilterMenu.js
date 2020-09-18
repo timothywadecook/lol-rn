@@ -32,7 +32,7 @@ export default function FilterMenu({ y, categories, setCategories }) {
         zIndex: 2,
         transform: [
           {
-            translateY: interpolate(diffClampY, {
+            translateY: interpolate(y, {
               inputRange: [MIN, MIN + 2 * HEIGHT],
               outputRange: [0, -HEIGHT],
               extrapolateLeft: "clamp",

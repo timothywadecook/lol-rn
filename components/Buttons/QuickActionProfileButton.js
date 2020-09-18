@@ -1,7 +1,9 @@
 import React from "react";
 import { TouchableOpacity } from "react-native";
+import { useSelector } from "react-redux";
 // Components
 import { Feather } from "@expo/vector-icons";
+import Avatar from "../Atomic/Avatar";
 // Animations
 import Animated from "react-native-reanimated";
 import { diffClamp } from "react-native-redash";
@@ -13,9 +15,10 @@ import { useNavigation } from "@react-navigation/native";
 export default function QuickActionProfileButton({ y }) {
   const theme = useTheme();
   const navigation = useNavigation();
+  const sessionUser = useSelector((state) => state.user);
 
   const SIZE = 46;
-  const BOTTOM = 120;
+  const BOTTOM = 115;
 
   const diffClampY = diffClamp(y, 0, 500);
 
@@ -27,7 +30,8 @@ export default function QuickActionProfileButton({ y }) {
         alignItems: "center",
         justifyContent: "center",
         position: "absolute",
-        right: 47,
+        // right: 47,
+        right: 32,
         bottom: BOTTOM,
         zIndex: 3,
 
@@ -49,20 +53,21 @@ export default function QuickActionProfileButton({ y }) {
       <TouchableOpacity
         style={{
           elevation: 3,
-          backgroundColor: theme.iconDefault,
+          backgroundColor: theme.wallbg,
           alignItems: "center",
           justifyContent: "center",
           height: SIZE,
           width: SIZE,
           borderRadius: 23,
-          shadowColor: theme.wallbg,
+          shadowColor: theme.primary,
           shadowOffset: { width: 0, height: 1 },
           shadowOpacity: 0.3,
           shadowRadius: 3,
         }}
         onPress={() => navigation.navigate("Profile")}
       >
-        <Feather name="user" size={28} color={theme.white} />
+        {/* <Feather name="user" size={28} color={theme.white} /> */}
+        <Avatar user={sessionUser} size={SIZE} />
       </TouchableOpacity>
     </Animated.View>
   );

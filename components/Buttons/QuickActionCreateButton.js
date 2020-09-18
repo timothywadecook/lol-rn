@@ -1,7 +1,7 @@
 import React from "react";
 import { TouchableOpacity } from "react-native";
 // Components
-import { Ionicons, Entypo } from "@expo/vector-icons";
+import { Ionicons, Entypo, Feather } from "@expo/vector-icons";
 // Animations
 import Animated from "react-native-reanimated";
 import { diffClamp } from "react-native-redash";
@@ -14,7 +14,7 @@ export default function QuickActionCreateButton({ y }) {
   const theme = useTheme();
   const navigation = useNavigation();
 
-  const BOTTOM = 40;
+  const BOTTOM = 25; // 40
   const SIZE = 60;
 
   const diffClampY = diffClamp(y, 0, 500);
@@ -27,7 +27,8 @@ export default function QuickActionCreateButton({ y }) {
         alignItems: "center",
         justifyContent: "center",
         position: "absolute",
-        right: 40,
+        // right: 40,
+        right: 25,
         bottom: BOTTOM,
         zIndex: 3,
 
@@ -50,8 +51,9 @@ export default function QuickActionCreateButton({ y }) {
         style={{
           padding: 10,
           elevation: 3,
+          // backgroundColor: theme.wallbg,
           backgroundColor: theme.purple,
-          shadowColor: theme.wallbg,
+          shadowColor: theme.primary,
           shadowOffset: { width: 0, height: 1 },
           shadowOpacity: 0.3,
           shadowRadius: 3,
@@ -63,7 +65,8 @@ export default function QuickActionCreateButton({ y }) {
         }}
         onPress={() => navigation.navigate("Create")}
       >
-        <Ionicons name="md-create" size={30} color={theme.white} />
+        {/* <Feather name="edit" size={30} color={theme.white} /> */}
+        <Ionicons name="md-add" size={30} color={theme.white} />
         {/* <Entypo name="new-message" size={30} color={theme.white} /> */}
       </TouchableOpacity>
     </Animated.View>

@@ -191,12 +191,12 @@ export default function CreateScreen({ navigation, route }) {
               />
             )}
 
-            {itemChosen && (
+            {/* {itemChosen && (
               <SelectDirectRecipients
                 directRecipients={directRecipients}
                 setDirectRecipients={setDirectRecipients}
               />
-            )}
+            )} */}
 
             <MainCommentField
               hide={!itemChosen}

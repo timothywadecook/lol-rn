@@ -102,7 +102,7 @@ export default function AddThingToListModal({
             }}
           >
             <View style={{ alignSelf: "center", paddingBottom: 10 }}>
-              <T.Title>Add to List</T.Title>
+              <T.Title>Add to Collections</T.Title>
             </View>
             <ScrollView>
               {listIds.length < 0 ? (
