@@ -81,6 +81,7 @@ export default function HorizontalThingList({ listId, canCreate }) {
 
 function ThingCard({ thing }) {
   const { image, title, subtitle } = thing;
+  const theme = useTheme();
   return (
     <View
       style={{
@@ -106,12 +107,23 @@ function ThingCard({ thing }) {
               width: 100, //  100,
               height: 140, // 140,
               borderRadius: 15,
-              marginRight: 6,
-              marginTop: 2,
+              // marginRight: 6,
+              // marginTop: 2,
             }}
           />
         ) : thing.category === "Place" ? (
-          <PlaceIcon />
+          <View
+            style={{
+              width: 100,
+              height: 140,
+              borderRadius: 15,
+              alignItems: "center",
+              justifyContent: "center",
+              backgroundColor: theme.iconBg,
+            }}
+          >
+            <PlaceIcon />
+          </View>
         ) : null}
       </View>
 
@@ -169,12 +181,5 @@ function AddThingCard() {
 function PlaceIcon() {
   const theme = useTheme();
 
-  return (
-    <Entypo
-      style={{ width: 30, marginRight: 8, marginLeft: -8 }}
-      name="location-pin"
-      size={40}
-      color={theme.iconDefault}
-    />
-  );
+  return <Entypo name="location-pin" size={50} color={theme.red} />;
 }
