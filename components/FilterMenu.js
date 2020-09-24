@@ -27,9 +27,7 @@ export default function FilterMenu({ y, categories, setCategories }) {
   return (
     <Animated.View
       style={{
-        // paddingTop: theme.topPad,
-        top: 118,
-        // height: HEIGHT,
+        top: 135,
         position: "absolute",
         zIndex: 1,
         transform: [
@@ -53,15 +51,9 @@ export default function FilterMenu({ y, categories, setCategories }) {
     >
       <View
         style={{
-          // borderRadius: 15,
           margin: 5,
-          // elevation: 5,
           flexDirection: "column",
           backgroundColor: theme.wallbg,
-          // shadowRadius: 3,
-          // shadowColor: theme.primary,
-          // shadowOffset: { width: 0, height: 2 },
-          // shadowOpacity: 0.3,
         }}
       >
         <T.H4 style={{ paddingHorizontal: 10, paddingBottom: 5, fontSize: 14 }}>

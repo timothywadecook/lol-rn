@@ -28,7 +28,7 @@ export default function Collections({ navigation }) {
     >
       <WindowWidthRow pad={true}>
         <CloseModalButton dismissModal={dismissModal} />
-        <T.H1 style={{ marginLeft: 10 }}>Collections</T.H1>
+        <T.H1 style={{ marginLeft: 10 }}>My Collections</T.H1>
       </WindowWidthRow>
 
       <ScrollView

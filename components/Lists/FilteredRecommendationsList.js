@@ -75,7 +75,7 @@ const FilteredRecommendationsList = ({
           autoscrollToTopThreshold: 3,
         }}
         contentContainerStyle={{
-          paddingTop: topPad ? HEIGHT + 30 : 0,
+          paddingTop: topPad ? HEIGHT + 50 : 0,
           alignItems: "center",
         }}
       />

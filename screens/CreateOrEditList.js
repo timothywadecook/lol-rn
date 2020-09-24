@@ -14,6 +14,7 @@ import useTheme from "../hooks/useTheme";
 import UserListItem from "../components/ListItems/UserListItem";
 
 import { usersService, listsService } from "../services/feathersClient";
+import { removeDeletedList } from "../store/listsSlice";
 
 import { updateList, addCreatedList } from "../store/listsSlice";
 import { useNavigation } from "@react-navigation/native";
@@ -116,6 +117,7 @@ export default function CreateOrEditList({ navigation, route }) {
 function EditListHeader({ isEditMode, list }) {
   console.log("list ?", list);
   const theme = useTheme();
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const onDeleteList = async () => {
     try {

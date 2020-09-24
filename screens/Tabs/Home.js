@@ -66,7 +66,7 @@ export default function HomeScreen() {
         style={{
           backgroundColor: theme.wallbg,
           zIndex: 3,
-          paddingTop: theme.topPad + 25,
+          paddingTop: theme.topPad + 15,
           justifyContent: "center",
           // flexDirection: "column",
           // alignItems: "flex-start",

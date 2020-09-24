@@ -73,7 +73,7 @@ export default function HorizontalThingList({ listId, canCreate }) {
         horizontal={true}
         showsHorizontalScrollIndicator={false}
         keyExtractor={(item) => item._id}
-        ListFooterComponent={() => canCreate && <AddThingCard />}
+        // ListFooterComponent={() => canCreate && <AddThingCard />}
       />
     </ProfileCard>
   );
