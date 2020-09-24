@@ -15,6 +15,7 @@ export default function MultiSelectFilterButtons({
     <View
       style={{
         paddingVertical: 5,
+        paddingLeft: 6,
         flexDirection: "row",
         marginBottom: 0,
         width: theme.windowWidth,
@@ -23,6 +24,7 @@ export default function MultiSelectFilterButtons({
       }}
     >
       <FlatList
+        showsHorizontalScrollIndicator={false}
         horizontal={true}
         data={options}
         renderItem={({ item }) => (

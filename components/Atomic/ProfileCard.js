@@ -11,8 +11,8 @@ export default ProfileCard = (props) => {
 
   return (
     <Card
-      bottomMargin={true}
-      style={{ padding: 10, marginVertical: 4, backgroundColor: theme.wallbg }}
+      bottomMargin={false}
+      style={{ padding: 10, marginBottom: 30, backgroundColor: theme.bg }}
     >
       <CardHeader
         title={props.title}
@@ -41,7 +41,7 @@ function CardHeader({ title, renderRightChild }) {
         padding: 10,
       }}
     >
-      <T.H2 style={{ fontWeight: "normal" }}>{title}</T.H2>
+      <T.Title>{title}</T.Title>
       {renderRightChild()}
     </View>
   );

@@ -7,6 +7,7 @@ import FilteredRecommendationsList from "../../components/Lists/FilteredRecommen
 import FilterMenu from "../../components/FilterMenu";
 import QuickActionCreateButton from "../../components/Buttons/QuickActionCreateButton";
 import QuickActionProfileButton from "../../components/Buttons/QuickActionProfileButton";
+import QuickActionToolbar from "../../components/Buttons/QuickActionToolbar";
 // State Management
 import { refreshFeedAsync, fetchMoreFeedAsync } from "../../store/feedSlice";
 import { fetchFollowsAsync } from "../../store/followsSlice";
@@ -21,12 +22,14 @@ import * as T from "../../components/Atomic/StyledText";
 import logo from "../../assets/logo.png";
 // Hooks
 import useTheme from "../../hooks/useTheme";
+import WindowWidthRow from "../../components/Wrappers/WindowWidthRow";
 
 export default function HomeScreen() {
   const feed = useSelector((state) => state.feed.list);
   const loading = useSelector((state) => state.feed.loading);
   const refreshing = useSelector((state) => state.feed.refreshing);
   const sessionUserId = useSelector((state) => state.user._id);
+  const theme = useTheme();
 
   const dispatch = useDispatch();
   const refresh = () => dispatch(refreshFeedAsync());
@@ -58,8 +61,24 @@ export default function HomeScreen() {
   const y = React.useMemo(() => new Animated.Value(0), []);
   return (
     <Screen fullscreen={true}>
+      <WindowWidthRow
+        pad={true}
+        style={{
+          backgroundColor: theme.wallbg,
+          zIndex: 3,
+          paddingTop: theme.topPad + 25,
+          justifyContent: "center",
+          // flexDirection: "column",
+          // alignItems: "flex-start",
+          // padding: 10,
+        }}
+      >
+        <T.FancyH1 style={{ color: theme.purple }}>Like Out Loud</T.FancyH1>
+        {/* <T.H3>Recommendations you can trust</T.H3> */}
+      </WindowWidthRow>
+
       <FilterMenu y={y} categories={categories} setCategories={setCategories} />
-      <AnimatedLOL y={y} />
+      {/* <AnimatedLOL y={y} /> */}
       <FilteredRecommendationsList
         recommendations={feed}
         loading={loading}
@@ -71,8 +90,9 @@ export default function HomeScreen() {
         categories={categories}
         y={y}
       />
-      <QuickActionProfileButton y={y} />
-      <QuickActionCreateButton y={y} />
+      {/* <QuickActionProfileButton y={y} /> */}
+      {/* <QuickActionCreateButton y={y} /> */}
+      <QuickActionToolbar y={y} />
     </Screen>
   );
 }

@@ -24,7 +24,7 @@ export function H1(props) {
     <Text
       {...props}
       style={[
-        { color: theme.primary, fontSize: 32, fontWeight: "bold" },
+        { color: theme.primary, fontSize: 36, fontWeight: "bold" },
         props.style,
       ]}
     />

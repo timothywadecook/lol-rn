@@ -31,7 +31,7 @@ export default function ProfileTabContent({ userId, followers, following }) {
   };
 
   return (
-    <View style={{ backgroundColor: theme.iconBg, flex: 1 }}>
+    <View style={{ flex: 1 }}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
@@ -96,7 +96,7 @@ export default function ProfileTabContent({ userId, followers, following }) {
         </ProfileCard>
         <T.H4 style={{ padding: 10 }}>Collections</T.H4>
 
-        <ListList userId={userId} privateList={true} />
+        <ListList userId={userId} />
       </ScrollView>
     </View>
   );

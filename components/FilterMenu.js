@@ -9,6 +9,7 @@ const { interpolate } = Animated;
 import SelectableUserWithUnreadCount from "./ListItems/SelectableUserWithUnreadCount";
 import SelectableUserAddNew from "./ListItems/SelectableUserAddNew";
 import MultiSelectFilterButtons from "./MultiSelectFilterButtons";
+import * as T from "./Atomic/StyledText";
 // Services
 import { usersService } from "../services/feathersClient";
 // Hooks
@@ -26,41 +27,46 @@ export default function FilterMenu({ y, categories, setCategories }) {
   return (
     <Animated.View
       style={{
-        paddingTop: theme.topPad,
-        height: HEIGHT,
+        // paddingTop: theme.topPad,
+        top: 118,
+        // height: HEIGHT,
         position: "absolute",
-        zIndex: 2,
+        zIndex: 1,
         transform: [
           {
             translateY: interpolate(y, {
-              inputRange: [MIN, MIN + 2 * HEIGHT],
-              outputRange: [0, -HEIGHT],
-              extrapolateLeft: "clamp",
+              inputRange: [0, HEIGHT],
+              outputRange: [0, -HEIGHT / 2],
+              // extrapolateLeft: "clamp",
             }),
           },
         ],
         backgroundColor: "transparent",
         paddingVertical: 10,
         width: theme.windowWidth,
-        opacity: interpolate(diffClampY, {
-          inputRange: [250, 300],
-          outputRange: [1, 0],
-        }),
+        // opacity: interpolate(diffClampY, {
+        //   inputRange: [80, 90],
+        //   outputRange: [1, 0],
+        //   extrapolateLeft: "clamp",
+        // }),
       }}
     >
       <View
         style={{
-          borderRadius: 15,
+          // borderRadius: 15,
           margin: 5,
-          elevation: 5,
+          // elevation: 5,
           flexDirection: "column",
           backgroundColor: theme.wallbg,
-          shadowRadius: 3,
-          shadowColor: theme.primary,
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.3,
+          // shadowRadius: 3,
+          // shadowColor: theme.primary,
+          // shadowOffset: { width: 0, height: 2 },
+          // shadowOpacity: 0.3,
         }}
       >
+        <T.H4 style={{ paddingHorizontal: 10, paddingBottom: 5, fontSize: 14 }}>
+          Filter by users and categories
+        </T.H4>
         <ListSelectableUsersWithUnreadCountAndAddNew />
         <MultiSelectFilterButtons
           options={["Movies", "Shows", "Books", "Places"]}

@@ -51,6 +51,7 @@ export default function QuickActionProfileButton({ y }) {
       }}
     >
       <TouchableOpacity
+        activeOpacity={0.5}
         style={{
           elevation: 3,
           backgroundColor: theme.wallbg,

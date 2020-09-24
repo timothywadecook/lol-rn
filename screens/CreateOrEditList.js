@@ -16,9 +16,10 @@ import UserListItem from "../components/ListItems/UserListItem";
 import { usersService, listsService } from "../services/feathersClient";
 
 import { updateList, addCreatedList } from "../store/listsSlice";
+import { useNavigation } from "@react-navigation/native";
 
 export default function CreateOrEditList({ navigation, route }) {
-  const { list, isEdit } = route.params;
+  const { list, isEdit } = route.params || {};
   const theme = useTheme();
   const sessionUserId = useSelector((state) => state.user._id);
   const dispatch = useDispatch();
@@ -35,7 +36,7 @@ export default function CreateOrEditList({ navigation, route }) {
       setIsPrivate(list.isPrivate);
       setParticipants(list.participants);
     } else {
-      setIsPrivate(list.isPrivate);
+      setIsPrivate(false);
     }
   };
   React.useEffect(ifEditMode, []);
@@ -91,7 +92,7 @@ export default function CreateOrEditList({ navigation, route }) {
 
   return (
     <Screen center={true}>
-      <EditListHeader isEditMode={isEdit} />
+      <EditListHeader isEditMode={isEdit} list={list} />
       <EditName name={name} setName={setName} />
       <ToggleIsPrivate
         isPrivate={isPrivate}
@@ -112,8 +113,20 @@ export default function CreateOrEditList({ navigation, route }) {
   );
 }
 
-function EditListHeader({ isEditMode }) {
+function EditListHeader({ isEditMode, list }) {
+  console.log("list ?", list);
   const theme = useTheme();
+  const navigation = useNavigation();
+  const onDeleteList = async () => {
+    try {
+      listsService.remove(list._id);
+      dispatch(removeDeletedList(list._id));
+      navigation.goBack();
+    } catch (error) {
+      console.log("Error onDeleteList for listId", list, error);
+    }
+  };
+
   return (
     <View
       style={{
@@ -130,7 +143,9 @@ function EditListHeader({ isEditMode }) {
       <View style={{ flex: 2, alignItems: "center" }}>
         <H2>{isEditMode ? "Edit List" : "Create List"}</H2>
       </View>
-      <View style={{ flex: 1 }}></View>
+      <View style={{ flex: 1 }}>
+        {isEditMode && <SubmitButton title="Delete" onPress={onDeleteList} />}
+      </View>
     </View>
   );
 }

@@ -47,7 +47,9 @@ export const LikeButton = iconButtonCreator("md-heart");
 export const CommentButton = iconButtonCreator("md-text");
 export const RepostButton = iconButtonCreator("md-repeat");
 export const AddCircle = iconButtonCreator("md-add-circle");
-export const AddToList = iconButtonCreator("md-add");
+export const AddToList = iconButtonCreator("md-add"); // md-add
+export const Bookmark = iconButtonCreator("md-bookmark");
+export const Bookmarks = iconButtonCreator("md-bookmarks");
 export const RemoveCircle = iconButtonCreator("md-remove-circle-outline");
 export const CheckmarkCircle = iconButtonCreator("md-checkmark-circle");
 export const Circle = iconButtonCreator("circle", Feather);
@@ -61,6 +63,8 @@ export const Delete = iconButtonCreator("md-trash");
 export const IsShared = iconButtonCreator("md-people");
 
 const IconButtons = {
+  Bookmark,
+  Bookmarks,
   ThreeDots,
   Settings,
   Close,

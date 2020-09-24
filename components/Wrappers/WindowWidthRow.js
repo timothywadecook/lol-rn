@@ -2,15 +2,19 @@ import React from "react";
 import { View } from "react-native";
 import useTheme from "../../hooks/useTheme";
 
-export default function WindowWidthRow({ children }) {
+export default function WindowWidthRow({ children, pad, style }) {
   const theme = useTheme();
   return (
     <View
-      style={{
-        width: theme.windowWidth,
-        flexDirection: "row",
-        alignItems: "center",
-      }}
+      style={[
+        {
+          width: theme.windowWidth,
+          flexDirection: "row",
+          alignItems: "center",
+          padding: pad ? 10 : 0,
+        },
+        style,
+      ]}
     >
       {children}
     </View>

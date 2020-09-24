@@ -53,7 +53,7 @@ export default function SelectDirectRecipients({
     <View
       style={{ width: theme.windowWidth, paddingHorizontal: 10, paddingTop: 3 }}
     >
-      <T.H2G>Tap Direct Recipients</T.H2G>
+      <T.H2G>Tag a Friend</T.H2G>
 
       <FlatList
         keyboardShouldPersistTaps="handled"

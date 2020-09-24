@@ -10,6 +10,8 @@ import BackButton from "../../components/Atomic/BackButton";
 import MyModal from "../../components/Modal";
 import { ThingItemWithAddToList } from "../../components/ListItems/ThingItem";
 import SelectDirectRecipients from "../../components/Lists/SelectDirectRecipients";
+import WindowWidthRow from "../../components/Wrappers/WindowWidthRow";
+import * as T from "../../components/Atomic/StyledText";
 
 import MoviesAndShowsInput from "../../components/Inputs/MoviesAndShowsInput";
 import BooksInput from "../../components/Inputs/BooksInput";
@@ -88,6 +90,8 @@ export default function CreateScreen({ navigation, route }) {
   const userId = useSelector((state) => state.user._id);
   const dispatch = useDispatch();
 
+  const [isRecommendation, setIsRecommendation] = useState(false);
+
   const [processing, setProcessing] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [category, setCategory] = useState("");
@@ -101,6 +105,7 @@ export default function CreateScreen({ navigation, route }) {
     setItem({});
     setItemChosen(false);
     setCategory("");
+    setIsRecommendation(false);
   };
 
   const receiveRepost = () => {
@@ -109,6 +114,7 @@ export default function CreateScreen({ navigation, route }) {
       setCategory(repost.category);
       setItem(repost);
       setItemChosen(true);
+      setIsRecommendation(true);
     } else {
       setCategory("Movie");
     }
@@ -151,6 +157,12 @@ export default function CreateScreen({ navigation, route }) {
             type="create"
           />
 
+          {!itemChosen && (
+            <WindowWidthRow pad={true}>
+              <T.H1>Search {category + "s"}</T.H1>
+            </WindowWidthRow>
+          )}
+
           <View
             style={{
               flexDirection: "row",
@@ -191,28 +203,48 @@ export default function CreateScreen({ navigation, route }) {
               />
             )}
 
-            {/* {itemChosen && (
+            {isRecommendation && itemChosen && (
               <SelectDirectRecipients
                 directRecipients={directRecipients}
                 setDirectRecipients={setDirectRecipients}
               />
-            )} */}
+            )}
 
-            <MainCommentField
-              hide={!itemChosen}
-              styles={styles}
-              theme={theme}
-              item={item}
-              setItem={setItem}
-            />
+            {isRecommendation && (
+              <MainCommentField
+                hide={!itemChosen}
+                styles={styles}
+                theme={theme}
+                item={item}
+                setItem={setItem}
+              />
+            )}
 
-            {itemChosen && !!item.main_comment && (
+            {isRecommendation && itemChosen && !!item.main_comment && (
               <SubmitButton
                 isProcessing={processing}
                 intent="primary"
-                title="Post"
+                title="Post Recommendation"
                 fullwidth={true}
                 onPress={submitCreate}
+              />
+            )}
+            {/* {itemChosen && !isRecommendation && (
+              <SubmitButton
+                intent="primary"
+                title="Save to Collection"
+                fullwidth={true}
+                onPress={() =>
+                  navigation.navigate("AddToCollection", { thingId: item._id })
+                }
+              />
+            )} */}
+            {itemChosen && !isRecommendation && (
+              <SubmitButton
+                intent="primary"
+                title="Recommend"
+                fullwidth={true}
+                onPress={() => setIsRecommendation(true)}
               />
             )}
             {itemChosen && (

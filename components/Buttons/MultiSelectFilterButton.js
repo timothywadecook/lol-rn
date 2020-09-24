@@ -23,15 +23,17 @@ export default function MutliSelectFilterButton({
     <TouchableOpacity
       onPress={() => (isActive ? removeFromSelected() : addToSelected())}
       style={{
-        paddingVertical: 10,
-        paddingHorizontal: 10,
-        marginHorizontal: 10,
+        // paddingVertical: 10,
+        // paddingHorizontal: 10,
+        padding: 15,
+        marginHorizontal: 6,
         justifyContent: "center",
         alignItems: "center",
-        borderRadius: 15,
+        // borderRadius: 15,
+        borderRadius: 30,
         backgroundColor: isActive ? theme.activeButtonBg : "transparent",
-        borderColor: theme.wallbg,
-        borderWidth: isActive ? 1 : 0,
+        borderColor: theme.iconDefault,
+        borderWidth: !isActive ? 1 : 0,
       }}
     >
       <H2

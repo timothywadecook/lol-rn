@@ -7,6 +7,7 @@ import { onScrollEvent } from "react-native-redash";
 import { HEIGHT } from "../FilterMenu";
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 // Components
+import PressableListItem from "../ListItems/PressableListItem";
 import ActivityIndicatorCentered from "../Atomic/ActivityIndicatorCentered";
 import * as T from "../Atomic/StyledText";
 // Hooks
@@ -27,6 +28,7 @@ const FilteredRecommendationsList = ({
 
   const renderItem = ({ item }) => (
     <ListItem spaced={true} recId={item} categories={categories} />
+    // <PressableListItem recId={item} categories={categories} />
   );
 
   const renderFooter = () => (
@@ -73,7 +75,7 @@ const FilteredRecommendationsList = ({
           autoscrollToTopThreshold: 3,
         }}
         contentContainerStyle={{
-          paddingTop: topPad ? HEIGHT + 100 : 0,
+          paddingTop: topPad ? HEIGHT + 30 : 0,
           alignItems: "center",
         }}
       />

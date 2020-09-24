@@ -1,13 +1,13 @@
 import React from "react";
-import { View, Button, Image } from "react-native";
+import { View, Image } from "react-native";
 // components
 import * as T from "../Atomic/StyledText";
 import IconButtons from "../Buttons/IconButtons";
-import AddThingToListModal from "../AddThingToListModal";
 import { Entypo } from "@expo/vector-icons";
 // hooks
 import useTheme from "../../hooks/useTheme";
 import { thingsService } from "../../services/feathersClient";
+import { useNavigation } from "@react-navigation/native";
 
 export default function ThingItem({ thing, children, border, pad }) {
   const theme = useTheme();
@@ -42,7 +42,20 @@ export default function ThingItem({ thing, children, border, pad }) {
             }}
           />
         ) : thing.category === "Place" ? (
-          <PlaceIcon />
+          <View
+            style={{
+              width: 30, //  100,
+              height: 40, // 140,
+              backgroundColor: theme.iconBg,
+              borderRadius: 5,
+              alignItems: "center",
+              justifyContent: "center",
+              marginRight: 6,
+              marginTop: 2,
+            }}
+          >
+            <PlaceIcon size={24} />
+          </View>
         ) : null}
 
         <View
@@ -62,7 +75,8 @@ export default function ThingItem({ thing, children, border, pad }) {
 }
 
 export function ThingItemWithAddToList({ thing, onComplete, border, pad }) {
-  const [showModal, setShowModal] = React.useState(false);
+  const theme = useTheme();
+  const navigation = useNavigation();
   const [thingId, setThingId] = React.useState(null);
   const [loading, setLoading] = React.useState(false); // so we cant create while creating
   // if no thingId then fetch thing Id when thing is loaded
@@ -90,17 +104,10 @@ export function ThingItemWithAddToList({ thing, onComplete, border, pad }) {
 
   return (
     <ThingItem pad={pad} border={border} thing={thing}>
-      {showModal && (
-        <AddThingToListModal
-          onComplete={onComplete}
-          showModal={showModal}
-          setShowModal={setShowModal}
-          thingId={thingId}
-        />
-      )}
-      <IconButtons.AddToList
-        active={showModal}
-        onPress={() => setShowModal(true)}
+      <IconButtons.Bookmark
+        onPress={() =>
+          navigation.navigate("AddToCollections", { thingId: thing._id })
+        }
       />
     </ThingItem>
   );
@@ -119,15 +126,15 @@ const getThingId = async (thing) => {
   }
 };
 
-function PlaceIcon() {
+function PlaceIcon({ size = 30 }) {
   const theme = useTheme();
 
   return (
     <Entypo
-      style={{ width: 30, marginRight: 8, marginLeft: -8 }}
+      style={{ marginTop: 2 }}
       name="location-pin"
-      size={40}
-      color={theme.iconDefault}
+      size={size}
+      color={theme.red}
     />
   );
 }

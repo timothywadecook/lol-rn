@@ -16,10 +16,14 @@ import List from "./screens/List";
 import Home from "./screens/Tabs/Home";
 import Profile from "./screens/Tabs/Profile";
 import Create from "./screens/Tabs/Create";
+import Collections from "./screens/Collections";
+import AddToCollections from "./screens/AddToCollections";
 // Actions
 import { login, setAppIsReady } from "./store/userSlice";
 
 const Stack = createStackNavigator();
+const RootStack = createStackNavigator();
+// const Stack = createSharedElementStackNavigator()
 
 const mapState = (state) => ({
   appIsReady: state.user.appIsReady,
@@ -56,19 +60,8 @@ const Router = ({
     };
   }, []);
 
-  if (!appIsReady) {
+  const MainStack = () => {
     return (
-      <Text style={{ marginTop: 50 }}>
-        We are in no man's land now. Close the app and reopen to get back to
-        normal.
-      </Text>
-    );
-  }
-  return (
-    <NavigationContainer linking={LinkingConfiguration}>
-      <StatusBar
-        barStyle={theme === "dark" ? "light-content" : "dark-content"}
-      />
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
@@ -108,6 +101,39 @@ const Router = ({
           />
         )}
       </Stack.Navigator>
+    );
+  };
+
+  if (!appIsReady) {
+    return (
+      <Text style={{ marginTop: 50 }}>
+        We are in no man's land now. Close the app and reopen to get back to
+        normal.
+      </Text>
+    );
+  }
+  return (
+    <NavigationContainer linking={LinkingConfiguration}>
+      <StatusBar
+        barStyle={theme === "dark" ? "light-content" : "dark-content"}
+      />
+      <RootStack.Navigator mode="modal">
+        <RootStack.Screen
+          name="Main"
+          component={MainStack}
+          options={{ headerShown: false }}
+        />
+        <RootStack.Screen
+          name="Collections"
+          component={Collections}
+          options={{ headerShown: false }}
+        />
+        <RootStack.Screen
+          name="AddToCollections"
+          component={AddToCollections}
+          options={{ headerShown: false }}
+        />
+      </RootStack.Navigator>
     </NavigationContainer>
   );
 };

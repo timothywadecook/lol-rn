@@ -1,8 +1,8 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 // Components
-import { View, TouchableWithoutFeedback } from "react-native";
-import { FancyH1, H4 } from "../Atomic/StyledText";
+import { View, TouchableWithoutFeedback, TouchableOpacity } from "react-native";
+import * as T from "../Atomic/StyledText";
 import IconButtons from "../Buttons/IconButtons";
 import { ThingItemWithAddToList } from "./ThingItem";
 import Card from "../Atomic/Card";
@@ -68,12 +68,12 @@ export default function ListItem({
   const directShareText = () => {
     if (r.directRecipients && r.directRecipients.includes(sessionUserId)) {
       return (
-        <H4 style={{ color: theme.purple }}>
+        <T.H4 style={{ color: theme.purple }}>
           {`recommends a ${r.thing.category}`}
-        </H4>
+        </T.H4>
       );
     }
-    return <H4>{`likes a ${r.thing.category}`}</H4>;
+    return <T.H4>{`likes a ${r.thing.category}`}</T.H4>;
   };
 
   const listStyle = spaced
@@ -90,29 +90,29 @@ export default function ListItem({
   return (
     <View style={listStyle}>
       <UserListItem user={r.creator} lean={true} adjacentText={directShareText}>
-        <H4>{moment(r.createdAt).fromNow()}</H4>
+        <T.H4>{moment(r.createdAt).fromNow()}</T.H4>
       </UserListItem>
 
       <Card bottomMargin={spaced}>
-        <CardContent>
-          <ThingItemWithAddToList border={false} thing={r.thing} />
-          <TouchableWithoutFeedback
-            disabled={disableLink}
-            onPress={openDetails}
-          >
-            <FancyH1 style={{ fontSize: 20, marginVertical: 20 }}>
-              {r.main_comment}
-            </FancyH1>
-          </TouchableWithoutFeedback>
-        </CardContent>
+        <TouchableWithoutFeedback onPress={openDetails} disabled={disableLink}>
+          <View>
+            <CardContent>
+              <ThingItemWithAddToList border={false} thing={r.thing} />
 
-        <CardActionBar
-          r={r}
-          toggleDisliked={toggleDisliked}
-          toggleLiked={toggleLiked}
-          openDetails={openDetails}
-          onRepost={onRepost}
-        />
+              <T.FancyH1 style={{ fontSize: 20, paddingVertical: 10 }}>
+                {r.main_comment}
+              </T.FancyH1>
+            </CardContent>
+
+            <CardActionBar
+              r={r}
+              toggleDisliked={toggleDisliked}
+              toggleLiked={toggleLiked}
+              openDetails={openDetails}
+              onRepost={onRepost}
+            />
+          </View>
+        </TouchableWithoutFeedback>
       </Card>
     </View>
   );
@@ -125,6 +125,7 @@ const CardActionBar = ({
   openDetails,
   onRepost,
 }) => {
+  const theme = useTheme();
   return (
     <View
       style={{

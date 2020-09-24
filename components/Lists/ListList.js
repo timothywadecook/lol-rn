@@ -7,6 +7,7 @@ import ListListItem from "../ListItems/ListListItem";
 import { Add } from "../Buttons/IconButtons";
 import ProfileCard from "../Atomic/ProfileCard";
 import * as T from "../Atomic/StyledText";
+import NewCollectionModal from "../NewCollectionModal";
 //
 import useTheme from "../../hooks/useTheme";
 //
@@ -14,9 +15,11 @@ import { listsService } from "../../services/feathersClient";
 import { addLoadedLists } from "../../store/listsSlice";
 import HorizontalThingList from "./HorizontalThingList";
 
-export default function ListList({ userId, privateList }) {
+export default function ListList({ userId }) {
   const theme = useTheme();
   const navigation = useNavigation();
+
+  const [showModal, setShowModal] = React.useState(false);
 
   const sessionUserId = useSelector((state) => state.user._id);
   const canCreate = () => sessionUserId === userId;
@@ -53,6 +56,7 @@ export default function ListList({ userId, privateList }) {
 
   return (
     <View>
+      <NewCollectionModal setShowModal={setShowModal} showModal={showModal} />
       {privateListIds.map((listId) => (
         <HorizontalThingList
           key={listId}
@@ -72,19 +76,16 @@ export default function ListList({ userId, privateList }) {
           style={{
             width: theme.contentWidth,
             height: 80,
-            backgroundColor: theme.wallbg,
+            backgroundColor: theme.bg,
             justifyContent: "center",
             alignItems: "center",
+            flexDirection: "row",
             borderRadius: 20,
             alignSelf: "center",
           }}
-          onPress={() =>
-            navigation.navigate("CreateOrEditList", {
-              list: { isPrivate: false },
-            })
-          }
+          onPress={() => navigation.navigate("CreateOrEditList")}
         >
-          <Add active={true} />
+          <T.Title style={{ color: theme.purple }}>NEW COLLECTION</T.Title>
         </TouchableOpacity>
       )}
     </View>
