@@ -28,7 +28,9 @@ const UsernameNavToFriendDetails = ({
       onPress={handleOnPress}
       style={{ flexDirection: "row", alignItems: "center", marginRight: 5 }}
     >
-      {withAvatar && <Avatar style={{ margin: 7 }} user={friend} />}
+      {withAvatar && !!friend.username && (
+        <Avatar style={{ margin: 7 }} user={friend} />
+      )}
       {withName && <H2>{friend.username}</H2>}
     </TouchableOpacity>
   );

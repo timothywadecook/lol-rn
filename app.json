@@ -15,7 +15,7 @@
     "facebookAutoLogAppEventsEnabled": true,
     "facebookAdvertiserIDCollectionEnabled": false,
     "facebookScheme": "fb576643239675500",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -31,7 +31,7 @@
     "ios": {
       "usesAppleSignIn": true,
       "supportsTablet": true,
-      "buildNumber": "1.0.3",
+      "buildNumber": "1.0.0",
       "bundleIdentifier": "app.likeoutloud",
       "config": {
         "googleSignIn": {

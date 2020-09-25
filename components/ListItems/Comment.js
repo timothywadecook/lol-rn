@@ -25,37 +25,22 @@ export default function Comment({ text, creator, large = false }) {
     fetchUser(creator);
   }, []);
 
-  if (friend.username) {
-    return (
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "flex-start",
-          // justifyContent: "flex-start",
-          //   flexWrap: "wrap",
-          padding: 10,
-        }}
-      >
-        <UsernameNavToFriendDetails
-          withAvatar={true}
-          withName={false}
-          friend={friend}
-        />
-        <View style={{ flex: 1, flexDirection: "column", paddingTop: 5 }}>
-          <T.FancyH1 style={{ fontSize: large ? 20 : 14 }}>{text}</T.FancyH1>
-        </View>
-      </View>
-    );
-  }
   return (
     <View
       style={{
         flexDirection: "row",
-        alignItems: "center",
+        alignItems: "flex-start",
         padding: 10,
       }}
     >
-      <ActivityIndicatorCentered size="small" />
+      <UsernameNavToFriendDetails
+        withAvatar={true}
+        withName={false}
+        friend={friend}
+      />
+      <View style={{ flex: 1, flexDirection: "column", paddingTop: 5 }}>
+        <T.FancyH1 style={{ fontSize: large ? 20 : 14 }}>{text}</T.FancyH1>
+      </View>
     </View>
   );
 }
