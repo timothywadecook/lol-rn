@@ -15,8 +15,6 @@ export function ThingItem({ thing, children, border, pad }) {
   const navigation = useNavigation();
   const { image, title, subtitle } = thing;
 
-  console.log("thing ? ", thing);
-
   return (
     <TouchableOpacity
       onPress={() => navigation.navigate("ThingDetails", { thing })}

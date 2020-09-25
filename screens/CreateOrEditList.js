@@ -4,8 +4,9 @@ import { useSelector, useDispatch } from "react-redux";
 import IconButtons from "../components/Buttons/IconButtons";
 import SubmitButton from "../components/Buttons/SubmitButton";
 
-import { Title, H2G, H2 } from "../components/Atomic/StyledText";
+import * as T from "../components/Atomic/StyledText";
 import BackButton from "../components/Atomic/BackButton";
+import WindowWidthRow from "../components/Wrappers/WindowWidthRow";
 
 import Screen from "../components/Wrappers/Screen";
 
@@ -129,25 +130,12 @@ function EditListHeader({ isEditMode, list }) {
   };
 
   return (
-    <View
-      style={{
-        paddingBottom: 5,
-        borderBottomWidth: 1,
-        borderBottomColor: theme.bg,
-        flexDirection: "row",
-        alignItems: "center",
-      }}
-    >
-      <View style={{ flex: 1, alignItems: "flex-start" }}>
-        <BackButton />
-      </View>
-      <View style={{ flex: 2, alignItems: "center" }}>
-        <H2>{isEditMode ? "Edit List" : "Create List"}</H2>
-      </View>
-      <View style={{ flex: 1, paddingRight: 10 }}>
-        {isEditMode && <SubmitButton title="Delete" onPress={onDeleteList} />}
-      </View>
-    </View>
+    <WindowWidthRow pad={true}>
+      <BackButton noLeftMargin={true} />
+      <T.H1>{isEditMode ? "Edit List" : "New List"}</T.H1>
+      <View style={{ flex: 1 }}></View>
+      {isEditMode && <SubmitButton title="Delete" onPress={onDeleteList} />}
+    </WindowWidthRow>
   );
 }
 
@@ -172,7 +160,7 @@ function EditName({ name, setName }) {
   return (
     <View style={{ width: theme.contentWidth }}>
       <View style={{ paddingTop: 30, paddingBottom: 15 }}>
-        <H2G>List Name</H2G>
+        <T.H2G>List Name</T.H2G>
       </View>
 
       <TextInput
@@ -198,7 +186,7 @@ function ToggleIsPrivate({ isPrivate, toggleIsPrivate }) {
   return (
     <View style={{ width: theme.contentWidth }}>
       <View style={{ paddingTop: 30, paddingBottom: 15 }}>
-        <H2G>Secret List</H2G>
+        <T.H2G>Secret List</T.H2G>
       </View>
 
       <Switch value={isPrivate} onValueChange={toggleIsPrivate} />
@@ -238,9 +226,12 @@ function SelectableUserList({
   return (
     <View style={{ flex: 1, width: theme.contentWidth }}>
       <View style={{ paddingTop: 30, paddingBottom: 15 }}>
-        <H2G>Participants</H2G>
+        <T.H2G>Participants</T.H2G>
       </View>
-      <ScrollView>
+      <ScrollView
+        contentContainerStyle={{ paddingVertical: 15 }}
+        showsVerticalScrollIndicator={false}
+      >
         {candidates.map((u) => (
           <UserListItem key={u._id} user={u}>
             {!isParticipant(u._id) ? (

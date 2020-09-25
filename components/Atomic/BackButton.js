@@ -4,7 +4,7 @@ import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import useTheme from "../../hooks/useTheme";
 
-export default function BackButton() {
+export default function BackButton({ noLeftMargin = false }) {
   const navigation = useNavigation();
   const theme = useTheme();
 
@@ -12,6 +12,7 @@ export default function BackButton() {
     <TouchableOpacity
       style={{
         marginHorizontal: 10,
+        marginLeft: noLeftMargin ? 0 : 10,
         alignItems: "center",
         justifyContent: "center",
         padding: 5,

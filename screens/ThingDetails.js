@@ -1,4 +1,5 @@
 import React from "react";
+import { View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import WindowWidthRow from "../components/Wrappers/WindowWidthRow";
 import * as T from "../components/Atomic/StyledText";
@@ -108,9 +109,16 @@ export default function ThingDetails({ route }) {
         />
       </WindowWidthRow>
 
-      {!!recommendations.length && (
+      {!!recommendations.length ? (
         <WindowWidthRow pad={true}>
           <T.Title>All Recommendations</T.Title>
+        </WindowWidthRow>
+      ) : (
+        <WindowWidthRow pad={true}>
+          <View>
+            <T.Title>No Recommendations Yet</T.Title>
+            <T.H4>You could be the first</T.H4>
+          </View>
         </WindowWidthRow>
       )}
 

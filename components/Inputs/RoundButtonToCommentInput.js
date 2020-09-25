@@ -33,7 +33,7 @@ export default function CommentInput({
 
           {active && (
             <TextInput
-              style={{ color: theme.primary, width: theme.windowWidth * 0.7 }}
+              style={{ color: theme.primary, width: theme.windowWidth * 0.5 }}
               onFocus={() => scrollToInput()}
               onEndEditing={() => {
                 setActive(false);

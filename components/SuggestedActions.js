@@ -12,10 +12,7 @@ import {
 } from "../store/recommendationsSlice";
 
 export default function SuggestedActions({ r, onSubmitComment }) {
-  const theme = useTheme();
   const dispatch = useDispatch();
-
-  const sessionUser = useSelector((state) => state.user);
 
   const [options, setOptions] = React.useState([
     "Yessss! 🙌",
@@ -72,13 +69,12 @@ export default function SuggestedActions({ r, onSubmitComment }) {
             <RoundButtonToCommentInput
               scrollToInput={() => {
                 flatlistRef.current.scrollToOffset({
-                  offset: 90,
+                  offset: 0,
                 });
               }}
               scrollToStart={() => {
-                flatlistRef.current.scrollToIndex({
-                  index: 0,
-                  viewPosition: 0,
+                flatlistRef.current.scrollToOffset({
+                  offset: 0,
                 });
               }}
               onSubmitComment={onSubmitComment}
@@ -88,9 +84,6 @@ export default function SuggestedActions({ r, onSubmitComment }) {
         renderItem={({ item }) => (
           <RoundButton
             solid={true}
-            // renderIcon={() => (
-            //   <Avatar user={sessionUser} style={{ marginRight: 10 }} />
-            // )}
             onPress={() => {
               onSubmitComment(item);
               setOptions(options.filter((o) => o !== item));
@@ -98,7 +91,7 @@ export default function SuggestedActions({ r, onSubmitComment }) {
             title={item}
           />
         )}
-        keyExtractor={(item) => item + Math.random()}
+        keyExtractor={(item) => item + r._id}
       />
     </View>
   );
