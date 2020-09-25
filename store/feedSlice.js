@@ -84,7 +84,7 @@ export const refreshFeedAsync = () => async (dispatch, getState) => {
 
     dispatch(addLoadedRecommendations(response.data));
     dispatch(setRefreshedData(response.data.map((r) => r._id)));
-    dispatch(setMoreToFetch(response.total > response.skip));
+    dispatch(setMoreToFetch(response.total > response.data.length));
     dispatch(setRefreshing(false));
   } catch {
     console.log("Error while trying to refresh recommendations");

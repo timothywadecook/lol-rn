@@ -1,5 +1,5 @@
 import React from "react";
-import { View } from "react-native";
+import { ActivityIndicator, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import WindowWidthRow from "../components/Wrappers/WindowWidthRow";
 import * as T from "../components/Atomic/StyledText";
@@ -29,7 +29,6 @@ export default function ThingDetails({ route }) {
 
   const fetchMore = async () => {
     if (!loading && !refreshing && !!thingId && moreToFetch) {
-      console.log("fetching more");
       try {
         setLoading(true);
         const res = await recommendationsService.find({
@@ -77,13 +76,8 @@ export default function ThingDetails({ route }) {
 
   const y = React.useMemo(() => new Animated.Value(0), []);
 
-  return (
-    <Screen center={true}>
-      <WindowWidthRow pad={true}>
-        <BackButton />
-        <T.H1>Details</T.H1>
-      </WindowWidthRow>
-
+  const renderHeader = () => (
+    <View style={{ alignItems: "center" }}>
       <ThingImage size={140} thing={thing} />
       <T.Title style={{ paddingVertical: 5 }}>{thing.title}</T.Title>
       <T.H3>{thing.subtitle}</T.H3>
@@ -109,7 +103,9 @@ export default function ThingDetails({ route }) {
         />
       </WindowWidthRow>
 
-      {!!recommendations.length ? (
+      {refreshing ? (
+        <ActivityIndicator />
+      ) : !!recommendations.length ? (
         <WindowWidthRow pad={true}>
           <T.Title>All Recommendations</T.Title>
         </WindowWidthRow>
@@ -121,6 +117,15 @@ export default function ThingDetails({ route }) {
           </View>
         </WindowWidthRow>
       )}
+    </View>
+  );
+
+  return (
+    <Screen center={true}>
+      <WindowWidthRow pad={true}>
+        <BackButton />
+        <T.H1>Details</T.H1>
+      </WindowWidthRow>
 
       <FilteredRecommendationsList
         loading={loading}
@@ -130,6 +135,8 @@ export default function ThingDetails({ route }) {
         recommendations={recommendations}
         categories={[]}
         y={y}
+        renderHeader={renderHeader}
+        initialNumToRender={1}
       />
     </Screen>
   );

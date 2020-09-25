@@ -68,7 +68,7 @@ export default function ListList({ userId }) {
           style={{
             width: theme.contentWidth,
             height: 80,
-            backgroundColor: theme.bg,
+            backgroundColor: theme.iconBg,
             justifyContent: "center",
             alignItems: "center",
             flexDirection: "row",

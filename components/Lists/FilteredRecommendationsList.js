@@ -22,6 +22,8 @@ const FilteredRecommendationsList = ({
   topPad = false,
   categories,
   y,
+  renderHeader = null,
+  initialNumToRender = 4,
 }) => {
   const theme = useTheme();
   const styles = getStyles(theme);
@@ -61,18 +63,13 @@ const FilteredRecommendationsList = ({
         refreshing={refreshing}
         data={recommendations}
         renderItem={renderItem}
-        initialNumToRender={4}
+        initialNumToRender={initialNumToRender}
         keyExtractor={(item) => item}
         showsVerticalScrollIndicator={false}
         ListFooterComponent={renderFooter}
-        bounces={true}
-        // onScrollEndDrag={onScroll}
+        ListHeaderComponent={renderHeader}
         onScroll={onScroll}
         scrollEventThrottle={16}
-        maintainVisibleContentPosition={{
-          minIndexForVisible: 1,
-          autoscrollToTopThreshold: 3,
-        }}
         contentContainerStyle={{
           paddingTop: topPad ? HEIGHT + 50 : 0,
           alignItems: "center",
