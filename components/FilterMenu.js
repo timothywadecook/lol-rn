@@ -27,21 +27,25 @@ export default function FilterMenu({ y, categories, setCategories }) {
   return (
     <Animated.View
       style={{
-        top: 135,
+        top: 120,
         position: "absolute",
         zIndex: 1,
         transform: [
           {
             translateY: interpolate(y, {
               inputRange: [0, HEIGHT],
-              outputRange: [0, -HEIGHT / 2],
+              outputRange: [0, -HEIGHT / 1.5],
               // extrapolateLeft: "clamp",
             }),
           },
         ],
         backgroundColor: "transparent",
-        paddingVertical: 10,
+
         width: theme.windowWidth,
+        // borderTopColor: theme.iconBg,
+        // borderTopWidth: 1,
+        borderBottomColor: theme.iconBg,
+        borderBottomWidth: 1,
         // opacity: interpolate(diffClampY, {
         //   inputRange: [80, 90],
         //   outputRange: [1, 0],
@@ -51,13 +55,15 @@ export default function FilterMenu({ y, categories, setCategories }) {
     >
       <View
         style={{
-          margin: 5,
+          // margin: 5,
+          padding: 5,
+          paddingVertical: 10,
           flexDirection: "column",
-          backgroundColor: theme.wallbg,
+          backgroundColor: theme.bg,
         }}
       >
         <T.H4 style={{ paddingHorizontal: 10, paddingBottom: 5, fontSize: 14 }}>
-          Filter by users and categories
+          Tap to filter by users and categories
         </T.H4>
         <ListSelectableUsersWithUnreadCountAndAddNew />
         <MultiSelectFilterButtons

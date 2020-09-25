@@ -12,10 +12,11 @@ const iconButtonCreator = (iconName, Icons = Ionicons) => ({
   size = 22,
   count = 0,
   padding = 8,
+  paddingHorizontal = 8,
 }) => {
   const theme = useTheme();
-  const countColor = theme.tabIconDefault;
-  const iconColor = active ? theme.purple : theme.tabIconDefault;
+  const countColor = active ? theme.purple : theme.iconDefault;
+  const iconColor = active ? theme.purple : theme.iconDefault;
   return (
     <TouchableOpacity
       style={{
@@ -32,7 +33,7 @@ const iconButtonCreator = (iconName, Icons = Ionicons) => ({
         </View>
       ) : null}
       <Icons
-        style={{ padding }}
+        style={{ padding, paddingHorizontal }}
         name={iconName}
         size={size}
         color={iconColor}

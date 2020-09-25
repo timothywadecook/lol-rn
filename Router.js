@@ -18,12 +18,12 @@ import Profile from "./screens/Tabs/Profile";
 import Create from "./screens/Tabs/Create";
 import Collections from "./screens/Collections";
 import AddToCollections from "./screens/AddToCollections";
+import SearchThings from "./screens/SearchThings";
+import ThingDetails from "./screens/ThingDetails";
 // Actions
 import { login, setAppIsReady } from "./store/userSlice";
 
 const Stack = createStackNavigator();
-const RootStack = createStackNavigator();
-// const Stack = createSharedElementStackNavigator()
 
 const mapState = (state) => ({
   appIsReady: state.user.appIsReady,
@@ -60,8 +60,19 @@ const Router = ({
     };
   }, []);
 
-  const MainStack = () => {
+  if (!appIsReady) {
     return (
+      <Text style={{ marginTop: 50 }}>
+        We are in no man's land now. Close the app and reopen to get back to
+        normal.
+      </Text>
+    );
+  }
+  return (
+    <NavigationContainer linking={LinkingConfiguration}>
+      <StatusBar
+        barStyle={theme === "dark" ? "light-content" : "dark-content"}
+      />
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
@@ -89,6 +100,13 @@ const Router = ({
             <Stack.Screen name="Create" component={Create} />
             <Stack.Screen name="Search Users" component={SearchUsers} />
             <Stack.Screen name="List" component={List} />
+            <Stack.Screen name="Collections" component={Collections} />
+            <Stack.Screen name="SearchThings" component={SearchThings} />
+            <Stack.Screen name="ThingDetails" component={ThingDetails} />
+            <Stack.Screen
+              name="AddToCollections"
+              component={AddToCollections}
+            />
           </React.Fragment>
         ) : (
           <Stack.Screen
@@ -101,39 +119,6 @@ const Router = ({
           />
         )}
       </Stack.Navigator>
-    );
-  };
-
-  if (!appIsReady) {
-    return (
-      <Text style={{ marginTop: 50 }}>
-        We are in no man's land now. Close the app and reopen to get back to
-        normal.
-      </Text>
-    );
-  }
-  return (
-    <NavigationContainer linking={LinkingConfiguration}>
-      <StatusBar
-        barStyle={theme === "dark" ? "light-content" : "dark-content"}
-      />
-      <RootStack.Navigator mode="modal">
-        <RootStack.Screen
-          name="Main"
-          component={MainStack}
-          options={{ headerShown: false }}
-        />
-        <RootStack.Screen
-          name="Collections"
-          component={Collections}
-          options={{ headerShown: false }}
-        />
-        <RootStack.Screen
-          name="AddToCollections"
-          component={AddToCollections}
-          options={{ headerShown: false }}
-        />
-      </RootStack.Navigator>
     </NavigationContainer>
   );
 };

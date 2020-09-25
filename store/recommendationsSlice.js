@@ -47,8 +47,9 @@ const recommendationsSlice = createSlice({
     },
     addCommentByRecId(state, action) {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      state[action.payload].comments.total += 1;
-      state[action.payload].comments.commented = true;
+      state[action.payload.recId].comments.total += 1;
+      state[action.payload.recId].comments.commented = true;
+      state[action.payload.recId].comments.list.push(action.payload.comment);
     },
     addCreatedRecommendation(state, action) {
       // if is repost .. update that one too

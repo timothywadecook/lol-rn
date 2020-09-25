@@ -13,6 +13,7 @@ import WindowWidthRow from "../components/Wrappers/WindowWidthRow";
 import CloseModalButton from "../components/Atomic/CloseModalButton";
 //
 import { updateList } from "../store/listsSlice";
+import BackButton from "../components/Atomic/BackButton";
 
 export default function AddThingToListModal({ navigation, route }) {
   const theme = useTheme();
@@ -63,7 +64,8 @@ export default function AddThingToListModal({ navigation, route }) {
       style={{ flex: 1, backgroundColor: theme.bg, paddingTop: theme.topPad }}
     >
       <WindowWidthRow pad={true}>
-        <CloseModalButton dismissModal={() => navigation.goBack()} />
+        {/* <CloseModalButton dismissModal={() => navigation.goBack()} /> */}
+        <BackButton />
         <T.H1 style={{ marginLeft: 10 }}>Save to...</T.H1>
       </WindowWidthRow>
       <View

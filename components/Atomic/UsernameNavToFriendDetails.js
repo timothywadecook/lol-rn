@@ -9,7 +9,7 @@ import useTheme from "../../hooks/useTheme";
 const UsernameNavToFriendDetails = ({
   friend,
   withAvatar = true,
-  withName = false,
+  withName = true,
 }) => {
   const theme = useTheme();
   const navigation = useNavigation();
@@ -29,7 +29,7 @@ const UsernameNavToFriendDetails = ({
       style={{ flexDirection: "row", alignItems: "center", marginRight: 5 }}
     >
       {withAvatar && <Avatar style={{ margin: 7 }} user={friend} />}
-      <H2>{friend.username}</H2>
+      {withName && <H2>{friend.username}</H2>}
     </TouchableOpacity>
   );
 };

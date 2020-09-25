@@ -90,7 +90,7 @@ export default function QuickActionProfileButton({ y }) {
           justifyContent: "center",
           marginHorizontal: 10,
         }}
-        onPress={() => navigation.navigate("Create")}
+        onPress={() => navigation.navigate("SearchThings")}
       >
         <Feather name="search" size={28} color={theme.primary} />
       </TouchableOpacity>

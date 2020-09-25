@@ -63,7 +63,7 @@ export default function QuickActionCreateButton({ y }) {
           width: SIZE,
           borderRadius: 30,
         }}
-        onPress={() => navigation.navigate("Create")}
+        onPress={() => navigation.navigate("SearchThings")}
       >
         {/* <Feather name="edit" size={30} color={theme.white} /> */}
         <Ionicons name="md-add" size={30} color={theme.white} />

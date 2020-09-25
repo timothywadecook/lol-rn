@@ -1,5 +1,5 @@
 import React from "react";
-import { View } from "react-native";
+import { View, FlatList } from "react-native";
 
 import useTheme from "../hooks/useTheme";
 import SingleFilterButton from "./Buttons/SingleFilterButton";
@@ -19,14 +19,20 @@ const SingleFilterButtonSpan = React.memo(({ options, setFilter, filter }) => {
         elevation: 3,
       }}
     >
-      {options.map((text) => (
-        <SingleFilterButton
-          filter={filter}
-          setFilter={setFilter}
-          text={text}
-          key={text + Math.random()}
-        />
-      ))}
+      <FlatList
+        keyboardShouldPersistTaps="always"
+        showsHorizontalScrollIndicator={false}
+        horizontal={true}
+        data={options}
+        renderItem={({ item }) => (
+          <SingleFilterButton
+            filter={filter}
+            setFilter={setFilter}
+            text={item}
+          />
+        )}
+        keyExtractor={(item) => item + Math.random()}
+      />
     </View>
   );
 });

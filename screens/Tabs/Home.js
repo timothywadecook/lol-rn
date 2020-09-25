@@ -64,16 +64,19 @@ export default function HomeScreen() {
       <WindowWidthRow
         pad={true}
         style={{
-          backgroundColor: theme.wallbg,
+          backgroundColor: theme.bg,
           zIndex: 3,
           paddingTop: theme.topPad + 15,
-          justifyContent: "center",
+          // justifyContent: "center",
+          borderBottomWidth: 1,
+          borderBottomColor: theme.iconBg,
           // flexDirection: "column",
           // alignItems: "flex-start",
           // padding: 10,
         }}
       >
-        <T.FancyH1 style={{ color: theme.purple }}>Like Out Loud</T.FancyH1>
+        {/* <T.FancyH1 style={{ color: theme.purple }}>Like Out Loud</T.FancyH1> */}
+        <T.H1>Recommendations</T.H1>
         {/* <T.H3>Recommendations you can trust</T.H3> */}
       </WindowWidthRow>
 

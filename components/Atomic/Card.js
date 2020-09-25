@@ -1,6 +1,6 @@
 import React from "react";
 import { View } from "react-native";
-
+import Morph from "../Wrappers/Morph";
 import useTheme from "../../hooks/useTheme";
 
 export default Card = (props) => {
@@ -10,15 +10,10 @@ export default Card = (props) => {
     <View
       style={[
         {
-          borderWidth: 1,
-          borderColor: theme.borderColor,
-          marginBottom: props.bottomMargin ? 50 : 0,
-          borderRadius: 25,
+          marginBottom: props.bottomMargin ? 60 : 10,
           padding: 10,
-          width: theme.windowWidth * 0.97,
+          width: theme.windowWidth,
           backgroundColor: theme.bg,
-          // backgroundColor: theme.iconBg,
-
           overflow: "hidden",
         },
         props.style,

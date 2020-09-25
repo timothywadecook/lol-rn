@@ -1,88 +1,40 @@
 import React, { useState } from "react";
 import { View, TextInput, StyleSheet, Image } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import SingleFilterButtonSpan from "../../components/SingleFilterButtonSpan";
 import AnimateExpand from "../../components/Wrappers/AnimateExpand";
 import DismissKeyboard from "../../components/Wrappers/DismissKeyboard";
 import SubmitButton from "../../components/Buttons/SubmitButton";
 import BackButton from "../../components/Atomic/BackButton";
 
-import MyModal from "../../components/Modal";
-import { ThingItemWithAddToList } from "../../components/ListItems/ThingItem";
+import { ThingItem } from "../../components/ListItems/ThingItem";
 import SelectDirectRecipients from "../../components/Lists/SelectDirectRecipients";
 import WindowWidthRow from "../../components/Wrappers/WindowWidthRow";
 import * as T from "../../components/Atomic/StyledText";
 
-import MoviesAndShowsInput from "../../components/Inputs/MoviesAndShowsInput";
-import BooksInput from "../../components/Inputs/BooksInput";
-import GooglePlacesInput from "../../components/Inputs/GooglePlacesInput";
-
 import useTheme from "../../hooks/useTheme";
-import usePrevious from "../../hooks/usePrevious";
 import { createRecommendationAsync } from "../../store/recommendationsSlice";
 
 import Screen from "../../components/Wrappers/Screen";
 
-const MainInputField = ({ category, setItem, itemChosen, setItemChosen }) => {
-  switch (category) {
-    case "Place":
-      return (
-        <GooglePlacesInput
-          setItem={setItem}
-          itemChosen={itemChosen}
-          setItemChosen={setItemChosen}
-        />
-      );
-    case "Book":
-      return (
-        <BooksInput
-          setItem={setItem}
-          itemChosen={itemChosen}
-          setItemChosen={setItemChosen}
-        />
-      );
-    case "Movie":
-      return (
-        <MoviesAndShowsInput
-          category={category}
-          setItem={setItem}
-          itemChosen={itemChosen}
-          setItemChosen={setItemChosen}
-        />
-      );
-    case "Show":
-      return (
-        <MoviesAndShowsInput
-          category={category}
-          setItem={setItem}
-          itemChosen={itemChosen}
-          setItemChosen={setItemChosen}
-        />
-      );
-    default:
-      return null;
-  }
-};
-const MainCommentField = ({ hide, styles, theme, item, setItem }) =>
-  !hide && (
-    <AnimateExpand doAnimation={!hide} height={80}>
-      <TextInput
-        autoFocus={true}
-        style={[styles.textInput, { minHeight: 60, marginTop: 15 }]}
-        autoCorrect={true}
-        placeholder="What would your friends want to know about this?"
-        clearButtonMode="always"
-        onChange={(e) => setItem({ ...item, main_comment: e.nativeEvent.text })}
-        value={item.main_comment}
-        multiline={true}
-        numberOfLines={4}
-        underlineColorAndroid="transparent"
-        keyboardAppearance={theme.theme}
-        returnKeyType="done"
-        blurOnSubmit={true}
-      />
-    </AnimateExpand>
-  );
+const MainCommentField = ({ styles, theme, main_comment, setComment }) => (
+  <AnimateExpand doAnimation={true} height={80}>
+    <TextInput
+      autoFocus={true}
+      style={[styles.textInput, { minHeight: 60, marginTop: 15 }]}
+      autoCorrect={true}
+      placeholder="What would your friends want to know about this?"
+      clearButtonMode="always"
+      onChangeText={(text) => setComment(text)}
+      value={main_comment}
+      multiline={true}
+      numberOfLines={4}
+      underlineColorAndroid="transparent"
+      keyboardAppearance={theme.theme}
+      returnKeyType="done"
+      blurOnSubmit={true}
+    />
+  </AnimateExpand>
+);
 
 export default function CreateScreen({ navigation, route }) {
   const theme = useTheme();
@@ -90,95 +42,37 @@ export default function CreateScreen({ navigation, route }) {
   const userId = useSelector((state) => state.user._id);
   const dispatch = useDispatch();
 
-  const [isRecommendation, setIsRecommendation] = useState(false);
-
   const [processing, setProcessing] = useState(false);
-  const [showModal, setShowModal] = useState(false);
-  const [category, setCategory] = useState("");
-  const prevCategory = usePrevious(category);
-  const [itemChosen, setItemChosen] = useState(false);
-  const [item, setItem] = useState({});
+
+  const { thing } = route.params;
+
+  const [main_comment, setComment] = useState("");
   const [directRecipients, setDirectRecipients] = useState([]);
   const [isPublic, setIsPublic] = useState(true);
-
-  const resetState = () => {
-    setItem({});
-    setItemChosen(false);
-    setCategory("");
-    setIsRecommendation(false);
-  };
-
-  const receiveRepost = () => {
-    if (route.params && route.params.repost) {
-      const { repost } = route.params;
-      setCategory(repost.category);
-      setItem(repost);
-      setItemChosen(true);
-      setIsRecommendation(true);
-    } else {
-      setCategory("Movie");
-    }
-  };
-
-  React.useEffect(receiveRepost, [route.params]);
 
   const submitCreate = async () => {
     setProcessing(true);
     await dispatch(
       createRecommendationAsync({
-        ...item,
+        ...thing,
+        main_comment,
         directRecipients,
         isPublic,
         creator: userId,
       })
     );
     setProcessing(false);
-    resetState();
-    setShowModal(true);
+    navigation.navigate("Home");
   };
-
-  React.useEffect(() => {
-    if (itemChosen && !!prevCategory) {
-      setItem({});
-      setItemChosen(false);
-    }
-  }, [category]);
 
   return (
     <Screen>
       <DismissKeyboard>
         <View style={styles.container}>
-          <MyModal
-            showModal={showModal}
-            setShowModal={(value) => {
-              setShowModal(value);
-              navigation.goBack();
-            }}
-            type="create"
-          />
-
-          {!itemChosen && (
-            <WindowWidthRow pad={true}>
-              <T.H1>Search {category + "s"}</T.H1>
-            </WindowWidthRow>
-          )}
-
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              width: theme.windowWidth,
-            }}
-          >
+          <WindowWidthRow pad={true}>
             <BackButton />
-            <View style={{ flex: 1, paddingRight: 10 }}>
-              <SingleFilterButtonSpan
-                options={["Movie", "Show", "Book", "Place"]}
-                setFilter={setCategory}
-                filter={category}
-              />
-            </View>
-          </View>
+            <T.H1>Recommend</T.H1>
+          </WindowWidthRow>
 
           <View
             style={{
@@ -187,40 +81,21 @@ export default function CreateScreen({ navigation, route }) {
               alignItems: "center",
             }}
           >
-            {itemChosen && (
-              <ThingItemWithAddToList
-                pad={true}
-                thing={item}
-                onComplete={resetState}
-              />
-            )}
-            {!itemChosen && !!category && (
-              <MainInputField
-                category={category}
-                setItem={setItem}
-                itemChosen={itemChosen}
-                setItemChosen={setItemChosen}
-              />
-            )}
+            <ThingItem thing={thing} />
 
-            {isRecommendation && itemChosen && (
-              <SelectDirectRecipients
-                directRecipients={directRecipients}
-                setDirectRecipients={setDirectRecipients}
-              />
-            )}
+            <SelectDirectRecipients
+              directRecipients={directRecipients}
+              setDirectRecipients={setDirectRecipients}
+            />
 
-            {isRecommendation && (
-              <MainCommentField
-                hide={!itemChosen}
-                styles={styles}
-                theme={theme}
-                item={item}
-                setItem={setItem}
-              />
-            )}
+            <MainCommentField
+              styles={styles}
+              theme={theme}
+              main_comment={main_comment}
+              setComment={setComment}
+            />
 
-            {isRecommendation && itemChosen && !!item.main_comment && (
+            {!!main_comment && (
               <SubmitButton
                 isProcessing={processing}
                 intent="primary"
@@ -229,31 +104,11 @@ export default function CreateScreen({ navigation, route }) {
                 onPress={submitCreate}
               />
             )}
-            {/* {itemChosen && !isRecommendation && (
-              <SubmitButton
-                intent="primary"
-                title="Save to Collection"
-                fullwidth={true}
-                onPress={() =>
-                  navigation.navigate("AddToCollection", { thingId: item._id })
-                }
-              />
-            )} */}
-            {itemChosen && !isRecommendation && (
-              <SubmitButton
-                intent="primary"
-                title="Recommend"
-                fullwidth={true}
-                onPress={() => setIsRecommendation(true)}
-              />
-            )}
-            {itemChosen && (
-              <SubmitButton
-                title="Cancel"
-                fullwidth={true}
-                onPress={resetState}
-              />
-            )}
+            <SubmitButton
+              title="Cancel"
+              fullwidth={true}
+              onPress={() => navigation.goBack()}
+            />
           </View>
         </View>
       </DismissKeyboard>

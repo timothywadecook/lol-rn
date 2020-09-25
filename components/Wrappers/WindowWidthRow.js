@@ -2,7 +2,7 @@ import React from "react";
 import { View } from "react-native";
 import useTheme from "../../hooks/useTheme";
 
-export default function WindowWidthRow({ children, pad, style }) {
+export default function WindowWidthRow({ children, pad = false, style }) {
   const theme = useTheme();
   return (
     <View

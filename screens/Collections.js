@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import * as T from "../components/Atomic/StyledText";
 
 import WindowWidthRow from "../components/Wrappers/WindowWidthRow";
+import BackButton from "../components/Atomic/BackButton";
 import CloseModalButton from "../components/Atomic/CloseModalButton";
 
 import ListList from "../components/Lists/ListList";
@@ -27,7 +28,8 @@ export default function Collections({ navigation }) {
       }}
     >
       <WindowWidthRow pad={true}>
-        <CloseModalButton dismissModal={dismissModal} />
+        {/* <CloseModalButton dismissModal={dismissModal} /> */}
+        <BackButton />
         <T.H1 style={{ marginLeft: 10 }}>My Collections</T.H1>
       </WindowWidthRow>
 

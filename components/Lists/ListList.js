@@ -2,12 +2,7 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { View, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-
-import ListListItem from "../ListItems/ListListItem";
-import { Add } from "../Buttons/IconButtons";
-import ProfileCard from "../Atomic/ProfileCard";
 import * as T from "../Atomic/StyledText";
-import NewCollectionModal from "../NewCollectionModal";
 //
 import useTheme from "../../hooks/useTheme";
 //
@@ -18,8 +13,6 @@ import HorizontalThingList from "./HorizontalThingList";
 export default function ListList({ userId }) {
   const theme = useTheme();
   const navigation = useNavigation();
-
-  const [showModal, setShowModal] = React.useState(false);
 
   const sessionUserId = useSelector((state) => state.user._id);
   const canCreate = () => sessionUserId === userId;
@@ -56,7 +49,6 @@ export default function ListList({ userId }) {
 
   return (
     <View>
-      <NewCollectionModal setShowModal={setShowModal} showModal={showModal} />
       {privateListIds.map((listId) => (
         <HorizontalThingList
           key={listId}

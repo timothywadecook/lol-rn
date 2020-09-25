@@ -12,7 +12,12 @@ export default ProfileCard = (props) => {
   return (
     <Card
       bottomMargin={false}
-      style={{ padding: 10, marginBottom: 30, backgroundColor: theme.bg }}
+      style={{
+        paddingVertical: 10,
+        paddingHorizontal: 0,
+        // marginBottom: 30,
+        // backgroundColor: theme.iconBg,
+      }}
     >
       <CardHeader
         title={props.title}

@@ -82,8 +82,10 @@ export default function HorizontalThingList({ listId, canCreate }) {
 function ThingCard({ thing }) {
   const { image, title, subtitle } = thing;
   const theme = useTheme();
+  const navigation = useNavigation();
   return (
-    <View
+    <TouchableOpacity
+      onPress={() => navigation.navigate("ThingDetails", { thing })}
       style={{
         width: 100,
         alignItems: "center",
@@ -129,7 +131,7 @@ function ThingCard({ thing }) {
 
       <T.H2 style={{ paddingBottom: 0 }}>{title}</T.H2>
       {/* <T.H4 style={{ fontWeight: "bold" }}>{subtitle}</T.H4> */}
-    </View>
+    </TouchableOpacity>
   );
 }
 

@@ -28,7 +28,6 @@ const FilteredRecommendationsList = ({
 
   const renderItem = ({ item }) => (
     <ListItem spaced={true} recId={item} categories={categories} />
-    // <PressableListItem recId={item} categories={categories} />
   );
 
   const renderFooter = () => (

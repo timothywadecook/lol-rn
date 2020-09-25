@@ -7,7 +7,7 @@ import ListItem from "../components/ListItems/ListItem";
 import { P, FancyH1, H2 } from "../components/Atomic/StyledText";
 import Screen from "../components/Wrappers/Screen";
 import BackButton from "../components/Atomic/BackButton";
-
+import Comment from "../components/ListItems/Comment";
 // Services
 import { commentsService, usersService } from "../services/feathersClient";
 // Hooks
@@ -104,50 +104,5 @@ export function CommentInput({ recId, onComplete }) {
       keyboardAppearance={theme.theme}
       returnKeyType="send"
     />
-  );
-}
-
-function Comment({ text, creator }) {
-  // fetch user from creator
-  const [friend, setFriend] = React.useState({});
-
-  const fetchUser = async (userId) => {
-    try {
-      const user = await usersService.get(userId);
-      setFriend(user);
-    } catch (error) {
-      console.log("Problem fetching user for comment", error);
-    }
-  };
-
-  React.useEffect(() => {
-    fetchUser(creator);
-  }, []);
-
-  if (friend.username) {
-    return (
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          flexWrap: "wrap",
-          padding: 10,
-        }}
-      >
-        <UsernameNavToFriendDetails withAvatar={true} friend={friend} />
-        <FancyH1 style={{ fontSize: 14 }}>{text}</FancyH1>
-      </View>
-    );
-  }
-  return (
-    <View
-      style={{
-        flexDirection: "row",
-        alignItems: "center",
-        padding: 10,
-      }}
-    >
-      <ActivityIndicatorCentered size="small" />
-    </View>
   );
 }

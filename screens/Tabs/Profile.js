@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import { View } from "react-native";
 import useTheme from "../../hooks/useTheme";
 
 // Components
@@ -23,14 +24,21 @@ export default function ProfileScreen({ navigation }) {
   const [showSettings, setShowSettings] = useState(false);
 
   return (
-    <Screen center={true}>
-      <ProfileMainHeader
-        user={user}
-        showSettings={showSettings}
-        setShowSettings={setShowSettings}
-      />
+    <Screen fullscreen={true} center={true}>
+      <View
+        style={{
+          backgroundColor: theme.bg,
+          paddingTop: theme.topPad + 10,
+        }}
+      >
+        <ProfileMainHeader
+          user={user}
+          showSettings={showSettings}
+          setShowSettings={setShowSettings}
+        />
 
-      <FriendDetailsHeader user={user} />
+        <FriendDetailsHeader user={user} />
+      </View>
 
       {showSettings ? (
         <ProfileSettings user={user} theme={theme} />

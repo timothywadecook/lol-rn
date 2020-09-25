@@ -16,36 +16,37 @@ export default function FriendDetailsScreen({ route }) {
 
   const theme = useTheme();
   return (
-    <Screen center={true}>
+    <Screen fullscreen={true} center={true}>
       <View
         style={{
-          width: theme.windowWidth,
-          alignItems: "center",
-          justifyContent: "space-between",
-          flexDirection: "row",
+          backgroundColor: theme.bg,
+          paddingTop: theme.topPad + 10,
         }}
       >
-        <BackButton />
-
         <View
           style={{
-            paddingHorizontal: 10,
-            justifyContent: "center",
+            width: theme.windowWidth,
             alignItems: "center",
+            justifyContent: "space-between",
+            flexDirection: "row",
           }}
         >
-          <FollowUnfollowButton userId={friend._id} />
-        </View>
-      </View>
+          <BackButton />
 
-      {friend ? (
-        <React.Fragment>
-          <FriendDetailsHeader user={friend} />
-          <FriendDetailsTabsContainer user={friend} />
-        </React.Fragment>
-      ) : (
-        <ActivityIndicatorCentered />
-      )}
+          <View
+            style={{
+              paddingHorizontal: 10,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <FollowUnfollowButton userId={friend._id} />
+          </View>
+        </View>
+
+        <FriendDetailsHeader user={friend} />
+      </View>
+      <FriendDetailsTabsContainer user={friend} />
     </Screen>
   );
 }

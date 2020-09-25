@@ -9,27 +9,22 @@ export default function FriendDetailsHeader({ user }) {
   const theme = useTheme();
 
   return (
-    <View>
+    <View
+      style={{
+        width: theme.windowWidth,
+        paddingVertical: 20,
+      }}
+    >
       <View
         style={{
-          width: theme.windowWidth,
-          backgroundColor: theme.wallbg,
-          paddingVertical: 20,
-          borderBottomLeftRadius: 20,
-          borderBottomRightRadius: 20,
+          alignItems: "center",
+          justifyContent: "center",
         }}
       >
-        <View
-          style={{
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Avatar style={{ marginHorizontal: 10 }} size={80} user={user} />
-          <View style={{ alignItems: "center" }}>
-            <Title>{user.username}</Title>
-            <H2G>{user.name}</H2G>
-          </View>
+        <Avatar style={{ marginHorizontal: 10 }} size={80} user={user} />
+        <View style={{ alignItems: "center" }}>
+          <Title>{user.username}</Title>
+          <H2G>{user.name}</H2G>
         </View>
       </View>
     </View>

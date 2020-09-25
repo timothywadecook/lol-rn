@@ -115,7 +115,6 @@ export default function CreateOrEditList({ navigation, route }) {
 }
 
 function EditListHeader({ isEditMode, list }) {
-  console.log("list ?", list);
   const theme = useTheme();
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -145,7 +144,7 @@ function EditListHeader({ isEditMode, list }) {
       <View style={{ flex: 2, alignItems: "center" }}>
         <H2>{isEditMode ? "Edit List" : "Create List"}</H2>
       </View>
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, paddingRight: 10 }}>
         {isEditMode && <SubmitButton title="Delete" onPress={onDeleteList} />}
       </View>
     </View>
