@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "557552202403",
+    "firebase_url": "https://like-out-loud.firebaseio.com",
+    "project_id": "like-out-loud",
+    "storage_bucket": "like-out-loud.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:557552202403:android:90e3a55ec8318a656cc516",
+        "android_client_info": {
+          "package_name": "app.likeoutloud"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "557552202403-u5a217636iterm43s3bfrbcmnmc58hbn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAd72iHb4Y2Jwms7XeaKoMlqFjlQ4O5hFI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "557552202403-u5a217636iterm43s3bfrbcmnmc58hbn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

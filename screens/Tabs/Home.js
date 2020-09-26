@@ -1,34 +1,101 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { Platform } from "react-native";
 import * as SplashScreen from "expo-splash-screen";
 // Components
+import * as T from "../../components/Atomic/StyledText";
 import Screen from "../../components/Wrappers/Screen";
 import FilteredRecommendationsList from "../../components/Lists/FilteredRecommendationsList";
 import FilterMenu from "../../components/FilterMenu";
-import QuickActionCreateButton from "../../components/Buttons/QuickActionCreateButton";
-import QuickActionProfileButton from "../../components/Buttons/QuickActionProfileButton";
 import QuickActionToolbar from "../../components/Buttons/QuickActionToolbar";
 // State Management
 import { refreshFeedAsync, fetchMoreFeedAsync } from "../../store/feedSlice";
 import { fetchFollowsAsync } from "../../store/followsSlice";
 import { addLoadedLists } from "../../store/listsSlice";
 // Services
-import { listsService } from "../../services/feathersClient";
+import { listsService, usersService } from "../../services/feathersClient";
 // Animation
 import Animated from "react-native-reanimated";
 import { HEIGHT } from "../../components/FilterMenu";
-// LOL
-import * as T from "../../components/Atomic/StyledText";
-import logo from "../../assets/logo.png";
 // Hooks
 import useTheme from "../../hooks/useTheme";
 import WindowWidthRow from "../../components/Wrappers/WindowWidthRow";
+// PUSH NOTIFICATIONS
+import Constants from "expo-constants";
+import * as Notifications from "expo-notifications";
+import * as Permissions from "expo-permissions";
+
+async function registerForPushNotificationsAsync() {
+  let token;
+  if (Constants.isDevice) {
+    const { status: existingStatus } = await Permissions.getAsync(
+      Permissions.NOTIFICATIONS
+    );
+    let finalStatus = existingStatus;
+    if (existingStatus !== "granted") {
+      const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+      finalStatus = status;
+    }
+    if (finalStatus !== "granted") {
+      alert("Failed to get push token for push notification!");
+      return;
+    }
+    token = (await Notifications.getExpoPushTokenAsync()).data;
+  } else {
+    alert("Must use physical device for Push Notifications");
+  }
+
+  if (Platform.OS === "android") {
+    Notifications.setNotificationChannelAsync("default", {
+      name: "default",
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: "#FF231F7C",
+    });
+  }
+
+  return token;
+}
 
 export default function HomeScreen() {
+  const sessionUserId = useSelector((state) => state.user._id);
+
+  const [expoPushToken, setExpoPushToken] = React.useState();
+  const [notification, setNotification] = React.useState(false);
+  const notificationListener = React.useRef();
+  const responseListener = React.useRef();
+
+  useEffect(() => {
+    registerForPushNotificationsAsync().then((token) => {
+      setExpoPushToken(token);
+      if (!!token) {
+        usersService.patch(sessionUserId, {
+          expoPushToken: token,
+        });
+      }
+    });
+    // This listener is fired whenever a notification is received while the app is foregrounded
+    notificationListener.current = Notifications.addNotificationReceivedListener(
+      (notification) => {
+        console.log("notification received", notification);
+        setNotification(notification);
+      }
+    );
+    // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(
+      (response) => {
+        console.log(response);
+      }
+    );
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener);
+      Notifications.removeNotificationSubscription(responseListener);
+    };
+  }, []);
+
   const feed = useSelector((state) => state.feed.list);
   const loading = useSelector((state) => state.feed.loading);
   const refreshing = useSelector((state) => state.feed.refreshing);
-  const sessionUserId = useSelector((state) => state.user._id);
   const theme = useTheme();
 
   const dispatch = useDispatch();

@@ -31,6 +31,8 @@
     "expo-google-app-auth": "^8.1.2",
     "expo-haptics": "~8.2.1",
     "expo-linking": "^1.0.1",
+    "expo-notifications": "~0.3.3",
+    "expo-permissions": "~9.0.1",
     "expo-splash-screen": "^0.5.0",
     "expo-web-browser": "~8.3.1",
     "moment": "^2.27.0",

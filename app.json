@@ -41,6 +41,7 @@
     },
     "android": {
       "package": "app.likeoutloud",
+      "googleServicesFile": "./google-services.json",
       "versionCode": 1,
       "config": {
         "googleSignIn": { "apiKey": "AIzaSyAKhZhQTzambIjZZ4LRN-cBBWpa0yzqLa4" }
