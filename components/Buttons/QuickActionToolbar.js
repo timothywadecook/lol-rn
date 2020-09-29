@@ -107,7 +107,7 @@ export default function QuickActionProfileButton({ y }) {
         }}
         onPress={() => navigation.navigate("Profile")}
       >
-        <Avatar user={sessionUser} size={30} />
+        <Avatar user={sessionUser} size={40} />
       </TouchableOpacity>
     </Animated.View>
   );
