@@ -57,8 +57,18 @@ async function registerForPushNotificationsAsync() {
   return token;
 }
 
+// How to handle notifications recieved when app is in foreground
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
+
 export default function HomeScreen() {
   const sessionUserId = useSelector((state) => state.user._id);
+  const sessionUser = useSelector((state) => state.user);
 
   const [expoPushToken, setExpoPushToken] = React.useState();
   const [notification, setNotification] = React.useState(false);
@@ -129,21 +139,26 @@ export default function HomeScreen() {
   return (
     <Screen fullscreen={true}>
       <WindowWidthRow
-        pad={true}
+        // pad={true}
         style={{
           backgroundColor: theme.bg,
           zIndex: 3,
-          paddingTop: theme.topPad + 15,
+          paddingTop: theme.topPad,
           // justifyContent: "center",
           borderBottomWidth: 1,
           borderBottomColor: theme.iconBg,
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "center",
           // flexDirection: "column",
           // alignItems: "flex-start",
           // padding: 10,
         }}
       >
-        {/* <T.FancyH1 style={{ color: theme.purple }}>Like Out Loud</T.FancyH1> */}
-        <T.H1>Recommendations</T.H1>
+        <T.FancyH1 style={{ color: theme.purple, paddingBottom: 5 }}>
+          Like Out Loud
+        </T.FancyH1>
+        {/* <T.H1>Like Out Loud</T.H1> */}
         {/* <T.H3>Recommendations you can trust</T.H3> */}
       </WindowWidthRow>
 
