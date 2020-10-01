@@ -83,11 +83,12 @@ function ThingCard({ thing }) {
   const { image, title, subtitle } = thing;
   const theme = useTheme();
   const navigation = useNavigation();
+  const size = theme.windowWidth / 5;
   return (
     <TouchableOpacity
       onPress={() => navigation.navigate("ThingDetails", { thing })}
       style={{
-        width: 100,
+        width: size,
         alignItems: "center",
         marginHorizontal: 15,
         marginVertical: 10,
@@ -95,7 +96,7 @@ function ThingCard({ thing }) {
     >
       <View
         style={{
-          width: 100,
+          width: size,
           alignItems: "center",
           justifyContent: "center",
           marginBottom: 5,
@@ -106,8 +107,8 @@ function ThingCard({ thing }) {
             source={{ uri: image }}
             style={{
               resizeMode: "cover",
-              width: 100, //  100,
-              height: 140, // 140,
+              width: size, //  100,
+              height: size * 1.4, // 140,
               borderRadius: 15,
               // marginRight: 6,
               // marginTop: 2,
@@ -116,8 +117,8 @@ function ThingCard({ thing }) {
         ) : thing.category === "Place" ? (
           <View
             style={{
-              width: 100,
-              height: 140,
+              width: size,
+              height: size * 1.4,
               borderRadius: 15,
               alignItems: "center",
               justifyContent: "center",
@@ -129,7 +130,7 @@ function ThingCard({ thing }) {
         ) : null}
       </View>
 
-      <T.H2 style={{ paddingBottom: 0 }}>{title}</T.H2>
+      <T.P style={{ paddingBottom: 0 }}>{title}</T.P>
       {/* <T.H4 style={{ fontWeight: "bold" }}>{subtitle}</T.H4> */}
     </TouchableOpacity>
   );
@@ -138,11 +139,12 @@ function ThingCard({ thing }) {
 function AddThingCard() {
   const theme = useTheme();
   const navigation = useNavigation();
+  const size = 100;
   return (
     <TouchableOpacity
       onPress={() => navigation.navigate("Create")}
       style={{
-        width: 100,
+        width: size,
         alignItems: "center",
         marginHorizontal: 15,
         marginVertical: 10,
@@ -151,8 +153,8 @@ function AddThingCard() {
       <View
         style={{
           backgroundColor: theme.iconBg,
-          width: 100,
-          height: 140,
+          width: size,
+          height: size * 1.4,
           alignItems: "center",
           justifyContent: "center",
           borderRadius: 15,
@@ -160,8 +162,8 @@ function AddThingCard() {
       >
         <View
           style={{
-            height: 50,
-            width: 50,
+            height: size / 2,
+            width: size / 2,
             backgroundColor: theme.iconBg,
             alignItems: "center",
             justifyContent: "center",
@@ -169,9 +171,9 @@ function AddThingCard() {
           }}
         >
           <Feather
-            style={{ width: 30 }}
+            style={{ width: size / 3 }}
             name="search"
-            size={30}
+            size={size / 3}
             color={theme.iconDefault}
           />
         </View>

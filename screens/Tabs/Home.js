@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Platform } from "react-native";
+import { Platform, TouchableOpacity } from "react-native";
 import * as SplashScreen from "expo-splash-screen";
 // Components
 import * as T from "../../components/Atomic/StyledText";
@@ -8,6 +8,8 @@ import Screen from "../../components/Wrappers/Screen";
 import FilteredRecommendationsList from "../../components/Lists/FilteredRecommendationsList";
 import FilterMenu from "../../components/FilterMenu";
 import QuickActionToolbar from "../../components/Buttons/QuickActionToolbar";
+import { Feather } from "@expo/vector-icons";
+
 // State Management
 import { refreshFeedAsync, fetchMoreFeedAsync } from "../../store/feedSlice";
 import { fetchFollowsAsync } from "../../store/followsSlice";
@@ -66,7 +68,7 @@ Notifications.setNotificationHandler({
   }),
 });
 
-export default function HomeScreen() {
+export default function HomeScreen({ navigation }) {
   const sessionUserId = useSelector((state) => state.user._id);
   const sessionUser = useSelector((state) => state.user);
 
@@ -144,20 +146,37 @@ export default function HomeScreen() {
           backgroundColor: theme.bg,
           zIndex: 3,
           paddingTop: theme.topPad,
-          // justifyContent: "center",
           borderBottomWidth: 1,
           borderBottomColor: theme.iconBg,
           flexDirection: "row",
-          justifyContent: "center",
+          justifyContent: "space-between",
           alignItems: "center",
-          // flexDirection: "column",
-          // alignItems: "flex-start",
-          // padding: 10,
         }}
       >
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Search Users")}
+          style={{
+            padding: 15,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Feather name="user-plus" size={26} color={theme.iconDefault} />
+        </TouchableOpacity>
+
         <T.FancyH1 style={{ color: theme.purple, paddingBottom: 5 }}>
           Like Out Loud
         </T.FancyH1>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("SearchThings")}
+          style={{
+            padding: 15,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Feather name="edit" size={26} color={theme.iconDefault} />
+        </TouchableOpacity>
         {/* <T.H1>Like Out Loud</T.H1> */}
         {/* <T.H3>Recommendations you can trust</T.H3> */}
       </WindowWidthRow>
