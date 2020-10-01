@@ -161,10 +161,12 @@ export default function HomeScreen({ navigation }) {
             justifyContent: "center",
           }}
         >
-          <Feather name="user-plus" size={26} color={theme.iconDefault} />
+          <Feather name="user-plus" size={24} color={theme.iconDefault} />
         </TouchableOpacity>
 
-        <T.FancyH1 style={{ color: theme.purple, paddingBottom: 5 }}>
+        <T.FancyH1
+          style={{ color: theme.purple, paddingBottom: 5, fontSize: 30 }}
+        >
           Like Out Loud
         </T.FancyH1>
         <TouchableOpacity
@@ -175,7 +177,7 @@ export default function HomeScreen({ navigation }) {
             justifyContent: "center",
           }}
         >
-          <Feather name="edit" size={26} color={theme.iconDefault} />
+          <Feather name="edit" size={24} color={theme.iconDefault} />
         </TouchableOpacity>
         {/* <T.H1>Like Out Loud</T.H1> */}
         {/* <T.H3>Recommendations you can trust</T.H3> */}

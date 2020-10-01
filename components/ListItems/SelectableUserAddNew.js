@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Ionicons, Entypo, Feather } from "@expo/vector-icons";
+import { Ionicons, Entypo, Feather, FontAwesome } from "@expo/vector-icons";
 import { TouchableOpacity, View } from "react-native";
 import * as T from "../Atomic/StyledText";
 import useTheme from "../../hooks/useTheme";
@@ -69,14 +69,13 @@ export function SelectableUserAll({ size = 40 }) {
         }}
       >
         <Entypo
-          // style={{ height: size }}
           name="globe"
-          size={size / 1.5}
+          size={size / 1.2}
           color={active ? theme.purple : theme.iconDefault}
         />
       </View>
 
-      <T.H3 style={{ marginTop: 3 }}>World</T.H3>
+      <T.H3 style={{ marginTop: 3 }}>All Users</T.H3>
     </TouchableOpacity>
   );
 }
@@ -117,9 +116,14 @@ export function SelectableUserFollowing({ size = 40 }) {
           justifyContent: "center",
         }}
       >
-        <Feather
+        {/* <Feather
           name="users"
           size={size / 2}
+          color={active ? theme.purple : theme.iconDefault}
+        /> */}
+        <Ionicons
+          name="md-people"
+          size={size / 1.3}
           color={active ? theme.purple : theme.iconDefault}
         />
       </View>

@@ -13,6 +13,7 @@ import SelectableUserAddNew, {
 } from "./ListItems/SelectableUserAddNew";
 import MultiSelectFilterButtons from "./MultiSelectFilterButtons";
 import * as T from "./Atomic/StyledText";
+
 // Services
 import { usersService } from "../services/feathersClient";
 // Hooks
@@ -112,7 +113,7 @@ function ListSelectableUsersWithUnreadCountAndAddNew() {
     <FlatList
       data={userList}
       renderItem={renderUser}
-      ListFooterComponent={renderFooter}
+      // ListFooterComponent={renderFooter}
       ListHeaderComponent={renderHeader}
       horizontal={true}
       showsHorizontalScrollIndicator={false}
