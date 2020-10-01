@@ -1,16 +1,13 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { TouchableWithoutFeedback, View } from "react-native";
+import { View } from "react-native";
 import SelectableUser from "./SelectableUser";
 import * as T from "../Atomic/StyledText";
 
 import { recommendationsService } from "../../services/feathersClient";
 import useTheme from "../../hooks/useTheme";
 
-import {
-  addCreatorToQueryAndRefresh,
-  removeCreatorFromQueryAndRefresh,
-} from "../../store/feedSlice";
+import { setCreatorQueryAndRefresh } from "../../store/feedSlice";
 
 export default function SelectableUserWithUnreadCount({ user }) {
   const dispatch = useDispatch();
@@ -41,19 +38,15 @@ export default function SelectableUserWithUnreadCount({ user }) {
     }
   };
 
-  const onUnselect = () => {
-    dispatch(removeCreatorFromQueryAndRefresh(user._id));
-  };
-
   const onSelect = () => {
-    dispatch(addCreatorToQueryAndRefresh(user._id));
+    dispatch(setCreatorQueryAndRefresh([user._id]));
     onPress();
   };
 
   return (
     <View>
       <CountBubble count={unread.length} />
-      <SelectableUser user={user} onSelect={onSelect} onUnselect={onUnselect} />
+      <SelectableUser user={user} onSelect={onSelect} />
     </View>
   );
 }

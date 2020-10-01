@@ -9,12 +9,14 @@ export default function RoundButton({
   title,
   renderIcon = false,
   solid = false,
+  secondary = false,
 }) {
   const theme = useTheme();
 
   solid = theme.theme === "light" ? !solid : solid;
   const inActiveColor = solid ? theme.iconBg : "transparent";
   const inActiveBorderWidth = solid ? 0 : 1;
+  const activeBgColor = secondary ? theme.wallbg : theme.activeButtonBg;
 
   return (
     <TouchableOpacity
@@ -26,7 +28,7 @@ export default function RoundButton({
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 30,
-        backgroundColor: active ? theme.activeButtonBg : inActiveColor,
+        backgroundColor: active ? activeBgColor : inActiveColor,
         borderColor: theme.iconDefault,
         borderWidth: active ? 0 : inActiveBorderWidth,
       }}

@@ -3,6 +3,7 @@ import { View, FlatList } from "react-native";
 
 import useTheme from "../hooks/useTheme";
 import MultiSelectFilterButton from "./Buttons/MultiSelectFilterButton";
+import RoundButton from "./Buttons/RoundButton";
 
 export default function MultiSelectFilterButtons({
   options,
@@ -27,6 +28,13 @@ export default function MultiSelectFilterButtons({
         showsHorizontalScrollIndicator={false}
         horizontal={true}
         data={options}
+        ListHeaderComponent={() => (
+          <RoundButton
+            onPress={() => setSelected([])}
+            active={selected.length === 0}
+            title={"   All   "}
+          />
+        )}
         renderItem={({ item }) => (
           <MultiSelectFilterButton
             selected={selected}

@@ -7,7 +7,10 @@ import { diffClamp } from "react-native-redash";
 const { interpolate } = Animated;
 // Components
 import SelectableUserWithUnreadCount from "./ListItems/SelectableUserWithUnreadCount";
-import SelectableUserAddNew from "./ListItems/SelectableUserAddNew";
+import SelectableUserAddNew, {
+  SelectableUserAll,
+  SelectableUserFollowing,
+} from "./ListItems/SelectableUserAddNew";
 import MultiSelectFilterButtons from "./MultiSelectFilterButtons";
 import * as T from "./Atomic/StyledText";
 // Services
@@ -78,27 +81,39 @@ export default function FilterMenu({ y, categories, setCategories }) {
 
 function ListSelectableUsersWithUnreadCountAndAddNew() {
   const following = useSelector((state) => state.follows.following);
-  const sessionUserId = useSelector((state) => state.user._id);
-  const filterableUserIds = [...following, sessionUserId];
+  const sessionUser = useSelector((state) => state.user);
+  const me = { ...sessionUser, username: "me" };
 
   const [userList, setUserList] = React.useState([]);
   React.useEffect(() => {
     usersService
       .find({
         query: {
-          _id: { $in: filterableUserIds },
+          _id: { $in: following },
         },
       })
-      .then((res) => setUserList(res.data));
+      .then((res) => setUserList([me, ...res.data]));
   }, [following]);
+
+  const renderUser = ({ item: user }) => (
+    <SelectableUserWithUnreadCount user={user} />
+  );
+
+  const renderFooter = () => <SelectableUserAddNew />;
+
+  const renderHeader = () => (
+    <View style={{ flexDirection: "row", alignItems: "center" }}>
+      <SelectableUserAll />
+      <SelectableUserFollowing />
+    </View>
+  );
 
   return (
     <FlatList
       data={userList}
-      renderItem={({ item: user }) => (
-        <SelectableUserWithUnreadCount user={user} />
-      )}
-      ListFooterComponent={() => <SelectableUserAddNew />}
+      renderItem={renderUser}
+      ListFooterComponent={renderFooter}
+      ListHeaderComponent={renderHeader}
       horizontal={true}
       showsHorizontalScrollIndicator={false}
       keyExtractor={(item) => item._id}

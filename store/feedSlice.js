@@ -37,6 +37,9 @@ const feedSlice = createSlice({
     addRecommendationToFeed(state, action) {
       state.list.unshift(action.payload);
     },
+    setCreatorQuery(state, action) {
+      state.query.creator["$in"] = [...action.payload];
+    },
     addCreatorToQuery(state, action) {
       state.query.creator["$in"].push(action.payload);
     },
@@ -59,6 +62,7 @@ const {
   setRefreshing,
   setRefreshedData,
   setMoreToFetch,
+  setCreatorQuery,
   addCreatorToQuery,
   removeCreatorFromQuery,
   setRecommendationInQuery,
@@ -121,6 +125,11 @@ export const fetchMoreFeedAsync = () => async (dispatch, getState) => {
       dispatch(setLoading(false));
     }
   }
+};
+
+export const setCreatorQueryAndRefresh = (creatorId) => async (dispatch) => {
+  dispatch(setCreatorQuery(creatorId));
+  dispatch(refreshFeedAsync());
 };
 
 export const addCreatorToQueryAndRefresh = (creatorId) => async (dispatch) => {

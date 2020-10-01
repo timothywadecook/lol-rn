@@ -36,7 +36,6 @@ export default function SuggestedActions({ r, onSubmitComment }) {
   return (
     <View
       style={{
-        // width: theme.windowWidth,
         paddingVertical: 10,
         flexDirection: "row",
         marginBottom: 0,
@@ -54,6 +53,7 @@ export default function SuggestedActions({ r, onSubmitComment }) {
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <RoundButton
               solid={true}
+              secondary={true}
               renderIcon={() => (
                 <IconButtons.LikeButton
                   showCount={true}

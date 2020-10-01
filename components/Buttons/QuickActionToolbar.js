@@ -92,7 +92,7 @@ export default function QuickActionProfileButton({ y }) {
         }}
         onPress={() => navigation.navigate("SearchThings")}
       >
-        <Feather name="search" size={28} color={theme.primary} />
+        <Feather name="plus" size={28} color={theme.primary} />
       </TouchableOpacity>
 
       <TouchableOpacity
