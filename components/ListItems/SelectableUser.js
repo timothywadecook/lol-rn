@@ -1,13 +1,12 @@
 import React from "react";
 import { View } from "react-native";
 import { useSelector } from "react-redux";
-import { Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native";
 import * as T from "../Atomic/StyledText";
 import Avatar from "../Atomic/Avatar";
 import useTheme from "../../hooks/useTheme";
 
-export default function SelectableUser({ user, size = 40, onSelect }) {
+export default function SelectableUser({ user, size = 50, onSelect }) {
   const theme = useTheme();
   const query = useSelector((state) => state.feed.query.creator["$in"]);
   const selected = query.length === 1 && query.includes(user._id);
@@ -25,7 +24,6 @@ export default function SelectableUser({ user, size = 40, onSelect }) {
       {selected ? (
         <View
           style={{
-            overflow: "hidden",
             backgroundColor: theme.white,
             alignItems: "center",
             justifyContent: "center",
@@ -34,11 +32,12 @@ export default function SelectableUser({ user, size = 40, onSelect }) {
             width: size,
           }}
         >
-          <Ionicons name="md-checkmark" size={size - 10} color={theme.purple} />
+          <T.Title style={{ color: theme.purple }}>{user.name[0]}</T.Title>
         </View>
       ) : (
         <Avatar user={user} size={size} />
       )}
+
       <T.H3 style={{ marginTop: 3 }}>{user.username}</T.H3>
     </TouchableOpacity>
   );

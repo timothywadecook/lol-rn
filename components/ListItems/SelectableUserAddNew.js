@@ -1,13 +1,14 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Ionicons, Entypo, Feather, FontAwesome } from "@expo/vector-icons";
+import { Ionicons, Feather, Entypo } from "@expo/vector-icons";
 import { TouchableOpacity, View } from "react-native";
 import * as T from "../Atomic/StyledText";
 import useTheme from "../../hooks/useTheme";
 import { useNavigation } from "@react-navigation/native";
 import { setCreatorQueryAndRefresh } from "../../store/feedSlice";
+import { AnimateExpandWidth } from "../Wrappers/AnimateExpand";
 
-export default function SelectableUserAddNew({ size = 40 }) {
+export default function SelectableUserAddNew({ size = 50 }) {
   const theme = useTheme();
   const navigation = useNavigation();
 
@@ -37,7 +38,7 @@ export default function SelectableUserAddNew({ size = 40 }) {
   );
 }
 
-export function SelectableUserAll({ size = 40 }) {
+export function SelectableUserAll({ size = 45 }) {
   const theme = useTheme();
   const dispatch = useDispatch();
   const query = useSelector((state) => state.feed.query.creator["$in"]);
@@ -47,6 +48,40 @@ export function SelectableUserAll({ size = 40 }) {
   };
 
   const active = query.length === 0;
+
+  return (
+    <TouchableOpacity
+      onPress={onPress}
+      style={{
+        padding: 5,
+        margin: 5,
+        marginLeft: 15,
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      <Ionicons
+        style={{ paddingTop: 3 }}
+        name="md-globe"
+        size={size + 4}
+        color={active ? theme.purple : theme.iconDefault}
+      />
+      <T.H3 style={{ marginTop: 3 }}></T.H3>
+    </TouchableOpacity>
+  );
+}
+
+export function SelectableUserMe({ size = 50 }) {
+  const theme = useTheme();
+  const dispatch = useDispatch();
+  const query = useSelector((state) => state.feed.query.creator["$in"]);
+  const sessionUser = useSelector((state) => state.user);
+
+  const onPress = () => {
+    dispatch(setCreatorQueryAndRefresh([sessionUser._id]));
+  };
+
+  const active = query.length === 1 && query.includes(sessionUser._id);
 
   return (
     <TouchableOpacity
@@ -68,19 +103,20 @@ export function SelectableUserAll({ size = 40 }) {
           justifyContent: "center",
         }}
       >
-        <Entypo
-          name="globe"
-          size={size / 1.2}
+        <Ionicons
+          style={{ padding: 0 }}
+          name="md-person"
+          size={size / 1.5}
           color={active ? theme.purple : theme.iconDefault}
         />
       </View>
 
-      <T.H3 style={{ marginTop: 3 }}>All Users</T.H3>
+      <T.H3 style={{ marginTop: 3 }}>Me</T.H3>
     </TouchableOpacity>
   );
 }
 
-export function SelectableUserFollowing({ size = 40 }) {
+export function SelectableUserFollowing({ size = 50 }) {
   const theme = useTheme();
   const dispatch = useDispatch();
   const following = useSelector((state) => state.follows.following);

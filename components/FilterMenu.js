@@ -9,6 +9,7 @@ const { interpolate } = Animated;
 import SelectableUserWithUnreadCount from "./ListItems/SelectableUserWithUnreadCount";
 import SelectableUserAddNew, {
   SelectableUserAll,
+  SelectableUserMe,
   SelectableUserFollowing,
 } from "./ListItems/SelectableUserAddNew";
 import MultiSelectFilterButtons from "./MultiSelectFilterButtons";
@@ -31,7 +32,7 @@ export default function FilterMenu({ y, categories, setCategories }) {
   return (
     <Animated.View
       style={{
-        top: 120,
+        top: 115,
         position: "absolute",
         zIndex: 1,
         transform: [
@@ -60,7 +61,7 @@ export default function FilterMenu({ y, categories, setCategories }) {
       <View
         style={{
           // margin: 5,
-          padding: 5,
+          paddingBottom: 15,
           paddingVertical: 10,
           flexDirection: "column",
           backgroundColor: theme.bg,
@@ -82,8 +83,8 @@ export default function FilterMenu({ y, categories, setCategories }) {
 
 function ListSelectableUsersWithUnreadCountAndAddNew() {
   const following = useSelector((state) => state.follows.following);
-  const sessionUser = useSelector((state) => state.user);
-  const me = { ...sessionUser, username: "me" };
+  // const sessionUser = useSelector((state) => state.user);
+  // const me = { ...sessionUser, username: "me" };
 
   const [userList, setUserList] = React.useState([]);
   React.useEffect(() => {
@@ -93,7 +94,7 @@ function ListSelectableUsersWithUnreadCountAndAddNew() {
           _id: { $in: following },
         },
       })
-      .then((res) => setUserList([me, ...res.data]));
+      .then((res) => setUserList([...res.data]));
   }, [following]);
 
   const renderUser = ({ item: user }) => (
@@ -105,6 +106,7 @@ function ListSelectableUsersWithUnreadCountAndAddNew() {
   const renderHeader = () => (
     <View style={{ flexDirection: "row", alignItems: "center" }}>
       <SelectableUserAll />
+      <SelectableUserMe />
       <SelectableUserFollowing />
     </View>
   );

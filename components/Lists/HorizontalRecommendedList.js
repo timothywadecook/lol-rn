@@ -1,42 +1,41 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import { View, FlatList, Image, TouchableOpacity } from "react-native";
 import * as T from "../Atomic/StyledText";
 import ProfileCard from "../Atomic/ProfileCard";
 
-import { thingsService } from "../../services/feathersClient";
-import { Feather, Entypo } from "@expo/vector-icons";
+import { recommendationsService } from "../../services/feathersClient";
+import { Entypo } from "@expo/vector-icons";
 
 import { useNavigation } from "@react-navigation/native";
 import useTheme from "../../hooks/useTheme";
 
-export default function HorizontalThingList({ listId, canCreate }) {
+export default function HorizontalRecommendedList({ userId, canCreate }) {
   const [thingsData, setThingsData] = React.useState([]);
   const theme = useTheme();
   const navigation = useNavigation();
 
-  const list = useSelector((state) => state.lists[listId]);
-  const { name, isPrivate, participants, things } = list;
-
   React.useEffect(() => {
     const fetchThings = async () => {
       try {
-        const res = await thingsService.find({
-          query: { _id: { $in: things }, $limit: 1000 },
+        const recs = await recommendationsService.find({
+          query: {
+            creator: userId,
+            $limit: 1000,
+          },
         });
-        setThingsData(res.data);
+        setThingsData(recs.data.map((r) => r.thing));
       } catch (error) {
         console.log(
-          "Error fetching things for horizontal list",
+          "Error fetching things for horizontal recommended list",
           error.message,
           error
         );
       }
     };
-    if (things && !!things.length) {
+    if (userId) {
       fetchThings();
     }
-  }, [listId]);
+  }, [userId]);
 
   if (!thingsData.length && !canCreate) {
     return null;
@@ -64,7 +63,7 @@ export default function HorizontalThingList({ listId, canCreate }) {
           </TouchableOpacity>
         )
       }
-      title={name}
+      title={"Recommended"}
     >
       <FlatList
         keyboardShouldPersistTaps="handled"
@@ -73,7 +72,6 @@ export default function HorizontalThingList({ listId, canCreate }) {
         horizontal={true}
         showsHorizontalScrollIndicator={false}
         keyExtractor={(item) => item._id}
-        // ListFooterComponent={() => canCreate && <AddThingCard />}
       />
     </ProfileCard>
   );
@@ -107,11 +105,9 @@ function ThingCard({ thing }) {
             source={{ uri: image }}
             style={{
               resizeMode: "cover",
-              width: size, //  100,
-              height: size * 1.4, // 140,
+              width: size,
+              height: size * 1.4,
               borderRadius: 15,
-              // marginRight: 6,
-              // marginTop: 2,
             }}
           />
         ) : thing.category === "Place" ? (
@@ -131,52 +127,7 @@ function ThingCard({ thing }) {
       </View>
 
       <T.P style={{ paddingBottom: 0 }}>{title}</T.P>
-    </TouchableOpacity>
-  );
-}
-
-function AddThingCard() {
-  const theme = useTheme();
-  const navigation = useNavigation();
-  const size = 100;
-  return (
-    <TouchableOpacity
-      onPress={() => navigation.navigate("Create")}
-      style={{
-        width: size,
-        alignItems: "center",
-        marginHorizontal: 15,
-        marginVertical: 10,
-      }}
-    >
-      <View
-        style={{
-          backgroundColor: theme.iconBg,
-          width: size,
-          height: size * 1.4,
-          alignItems: "center",
-          justifyContent: "center",
-          borderRadius: 15,
-        }}
-      >
-        <View
-          style={{
-            height: size / 2,
-            width: size / 2,
-            backgroundColor: theme.iconBg,
-            alignItems: "center",
-            justifyContent: "center",
-            borderRadius: 15,
-          }}
-        >
-          <Feather
-            style={{ width: size / 3 }}
-            name="search"
-            size={size / 3}
-            color={theme.iconDefault}
-          />
-        </View>
-      </View>
+      {/* <T.H4 style={{ fontWeight: "bold" }}>{subtitle}</T.H4> */}
     </TouchableOpacity>
   );
 }

@@ -30,6 +30,7 @@ export default function MultiSelectFilterButtons({
         data={options}
         ListHeaderComponent={() => (
           <RoundButton
+            // secondary={true}
             onPress={() => setSelected([])}
             active={selected.length === 0}
             title={"   All   "}

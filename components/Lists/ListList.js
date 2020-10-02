@@ -9,6 +9,7 @@ import useTheme from "../../hooks/useTheme";
 import { listsService } from "../../services/feathersClient";
 import { addLoadedLists } from "../../store/listsSlice";
 import HorizontalThingList from "./HorizontalThingList";
+import HorizontalRecommendedList from "./HorizontalRecommendedList";
 
 export default function ListList({ userId }) {
   const theme = useTheme();
@@ -49,6 +50,11 @@ export default function ListList({ userId }) {
 
   return (
     <View>
+      <HorizontalRecommendedList
+        userId={userId}
+        key={"recommendedList" + userId}
+        canCreate={canCreate()}
+      />
       {privateListIds.map((listId) => (
         <HorizontalThingList
           key={listId}
@@ -63,7 +69,7 @@ export default function ListList({ userId }) {
           canCreate={canCreate()}
         />
       ))}
-      {canCreate() && (
+      {/* {canCreate() && (
         <TouchableOpacity
           style={{
             width: theme.contentWidth,
@@ -77,9 +83,9 @@ export default function ListList({ userId }) {
           }}
           onPress={() => navigation.navigate("CreateOrEditList")}
         >
-          <T.Title style={{ color: theme.purple }}>NEW COLLECTION</T.Title>
+          <T.Title style={{ color: theme.purple }}>NEW LIST</T.Title>
         </TouchableOpacity>
-      )}
+      )} */}
     </View>
   );
 }

@@ -18,7 +18,7 @@ export default function SuggestedActions({ r, onSubmitComment }) {
     "Yessss! 🙌",
     "More like this? 👀",
     "Where is this? 🧐",
-    "Dopee 👌",
+    "Saving this 👌",
     "💯",
     "⭐⭐⭐⭐⭐",
   ]);
@@ -52,6 +52,7 @@ export default function SuggestedActions({ r, onSubmitComment }) {
         ListHeaderComponent={
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <RoundButton
+              lessVerticalPad={true}
               solid={true}
               secondary={true}
               renderIcon={() => (
@@ -83,6 +84,7 @@ export default function SuggestedActions({ r, onSubmitComment }) {
         }
         renderItem={({ item }) => (
           <RoundButton
+            lessVerticalPad={true}
             solid={true}
             onPress={() => {
               onSubmitComment(item);

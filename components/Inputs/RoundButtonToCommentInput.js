@@ -22,6 +22,7 @@ export default function CommentInput({
 
   return (
     <RoundButton
+      lessVerticalPad={true}
       onPress={() => setActive(true)}
       solid={true}
       renderIcon={() => (

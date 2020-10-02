@@ -10,6 +10,7 @@ export default function RoundButton({
   renderIcon = false,
   solid = false,
   secondary = false,
+  lessVerticalPad = false,
 }) {
   const theme = useTheme();
 
@@ -22,7 +23,8 @@ export default function RoundButton({
     <TouchableOpacity
       onPress={onPress}
       style={{
-        padding: 15,
+        padding: 20,
+        paddingVertical: 30,
         marginHorizontal: 6,
         flexDirection: "row",
         justifyContent: "center",

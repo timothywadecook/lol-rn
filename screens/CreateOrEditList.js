@@ -132,7 +132,7 @@ function EditListHeader({ isEditMode, list }) {
   return (
     <WindowWidthRow pad={true}>
       <BackButton noLeftMargin={true} />
-      <T.H1>{isEditMode ? "Edit List" : "New List"}</T.H1>
+      <T.H1>{isEditMode ? "Edit List" : "Create List"}</T.H1>
       <View style={{ flex: 1 }}></View>
       {isEditMode && <SubmitButton title="Delete" onPress={onDeleteList} />}
     </WindowWidthRow>
@@ -163,20 +163,32 @@ function EditName({ name, setName }) {
         <T.H2G>List Name</T.H2G>
       </View>
 
-      <TextInput
-        style={{ fontSize: 26, fontWeight: "bold", color: theme.primary }}
-        placeholder="Type a name..."
-        placeholderTextColor="#A8A8A8"
-        value={name}
-        onChangeText={(text) => setName(text)}
-        autoFocus={false}
-        // style={[styles.textInput, { minHeight: 60, marginTop: 15 }]}
-        autoCorrect={true}
-        underlineColorAndroid="transparent"
-        keyboardAppearance={theme.theme}
-        returnKeyType="done"
-        blurOnSubmit={true}
-      />
+      <View
+        style={{
+          backgroundColor: theme.iconBg,
+          borderRadius: 20,
+          padding: 15,
+        }}
+      >
+        <TextInput
+          style={{
+            fontSize: 26,
+            // fontWeight: "bold",
+            color: theme.primary,
+          }}
+          placeholder="Type a name..."
+          placeholderTextColor="#A8A8A8"
+          value={name}
+          onChangeText={(text) => setName(text)}
+          autoFocus={false}
+          // style={[styles.textInput, { minHeight: 60, marginTop: 15 }]}
+          autoCorrect={true}
+          underlineColorAndroid="transparent"
+          keyboardAppearance={theme.theme}
+          returnKeyType="done"
+          blurOnSubmit={true}
+        />
+      </View>
     </View>
   );
 }

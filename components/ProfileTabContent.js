@@ -151,17 +151,18 @@ export default function ProfileTabContent({ userId, followers, following }) {
           />
         </View>
       </ProfileCard>
-      <T.H4 style={{ paddingTop: 10 }}>Collections</T.H4>
+      <T.H4 style={{ paddingTop: 10 }}>Lists</T.H4>
 
       <ListList userId={userId} />
 
-      <T.H4 style={{ paddingTop: 20, paddingBottom: 10 }}>Recommendations</T.H4>
+      {/* <T.H4 style={{ paddingTop: 20, paddingBottom: 10 }}>Recommendations</T.H4> */}
     </View>
   );
 
   return (
-    <View style={{ flex: 1 }}>
-      <FilteredRecommendationsList
+    <ScrollView style={{ flex: 1 }}>
+      {renderHeader()}
+      {/* <FilteredRecommendationsList
         loading={loading}
         fetchMore={fetchMore}
         refresh={refresh}
@@ -171,7 +172,7 @@ export default function ProfileTabContent({ userId, followers, following }) {
         y={y}
         renderHeader={renderHeader}
         initialNumToRender={1}
-      />
-    </View>
+      /> */}
+    </ScrollView>
   );
 }

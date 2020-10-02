@@ -89,7 +89,13 @@ export default function ThingDetails({ route }) {
         <RoundButton
           solid={true}
           renderIcon={({ size }) => (
-            <IconButtons.Bookmark padding={0} size={size} />
+            <IconButtons.Bookmark
+              onPress={() =>
+                navigation.navigate("AddToCollections", { thingId: thingId })
+              }
+              padding={0}
+              size={size}
+            />
           )}
           title="Save"
           onPress={() =>
@@ -97,7 +103,13 @@ export default function ThingDetails({ route }) {
           }
         />
         <RoundButton
-          renderIcon={({ size }) => <IconButtons.Add padding={0} size={size} />}
+          renderIcon={({ size }) => (
+            <IconButtons.Add
+              onPress={() => navigation.navigate("Create", { thing })}
+              padding={0}
+              size={size}
+            />
+          )}
           title="Recommend"
           onPress={() => navigation.navigate("Create", { thing })}
         />

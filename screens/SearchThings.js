@@ -85,11 +85,11 @@ export default function SearchThings({ navigation }) {
           }}
         >
           <WindowWidthRow pad={true}>
-            <T.H1>Search {category && category + "s"}</T.H1>
+            <BackButton />
+            <T.H1>Search Things</T.H1>
           </WindowWidthRow>
 
           <WindowWidthRow>
-            <BackButton />
             <View style={{ flex: 1, paddingRight: 10 }}>
               <SingleFilterButtonSpan
                 options={["Movie", "Show", "Book", "Place"]}
