@@ -9,6 +9,8 @@ import useTheme from "../../hooks/useTheme";
 
 import { setCreatorQueryAndRefresh } from "../../store/feedSlice";
 
+import * as Notifications from "expo-notifications";
+
 export default function SelectableUserWithUnreadCount({ user }) {
   const dispatch = useDispatch();
   const sessionUserId = useSelector((state) => state.user._id);
@@ -34,6 +36,11 @@ export default function SelectableUserWithUnreadCount({ user }) {
           $pull: { directRecipientsUnread: sessionUserId },
         });
       });
+      // update the badge count
+      const count = await Notifications.getBadgeCountAsync();
+      if (count >= unread.length) {
+        Notifications.setBadgeCountAsync(count - unread.length);
+      }
       setUnread([]);
     }
   };
