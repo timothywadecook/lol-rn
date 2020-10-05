@@ -1,11 +1,7 @@
 import React from "react";
 import { TouchableOpacity } from "react-native";
-import { useSelector } from "react-redux";
 // Components
-import { Feather, Entypo, Ionicons } from "@expo/vector-icons";
-import Avatar from "../Atomic/Avatar";
-import Collections from "../../screens/Collections";
-import * as T from "../Atomic/StyledText";
+import { Feather, Ionicons } from "@expo/vector-icons";
 // Animations
 import Animated from "react-native-reanimated";
 import { diffClamp } from "react-native-redash";
@@ -17,7 +13,6 @@ import { useNavigation } from "@react-navigation/native";
 export default function QuickActionProfileButton({ y }) {
   const theme = useTheme();
   const navigation = useNavigation();
-  const sessionUser = useSelector((state) => state.user);
 
   const [showModal, setShowModal] = React.useState(false);
 
@@ -69,12 +64,11 @@ export default function QuickActionProfileButton({ y }) {
           width: SIZE,
           borderRadius: 23,
         }}
-        onPress={() => navigation.navigate("Collections")}
-        // onPress={() => setShowModal(true)}
+        onPress={() => navigation.navigate("Network")}
       >
-        <Ionicons
-          name="md-bookmarks" // "md-list"
-          size={28}
+        <Feather
+          name="users"
+          size={28 - 4}
           color={showModal ? theme.purple : theme.primary}
         />
       </TouchableOpacity>
@@ -105,9 +99,13 @@ export default function QuickActionProfileButton({ y }) {
           justifyContent: "center",
           borderRadius: 23,
         }}
-        onPress={() => navigation.navigate("Profile")}
+        onPress={() => navigation.navigate("Collections")}
       >
-        <Avatar user={sessionUser} size={40} />
+        <Ionicons
+          name="md-bookmarks"
+          size={28}
+          color={showModal ? theme.purple : theme.primary}
+        />
       </TouchableOpacity>
     </Animated.View>
   );

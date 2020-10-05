@@ -19,7 +19,7 @@ export default function UserListItem({
 
   const openFriendDetails = () => {
     if (user._id === sessionUserId) {
-      navigation.navigate("Profile");
+      navigation.navigate("Network");
     } else {
       navigation.navigate("FriendDetails", { friend: user });
     }

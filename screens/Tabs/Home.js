@@ -179,12 +179,9 @@ export default function HomeScreen({ navigation }) {
         >
           <Feather name="edit" size={24} color={theme.iconDefault} />
         </TouchableOpacity>
-        {/* <T.H1>Like Out Loud</T.H1> */}
-        {/* <T.H3>Recommendations you can trust</T.H3> */}
       </WindowWidthRow>
 
       <FilterMenu y={y} categories={categories} setCategories={setCategories} />
-      {/* <AnimatedLOL y={y} /> */}
       <FilteredRecommendationsList
         recommendations={feed}
         loading={loading}
@@ -196,42 +193,7 @@ export default function HomeScreen({ navigation }) {
         categories={categories}
         y={y}
       />
-      {/* <QuickActionProfileButton y={y} /> */}
-      {/* <QuickActionCreateButton y={y} /> */}
       <QuickActionToolbar y={y} />
     </Screen>
-  );
-}
-
-function AnimatedLOL({ y }) {
-  const theme = useTheme();
-  return (
-    <Animated.View
-      style={{
-        width: theme.windowWidth,
-        alignItems: "center",
-        justifyContent: "center",
-        flexDirection: "row",
-        padding: 20,
-        position: "absolute",
-        top: HEIGHT,
-        zIndex: 2,
-        opacity: Animated.interpolate(y, {
-          inputRange: [0, 50],
-          outputRange: [1, 0],
-        }),
-        transform: [
-          {
-            translateY: Animated.interpolate(y, {
-              inputRange: [0, 400],
-              outputRange: [0, -200],
-            }),
-          },
-        ],
-      }}
-    >
-      {/* <Image source={logo} style={{ width: 44, height: 44, paddingTop: 5 }} /> */}
-      <T.FancyH1 style={{ color: theme.purple }}>Like Out Loud</T.FancyH1>
-    </Animated.View>
   );
 }

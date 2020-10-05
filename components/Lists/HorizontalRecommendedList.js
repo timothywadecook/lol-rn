@@ -31,7 +31,7 @@ export default function HorizontalRecommendedList({
       setLoaded(true);
       const timeout = setTimeout(() => {
         setShow(true);
-      }, 2000 + openDelay);
+      }, 1500 + openDelay);
       return () => clearTimeout(timeout);
     }
   }, []);

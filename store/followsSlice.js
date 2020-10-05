@@ -44,7 +44,7 @@ export const fetchFollowsAsync = () => async (dispatch, getState) => {
         $limit: 1000,
       },
     });
-    dispatch(setFollowing(getFollowing.data.map((f) => f.following)));
+    dispatch(setFollowing(getFollowing.data.map((f) => f.following._id)));
 
     const getFollowers = await followsService.find({
       query: {
@@ -52,7 +52,7 @@ export const fetchFollowsAsync = () => async (dispatch, getState) => {
         $limit: 1000,
       },
     });
-    dispatch(setFollowers(getFollowers.data.map((f) => f.follower)));
+    dispatch(setFollowers(getFollowers.data.map((f) => f.follower._id)));
   } catch {
     console.log("Error fetching follows", userId);
   }

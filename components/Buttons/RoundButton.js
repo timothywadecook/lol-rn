@@ -11,6 +11,7 @@ export default function RoundButton({
   solid = false,
   secondary = false,
   lessVerticalPad = false,
+  style,
 }) {
   const theme = useTheme();
 
@@ -22,18 +23,21 @@ export default function RoundButton({
   return (
     <TouchableOpacity
       onPress={onPress}
-      style={{
-        padding: 20,
-        paddingVertical: 30,
-        marginHorizontal: 6,
-        flexDirection: "row",
-        justifyContent: "center",
-        alignItems: "center",
-        borderRadius: 30,
-        backgroundColor: active ? activeBgColor : inActiveColor,
-        borderColor: theme.iconDefault,
-        borderWidth: active ? 0 : inActiveBorderWidth,
-      }}
+      style={[
+        {
+          padding: 20,
+          paddingVertical: 30,
+          marginHorizontal: 6,
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "center",
+          borderRadius: 30,
+          backgroundColor: active ? activeBgColor : inActiveColor,
+          borderColor: theme.iconDefault,
+          borderWidth: active ? 0 : inActiveBorderWidth,
+        },
+        style,
+      ]}
     >
       {renderIcon && renderIcon({ size: 14 })}
       <H2

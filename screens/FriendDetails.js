@@ -1,12 +1,11 @@
 import React from "react";
-import { View, Button } from "react-native";
+import { View } from "react-native";
 import useTheme from "../hooks/useTheme";
 
 // Components
 import FollowUnfollowButton from "../components/Buttons/FollowUnfollowButton";
 import FriendDetailsHeader from "../components/FriendDetailsHeader";
-import FriendDetailsTabsContainer from "../components/FriendDetailsTabsContainer";
-import ActivityIndicatorCentered from "../components/Atomic/ActivityIndicatorCentered";
+import ProfileTabContent from "../components/ProfileTabContent";
 import BackButton from "../components/Atomic/BackButton";
 
 import Screen from "../components/Wrappers/Screen";
@@ -52,7 +51,10 @@ export default function FriendDetailsScreen({ navigation, route }) {
 
         <FriendDetailsHeader user={friend} />
       </View>
-      <FriendDetailsTabsContainer user={friend} />
+
+      <View style={{ flex: 1, alignItems: "center" }}>
+        <ProfileTabContent userId={friend._id} />
+      </View>
     </Screen>
   );
 }

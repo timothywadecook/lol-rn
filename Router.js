@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { StatusBar, Text } from "react-native";
+import { StatusBar, Text, View } from "react-native";
 import LinkingConfiguration from "./navigation/LinkingConfiguration";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
@@ -14,12 +14,12 @@ import CreateOrEditList from "./screens/CreateOrEditList";
 import SearchUsers from "./screens/SearchUsers";
 import List from "./screens/List";
 import Home from "./screens/Tabs/Home";
-import Profile from "./screens/Tabs/Profile";
 import Create from "./screens/Tabs/Create";
 import Collections from "./screens/Collections";
 import AddToCollections from "./screens/AddToCollections";
 import SearchThings from "./screens/SearchThings";
 import ThingDetails from "./screens/ThingDetails";
+import Network from "./screens/Network";
 // Actions
 import { login, setAppIsReady } from "./store/userSlice";
 
@@ -62,10 +62,9 @@ const Router = ({
 
   if (!appIsReady) {
     return (
-      <Text style={{ marginTop: 50 }}>
-        We are in no man's land now. Close the app and reopen to get back to
-        normal.
-      </Text>
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        <Text style={{ marginTop: 50 }}>Close the app and reopen it.</Text>
+      </View>
     );
   }
   return (
@@ -86,7 +85,6 @@ const Router = ({
         {isAuthenticated ? (
           <React.Fragment>
             <Stack.Screen name="Home" component={Home} />
-            <Stack.Screen name="Profile" component={Profile} />
             <Stack.Screen
               name="RecommendationDetails"
               component={RecommendationDetails}
@@ -107,6 +105,7 @@ const Router = ({
               name="AddToCollections"
               component={AddToCollections}
             />
+            <Stack.Screen name="Network" component={Network} />
           </React.Fragment>
         ) : (
           <Stack.Screen

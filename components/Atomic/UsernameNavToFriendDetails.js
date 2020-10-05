@@ -4,20 +4,18 @@ import { View, TouchableOpacity } from "react-native";
 import { H3, H2 } from "./StyledText";
 import { useNavigation } from "@react-navigation/native";
 import Avatar from "./Avatar";
-import useTheme from "../../hooks/useTheme";
 
 const UsernameNavToFriendDetails = ({
   friend,
   withAvatar = true,
   withName = true,
 }) => {
-  const theme = useTheme();
   const navigation = useNavigation();
   const activeUserId = useSelector((state) => state.user._id);
 
   const handleOnPress = () => {
     if (friend._id === activeUserId) {
-      navigation.navigate("Profile");
+      navigation.navigate("Network");
     } else {
       navigation.navigate("FriendDetails", { friend });
     }
