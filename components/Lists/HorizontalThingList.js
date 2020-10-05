@@ -10,6 +10,8 @@ import { Feather, Entypo } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import useTheme from "../../hooks/useTheme";
 
+import AnimateExpand from "../Wrappers/AnimateExpand";
+
 export default function HorizontalThingList({ listId, canCreate }) {
   const [thingsData, setThingsData] = React.useState([]);
   const theme = useTheme();
@@ -38,43 +40,64 @@ export default function HorizontalThingList({ listId, canCreate }) {
     }
   }, [listId]);
 
+  const [show, setShow] = React.useState(false);
+  const [loaded, setLoaded] = React.useState(false);
+  const size = theme.windowWidth / 5;
+  const maxHeight = size * 2.18;
+
   if (!thingsData.length && !canCreate) {
     return null;
   }
 
   return (
     <ProfileCard
-      renderRightChild={() =>
-        canCreate && (
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate("CreateOrEditList", { list, isEdit: true })
-            }
-            style={{
-              height: 30,
-              width: 30,
-              backgroundColor: theme.iconBg,
-              alignItems: "center",
-              justifyContent: "center",
+      onPressHeader={() => {
+        setLoaded(true);
+        setShow(!show);
+      }}
+      renderRightChild={() => (
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <T.Title style={{ paddingRight: 10, color: theme.purple }}>
+            {things.length}
+          </T.Title>
+          {canCreate && (
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate("CreateOrEditList", { list, isEdit: true })
+              }
+              style={{
+                height: 30,
+                width: 30,
+                backgroundColor: theme.iconBg,
+                alignItems: "center",
+                justifyContent: "center",
 
-              borderRadius: 15,
-            }}
-          >
-            <Entypo name="dots-two-vertical" size={20} color={theme.purple} />
-          </TouchableOpacity>
-        )
-      }
+                borderRadius: 15,
+              }}
+            >
+              <Entypo name="dots-two-vertical" size={20} color={theme.purple} />
+            </TouchableOpacity>
+          )}
+        </View>
+      )}
       title={name}
     >
-      <FlatList
-        keyboardShouldPersistTaps="handled"
-        data={thingsData}
-        renderItem={({ item: thing }) => <ThingCard thing={thing} />}
-        horizontal={true}
-        showsHorizontalScrollIndicator={false}
-        keyExtractor={(item) => item._id}
-        // ListFooterComponent={() => canCreate && <AddThingCard />}
-      />
+      {loaded && (
+        <AnimateExpand doAnimation={show} height={maxHeight}>
+          <View style={{ width: theme.windowWidth }}>
+            <FlatList
+              initialNumToRender={5}
+              keyboardShouldPersistTaps="handled"
+              data={thingsData}
+              renderItem={({ item: thing }) => <ThingCard thing={thing} />}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              keyExtractor={(item) => item._id + listId}
+              // ListFooterComponent={() => canCreate && <AddThingCard />}
+            />
+          </View>
+        </AnimateExpand>
+      )}
     </ProfileCard>
   );
 }
@@ -84,10 +107,12 @@ function ThingCard({ thing }) {
   const theme = useTheme();
   const navigation = useNavigation();
   const size = theme.windowWidth / 5;
+  const maxHeight = size * 2.18;
   return (
     <TouchableOpacity
       onPress={() => navigation.navigate("ThingDetails", { thing })}
       style={{
+        maxHeight: maxHeight,
         width: size,
         alignItems: "center",
         marginHorizontal: 15,

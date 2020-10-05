@@ -11,7 +11,13 @@ import BackButton from "../components/Atomic/BackButton";
 
 import Screen from "../components/Wrappers/Screen";
 
-export default function FriendDetailsScreen({ route }) {
+export default function FriendDetailsScreen({ navigation, route }) {
+  navigation.setOptions({
+    gestureResponseDistance: {
+      horizontal: 80,
+      vertical: 100,
+    },
+  });
   const { friend } = route.params;
 
   const theme = useTheme();

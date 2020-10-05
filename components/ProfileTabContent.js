@@ -103,6 +103,7 @@ export default function ProfileTabContent({ userId, followers, following }) {
       <ProfileCard title="Following">
         <View>
           <FlatList
+            initialNumToRender={6}
             data={following}
             renderItem={({ item: user }) => (
               <SelectableUser
@@ -132,6 +133,7 @@ export default function ProfileTabContent({ userId, followers, following }) {
       <ProfileCard title="Followers">
         <View>
           <FlatList
+            initialNumToRender={6}
             data={followers}
             renderItem={({ item: user }) => (
               <SelectableUser

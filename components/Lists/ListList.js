@@ -49,7 +49,7 @@ export default function ListList({ userId }) {
   );
 
   return (
-    <View>
+    <View style={{ paddingBottom: 200 }}>
       <HorizontalRecommendedList
         userId={userId}
         key={"recommendedList" + userId}

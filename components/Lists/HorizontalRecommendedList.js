@@ -43,26 +43,31 @@ export default function HorizontalRecommendedList({ userId, canCreate }) {
 
   return (
     <ProfileCard
-      renderRightChild={() =>
-        canCreate && (
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate("CreateOrEditList", { list, isEdit: true })
-            }
-            style={{
-              height: 30,
-              width: 30,
-              backgroundColor: theme.iconBg,
-              alignItems: "center",
-              justifyContent: "center",
+      renderRightChild={() => (
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <T.Title style={{ paddingRight: 10, color: theme.purple }}>
+            {thingsData.length}
+          </T.Title>
+          {canCreate && (
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate("CreateOrEditList", { list, isEdit: true })
+              }
+              style={{
+                height: 30,
+                width: 30,
+                backgroundColor: theme.iconBg,
+                alignItems: "center",
+                justifyContent: "center",
 
-              borderRadius: 15,
-            }}
-          >
-            <Entypo name="dots-two-vertical" size={20} color={theme.purple} />
-          </TouchableOpacity>
-        )
-      }
+                borderRadius: 15,
+              }}
+            >
+              <Entypo name="dots-two-vertical" size={20} color={theme.purple} />
+            </TouchableOpacity>
+          )}
+        </View>
+      )}
       title={"Recommended"}
     >
       <FlatList
@@ -71,7 +76,7 @@ export default function HorizontalRecommendedList({ userId, canCreate }) {
         renderItem={({ item: thing }) => <ThingCard thing={thing} />}
         horizontal={true}
         showsHorizontalScrollIndicator={false}
-        keyExtractor={(item) => item._id}
+        keyExtractor={(item, i) => item._id + i}
       />
     </ProfileCard>
   );
