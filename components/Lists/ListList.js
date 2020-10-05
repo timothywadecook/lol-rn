@@ -1,10 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { View, TouchableOpacity } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import * as T from "../Atomic/StyledText";
-//
-import useTheme from "../../hooks/useTheme";
+import { View } from "react-native";
 //
 import { listsService } from "../../services/feathersClient";
 import { addLoadedLists } from "../../store/listsSlice";
@@ -12,9 +8,6 @@ import HorizontalThingList from "./HorizontalThingList";
 import HorizontalRecommendedList from "./HorizontalRecommendedList";
 
 export default function ListList({ userId }) {
-  const theme = useTheme();
-  const navigation = useNavigation();
-
   const sessionUserId = useSelector((state) => state.user._id);
   const canCreate = () => sessionUserId === userId;
   const dispatch = useDispatch();
@@ -55,37 +48,22 @@ export default function ListList({ userId }) {
         key={"recommendedList" + userId}
         canCreate={canCreate()}
       />
-      {privateListIds.map((listId) => (
+      {privateListIds.map((listId, i) => (
         <HorizontalThingList
           key={listId}
           listId={listId}
           canCreate={canCreate()}
+          openDelay={i * 500}
         />
       ))}
-      {publicListIds.map((listId) => (
+      {publicListIds.map((listId, i) => (
         <HorizontalThingList
           key={listId}
           listId={listId}
           canCreate={canCreate()}
+          openDelay={(i + privateListIds.length) * 500}
         />
       ))}
-      {/* {canCreate() && (
-        <TouchableOpacity
-          style={{
-            width: theme.contentWidth,
-            height: 80,
-            backgroundColor: theme.iconBg,
-            justifyContent: "center",
-            alignItems: "center",
-            flexDirection: "row",
-            borderRadius: 20,
-            alignSelf: "center",
-          }}
-          onPress={() => navigation.navigate("CreateOrEditList")}
-        >
-          <T.Title style={{ color: theme.purple }}>NEW LIST</T.Title>
-        </TouchableOpacity>
-      )} */}
     </View>
   );
 }

@@ -12,7 +12,12 @@ import useTheme from "../../hooks/useTheme";
 
 import AnimateExpand from "../Wrappers/AnimateExpand";
 
-export default function HorizontalThingList({ listId, canCreate }) {
+export default function HorizontalThingList({
+  listId,
+  canCreate,
+  autoOpen = true,
+  openDelay = 0,
+}) {
   const [thingsData, setThingsData] = React.useState([]);
   const theme = useTheme();
   const navigation = useNavigation();
@@ -44,6 +49,16 @@ export default function HorizontalThingList({ listId, canCreate }) {
   const [loaded, setLoaded] = React.useState(false);
   const size = theme.windowWidth / 5;
   const maxHeight = size * 2.18;
+
+  React.useEffect(() => {
+    if (autoOpen) {
+      setLoaded(true);
+      const timeout = setTimeout(() => {
+        setShow(true);
+      }, 2000 + openDelay);
+      return () => clearTimeout(timeout);
+    }
+  }, []);
 
   if (!thingsData.length && !canCreate) {
     return null;

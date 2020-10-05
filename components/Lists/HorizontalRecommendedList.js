@@ -9,10 +9,32 @@ import { Entypo } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import useTheme from "../../hooks/useTheme";
 
-export default function HorizontalRecommendedList({ userId, canCreate }) {
+import AnimateExpand from "../Wrappers/AnimateExpand";
+
+export default function HorizontalRecommendedList({
+  userId,
+  canCreate,
+  autoOpen = true,
+  openDelay = 0,
+}) {
   const [thingsData, setThingsData] = React.useState([]);
   const theme = useTheme();
   const navigation = useNavigation();
+
+  const [show, setShow] = React.useState(false);
+  const [loaded, setLoaded] = React.useState(false);
+  const size = theme.windowWidth / 5;
+  const maxHeight = size * 2.18;
+
+  React.useEffect(() => {
+    if (autoOpen) {
+      setLoaded(true);
+      const timeout = setTimeout(() => {
+        setShow(true);
+      }, 2000 + openDelay);
+      return () => clearTimeout(timeout);
+    }
+  }, []);
 
   React.useEffect(() => {
     const fetchThings = async () => {
@@ -43,6 +65,10 @@ export default function HorizontalRecommendedList({ userId, canCreate }) {
 
   return (
     <ProfileCard
+      onPressHeader={() => {
+        setLoaded(true);
+        setShow(!show);
+      }}
       renderRightChild={() => (
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <T.Title style={{ paddingRight: 10, color: theme.purple }}>
@@ -70,14 +96,20 @@ export default function HorizontalRecommendedList({ userId, canCreate }) {
       )}
       title={"Recommended"}
     >
-      <FlatList
-        keyboardShouldPersistTaps="handled"
-        data={thingsData}
-        renderItem={({ item: thing }) => <ThingCard thing={thing} />}
-        horizontal={true}
-        showsHorizontalScrollIndicator={false}
-        keyExtractor={(item, i) => item._id + i}
-      />
+      {loaded && (
+        <AnimateExpand doAnimation={show} height={maxHeight}>
+          <View style={{ width: theme.windowWidth }}>
+            <FlatList
+              keyboardShouldPersistTaps="handled"
+              data={thingsData}
+              renderItem={({ item: thing }) => <ThingCard thing={thing} />}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              keyExtractor={(item, i) => item._id + i}
+            />
+          </View>
+        </AnimateExpand>
+      )}
     </ProfileCard>
   );
 }

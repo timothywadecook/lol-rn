@@ -29,7 +29,7 @@ export default function QuickActionProfileButton({ y }) {
   return (
     <Animated.View
       style={{
-        width: 220,
+        width: 240,
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-evenly",
@@ -37,7 +37,7 @@ export default function QuickActionProfileButton({ y }) {
         padding: 10,
         borderRadius: (SIZE + 20) / 2,
         backgroundColor: theme.wallbg,
-        right: theme.windowWidth / 2 - 110,
+        right: theme.windowWidth / 2 - 120,
         bottom: BOTTOM,
         zIndex: 3,
         shadowColor: theme.primary,
@@ -83,16 +83,16 @@ export default function QuickActionProfileButton({ y }) {
         style={{
           elevation: 3,
           backgroundColor: theme.iconBg,
-          height: SIZE,
-          width: SIZE,
+          height: SIZE * 1.8,
+          width: SIZE * 1.8,
           borderRadius: 23,
           alignItems: "center",
           justifyContent: "center",
-          marginHorizontal: 10,
+          marginHorizontal: 15,
         }}
         onPress={() => navigation.navigate("SearchThings")}
       >
-        <Feather name="plus" size={28} color={theme.primary} />
+        <Feather name="edit" size={28} color={theme.primary} />
       </TouchableOpacity>
 
       <TouchableOpacity

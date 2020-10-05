@@ -162,7 +162,7 @@ export default function ProfileTabContent({ userId, followers, following }) {
   );
 
   return (
-    <ScrollView style={{ flex: 1 }}>
+    <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
       {renderHeader()}
       {/* <FilteredRecommendationsList
         loading={loading}
