@@ -6,14 +6,19 @@ import * as T from "../Atomic/StyledText";
 import Avatar from "../Atomic/Avatar";
 import useTheme from "../../hooks/useTheme";
 
-export default function SelectableUser({ user, size = 50, onSelect }) {
+export default function SelectableUser({
+  user,
+  size = 50,
+  onSelect,
+  onUnselect,
+  selected,
+}) {
   const theme = useTheme();
-  const query = useSelector((state) => state.feed.query.creator["$in"]);
-  const selected = query.length === 1 && query.includes(user._id);
+  onPress = selected ? onUnselect : onSelect;
 
   return (
     <TouchableOpacity
-      onPress={onSelect}
+      onPress={onPress}
       style={{
         padding: 5,
         margin: 5,

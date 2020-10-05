@@ -63,6 +63,7 @@ export default function SelectDirectRecipients({
             user={user}
             onSelect={() => onSelect(user._id)}
             onUnselect={() => onUnselect(user._id)}
+            selected={directRecipients.includes(user._id)}
           />
         )}
         horizontal={true}

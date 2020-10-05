@@ -38,15 +38,24 @@ export default function SelectableUserWithUnreadCount({ user }) {
     }
   };
 
+  const query = useSelector((state) => state.feed.query.creator["$in"]);
   const onSelect = () => {
     dispatch(setCreatorQueryAndRefresh([user._id]));
     onPress();
+  };
+  const onUnselect = () => {
+    dispatch(setCreatorQueryAndRefresh([]));
   };
 
   return (
     <View>
       <CountBubble count={unread.length} />
-      <SelectableUser user={user} onSelect={onSelect} />
+      <SelectableUser
+        user={user}
+        onSelect={onSelect}
+        onUnselect={onUnselect}
+        selected={query.length === 1 && query.includes(user._id)}
+      />
     </View>
   );
 }
