@@ -9,6 +9,7 @@ export default function useFollowing(userId) {
     refreshing,
     fetchmore,
     loading,
+    moreAvailable,
   ] = useListService(followsService, { follower: userId });
   return [
     data.map((follow) => follow.following),
@@ -16,5 +17,6 @@ export default function useFollowing(userId) {
     refreshing,
     fetchmore,
     loading,
+    moreAvailable,
   ];
 }

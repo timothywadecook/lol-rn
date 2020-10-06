@@ -116,3 +116,16 @@ export function P(props) {
     />
   );
 }
+
+export function Label(props) {
+  const theme = useTheme();
+  return (
+    <Text
+      {...props}
+      style={[
+        { color: theme.primary, fontSize: 11, paddingTop: 3 },
+        props.style,
+      ]}
+    />
+  );
+}

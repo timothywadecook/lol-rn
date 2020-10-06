@@ -18,6 +18,7 @@ export default function FriendsList({
   refreshing,
   fetchMore,
   loading,
+  moreAvailable = false,
 }) {
   const sessionUserId = useSelector((state) => state.user._id);
   const navigation = useNavigation();
@@ -57,7 +58,13 @@ export default function FriendsList({
           {loading ? (
             <ActivityIndicator />
           ) : (
-            <RoundButton title="Show More" onPress={fetchMore} />
+            moreAvailable && (
+              <RoundButton
+                title="Show More"
+                onPress={fetchMore}
+                lessVerticalPad={true}
+              />
+            )
           )}
         </WindowWidthRow>
       </ProfileCard>

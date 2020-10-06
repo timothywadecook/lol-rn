@@ -48,6 +48,7 @@ export default function NetworkScreen({ navigation }) {
     refreshingSuggested,
     fetchmoreSuggested,
     loadingSuggested,
+    moreAvailableSuggested,
   ] = useSuggested();
 
   return (
@@ -102,6 +103,7 @@ export default function NetworkScreen({ navigation }) {
             refreshing={refreshingSuggested}
             fetchMore={fetchmoreSuggested}
             loading={loadingSuggested}
+            moreAvailable={moreAvailableSuggested}
           />
         </ScrollView>
       )}

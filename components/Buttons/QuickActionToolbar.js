@@ -2,6 +2,7 @@ import React from "react";
 import { TouchableOpacity } from "react-native";
 // Components
 import { Feather, Ionicons } from "@expo/vector-icons";
+import * as T from "../Atomic/StyledText";
 // Animations
 import Animated from "react-native-reanimated";
 import { diffClamp } from "react-native-redash";
@@ -16,7 +17,7 @@ export default function QuickActionProfileButton({ y }) {
 
   const [showModal, setShowModal] = React.useState(false);
 
-  const SIZE = 46;
+  const SIZE = 54;
   const BOTTOM = 45;
 
   const diffClampY = diffClamp(y, 0, 500);
@@ -35,6 +36,7 @@ export default function QuickActionProfileButton({ y }) {
         right: theme.windowWidth / 2 - 120,
         bottom: BOTTOM,
         zIndex: 3,
+        elevation: 3,
         shadowColor: theme.primary,
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.3,
@@ -56,56 +58,55 @@ export default function QuickActionProfileButton({ y }) {
     >
       <TouchableOpacity
         style={{
-          elevation: 3,
-          backgroundColor: theme.iconBg,
+          // backgroundColor: theme.iconBg,
           alignItems: "center",
           justifyContent: "center",
           height: SIZE,
           width: SIZE,
-          borderRadius: 23,
+          borderRadius: SIZE / 2,
         }}
         onPress={() => navigation.navigate("Network")}
       >
         <Feather
           name="users"
-          size={28 - 4}
+          size={24}
           color={showModal ? theme.purple : theme.primary}
         />
+        <T.Label>People</T.Label>
       </TouchableOpacity>
 
       <TouchableOpacity
         style={{
-          elevation: 3,
-          backgroundColor: theme.iconBg,
-          height: SIZE * 1.8,
-          width: SIZE * 1.8,
-          borderRadius: 23,
+          // backgroundColor: theme.iconBg,
+          height: SIZE,
+          width: SIZE,
+          borderRadius: SIZE / 2,
           alignItems: "center",
           justifyContent: "center",
-          marginHorizontal: 15,
         }}
         onPress={() => navigation.navigate("SearchThings")}
       >
-        <Feather name="edit" size={28} color={theme.primary} />
+        <Feather name="search" size={24} color={theme.primary} />
+        <T.Label>Things</T.Label>
       </TouchableOpacity>
 
       <TouchableOpacity
         style={{
           height: SIZE,
           width: SIZE,
-          elevation: 3,
-          backgroundColor: theme.iconBg,
+          // backgroundColor: theme.iconBg,
           alignItems: "center",
           justifyContent: "center",
-          borderRadius: 23,
+          borderRadius: SIZE / 2,
         }}
         onPress={() => navigation.navigate("Collections")}
       >
-        <Ionicons
-          name="md-bookmarks"
-          size={28}
+        <Feather
+          name="bookmark"
+          size={24}
           color={showModal ? theme.purple : theme.primary}
         />
+        <T.Label>Lists</T.Label>
       </TouchableOpacity>
     </Animated.View>
   );
