@@ -115,7 +115,6 @@ function ListSelectableUsersWithUnreadCountAndAddNew() {
     <FlatList
       data={userList}
       renderItem={renderUser}
-      // ListFooterComponent={renderFooter}
       ListHeaderComponent={renderHeader}
       horizontal={true}
       showsHorizontalScrollIndicator={false}

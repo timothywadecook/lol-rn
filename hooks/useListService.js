@@ -5,6 +5,7 @@ export default function useListService(service, params) {
   const [refreshing, setRefreshing] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const [moreAvailable, setMoreAvailable] = React.useState(true);
+  const [total, setTotal] = React.useState(0);
 
   const refresh = async () => {
     if (!refreshing) {
@@ -19,6 +20,7 @@ export default function useListService(service, params) {
         });
         setData(datadata.data);
         setMoreAvailable(datadata.total > datadata.data.length);
+        setTotal(datadata.total);
       } catch (error) {
         console.log("Error using list service refresh", service, error);
         setMoreAvailable(false);
@@ -53,5 +55,5 @@ export default function useListService(service, params) {
     refresh();
   }, []);
 
-  return [data, refresh, refreshing, fetchMore, loading, moreAvailable];
+  return [data, refresh, refreshing, fetchMore, loading, moreAvailable, total];
 }

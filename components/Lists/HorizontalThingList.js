@@ -9,6 +9,7 @@ import { Feather, Entypo } from "@expo/vector-icons";
 
 import { useNavigation } from "@react-navigation/native";
 import useTheme from "../../hooks/useTheme";
+import useListService from "../../hooks/useListService";
 
 import AnimateExpand from "../Wrappers/AnimateExpand";
 
@@ -18,32 +19,24 @@ export default function HorizontalThingList({
   autoOpen = true,
   openDelay = 0,
 }) {
-  const [thingsData, setThingsData] = React.useState([]);
+  // const [thingsData, setThingsData] = React.useState([]);
   const theme = useTheme();
   const navigation = useNavigation();
 
   const list = useSelector((state) => state.lists[listId]);
   const { name, isPrivate, participants, things } = list;
 
-  React.useEffect(() => {
-    const fetchThings = async () => {
-      try {
-        const res = await thingsService.find({
-          query: { _id: { $in: things }, $limit: 1000 },
-        });
-        setThingsData(res.data);
-      } catch (error) {
-        console.log(
-          "Error fetching things for horizontal list",
-          error.message,
-          error
-        );
-      }
-    };
-    if (things && !!things.length) {
-      fetchThings();
-    }
-  }, [listId]);
+  const [
+    data,
+    refresh,
+    refreshing,
+    fetchMore,
+    loading,
+    moreAvailable,
+    total,
+  ] = useListService(thingsService, {
+    _id: { $in: things },
+  });
 
   const [show, setShow] = React.useState(false);
   const [loaded, setLoaded] = React.useState(false);
@@ -60,7 +53,7 @@ export default function HorizontalThingList({
     }
   }, []);
 
-  if (!thingsData.length && !canCreate) {
+  if (!data.length && !canCreate) {
     return null;
   }
 
@@ -72,8 +65,14 @@ export default function HorizontalThingList({
       }}
       renderRightChild={() => (
         <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <T.Title style={{ paddingRight: 10, color: theme.purple }}>
-            {things.length}
+          <T.Title
+            style={{
+              paddingRight: 10,
+              color: theme.purple,
+              fontWeight: "normal",
+            }}
+          >
+            {total}
           </T.Title>
           {canCreate && (
             <TouchableOpacity
@@ -103,12 +102,15 @@ export default function HorizontalThingList({
             <FlatList
               initialNumToRender={5}
               keyboardShouldPersistTaps="handled"
-              data={thingsData}
+              data={data}
               renderItem={({ item: thing }) => <ThingCard thing={thing} />}
               horizontal={true}
               showsHorizontalScrollIndicator={false}
               keyExtractor={(item) => item._id + listId}
-              // ListFooterComponent={() => canCreate && <AddThingCard />}
+              onEndReached={fetchMore}
+              refreshing={refreshing}
+              onRefresh={refresh}
+              loading={loading}
             />
           </View>
         </AnimateExpand>

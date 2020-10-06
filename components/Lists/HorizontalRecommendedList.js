@@ -8,6 +8,7 @@ import { Entypo } from "@expo/vector-icons";
 
 import { useNavigation } from "@react-navigation/native";
 import useTheme from "../../hooks/useTheme";
+import useListService from "../../hooks/useListService";
 
 import AnimateExpand from "../Wrappers/AnimateExpand";
 
@@ -17,7 +18,6 @@ export default function HorizontalRecommendedList({
   autoOpen = true,
   openDelay = 0,
 }) {
-  const [thingsData, setThingsData] = React.useState([]);
   const theme = useTheme();
   const navigation = useNavigation();
 
@@ -36,30 +36,19 @@ export default function HorizontalRecommendedList({
     }
   }, []);
 
-  React.useEffect(() => {
-    const fetchThings = async () => {
-      try {
-        const recs = await recommendationsService.find({
-          query: {
-            creator: userId,
-            $limit: 1000,
-          },
-        });
-        setThingsData(recs.data.map((r) => r.thing));
-      } catch (error) {
-        console.log(
-          "Error fetching things for horizontal recommended list",
-          error.message,
-          error
-        );
-      }
-    };
-    if (userId) {
-      fetchThings();
-    }
-  }, [userId]);
+  const [
+    data,
+    refresh,
+    refreshing,
+    fetchMore,
+    loading,
+    moreAvailable,
+    total,
+  ] = useListService(recommendationsService, {
+    creator: userId,
+  });
 
-  if (!thingsData.length && !canCreate) {
+  if (!data.length && !canCreate) {
     return null;
   }
 
@@ -72,7 +61,7 @@ export default function HorizontalRecommendedList({
       renderRightChild={() => (
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <T.Title style={{ paddingRight: 10, color: theme.purple }}>
-            {thingsData.length}
+            {total}
           </T.Title>
           {canCreate && (
             <TouchableOpacity
@@ -101,11 +90,15 @@ export default function HorizontalRecommendedList({
           <View style={{ width: theme.windowWidth }}>
             <FlatList
               keyboardShouldPersistTaps="handled"
-              data={thingsData}
               renderItem={({ item: thing }) => <ThingCard thing={thing} />}
               horizontal={true}
               showsHorizontalScrollIndicator={false}
               keyExtractor={(item, i) => item._id + i}
+              data={data.map((r) => r.thing)}
+              onEndReached={fetchMore}
+              refreshing={refreshing}
+              onRefresh={refresh}
+              loading={loading}
             />
           </View>
         </AnimateExpand>

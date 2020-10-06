@@ -81,9 +81,9 @@ export default function FriendsList({
         showVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
         keyExtractor={(item) => item._id}
-        refresh={refresh}
+        onRefresh={refresh}
         refreshing={refreshing}
-        fetchMore={fetchMore}
+        onEndReached={fetchMore}
         loading={loading}
       />
     </ProfileCard>
