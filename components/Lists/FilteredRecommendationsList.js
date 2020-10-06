@@ -71,7 +71,7 @@ const FilteredRecommendationsList = ({
         onScroll={onScroll}
         scrollEventThrottle={16}
         contentContainerStyle={{
-          paddingTop: topPad ? HEIGHT + 80 : 0,
+          paddingTop: topPad ? HEIGHT + 70 : 0,
           alignItems: "center",
         }}
       />

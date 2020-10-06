@@ -97,7 +97,7 @@ export default function HorizontalThingList({
       title={name}
     >
       {loaded && (
-        <AnimateExpand doAnimation={show} height={maxHeight}>
+        <AnimateExpand fast={true} doAnimation={show} height={maxHeight}>
           <View style={{ width: theme.windowWidth }}>
             <FlatList
               initialNumToRender={5}

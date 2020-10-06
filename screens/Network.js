@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, ActivityIndicator } from "react-native";
 import useTheme from "../hooks/useTheme";
 
 // Components
@@ -70,6 +70,8 @@ export default function NetworkScreen({ navigation }) {
 
       {showSettings ? (
         <ProfileSettings user={user} theme={theme} />
+      ) : refreshingFollowers || refreshingFollowing || refreshingSuggested ? (
+        <ActivityIndicator />
       ) : (
         <ScrollView
           showsVerticalScrollIndicator={false}

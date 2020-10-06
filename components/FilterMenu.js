@@ -32,7 +32,7 @@ export default function FilterMenu({ y, categories, setCategories }) {
   return (
     <Animated.View
       style={{
-        top: 115,
+        top: 105,
         position: "absolute",
         zIndex: 1,
         transform: [
@@ -67,9 +67,9 @@ export default function FilterMenu({ y, categories, setCategories }) {
           backgroundColor: theme.bg,
         }}
       >
-        <T.H4 style={{ paddingHorizontal: 10, paddingBottom: 5, fontSize: 14 }}>
+        {/* <T.H4 style={{ paddingHorizontal: 10, paddingBottom: 5, fontSize: 14 }}>
           Tap to filter by users and categories
-        </T.H4>
+        </T.H4> */}
         <ListSelectableUsersWithUnreadCountAndAddNew />
         <MultiSelectFilterButtons
           options={["Movies", "Shows", "Books", "Places"]}

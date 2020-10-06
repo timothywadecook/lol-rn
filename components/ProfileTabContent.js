@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView, View } from "react-native";
+import { ActivityIndicator, ScrollView, View } from "react-native";
 import ListList from "./Lists/ListList";
 import * as T from "./Atomic/StyledText";
 
@@ -26,7 +26,9 @@ export default function ProfileTabContent({ userId }) {
     loadingFollowers,
   ] = useFollowers(userId);
 
-  return (
+  return refreshingFollowers || refreshingFollowing ? (
+    <ActivityIndicator />
+  ) : (
     <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
       <View style={{ alignItems: "center" }}>
         <T.H4 style={{ paddingTop: 20 }}>Friends</T.H4>

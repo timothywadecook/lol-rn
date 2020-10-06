@@ -47,6 +47,7 @@ export default function ListList({ userId }) {
         userId={userId}
         key={"recommendedList" + userId}
         canCreate={canCreate()}
+        autoOpen={false}
       />
       {privateListIds.map((listId, i) => (
         <HorizontalThingList
@@ -54,6 +55,7 @@ export default function ListList({ userId }) {
           listId={listId}
           canCreate={canCreate()}
           openDelay={i * 500}
+          autoOpen={false}
         />
       ))}
       {publicListIds.map((listId, i) => (
@@ -62,6 +64,7 @@ export default function ListList({ userId }) {
           listId={listId}
           canCreate={canCreate()}
           openDelay={(i + privateListIds.length) * 500}
+          autoOpen={false}
         />
       ))}
     </View>

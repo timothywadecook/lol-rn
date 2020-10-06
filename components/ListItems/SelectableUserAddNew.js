@@ -77,15 +77,19 @@ export function SelectableUserMe({ size = 50 }) {
   const query = useSelector((state) => state.feed.query.creator["$in"]);
   const sessionUser = useSelector((state) => state.user);
 
-  const onPress = () => {
+  const onSelect = () => {
     dispatch(setCreatorQueryAndRefresh([sessionUser._id]));
+  };
+
+  const onUnselect = () => {
+    dispatch(setCreatorQueryAndRefresh([]));
   };
 
   const active = query.length === 1 && query.includes(sessionUser._id);
 
   return (
     <TouchableOpacity
-      onPress={onPress}
+      onPress={active ? onUnselect : onSelect}
       style={{
         padding: 5,
         margin: 5,
@@ -124,8 +128,12 @@ export function SelectableUserFollowing({ size = 50 }) {
 
   const active = following.length === query.length;
 
-  const onPress = () => {
+  const onSelect = () => {
     dispatch(setCreatorQueryAndRefresh(following));
+  };
+
+  const onUnselect = () => {
+    dispatch(setCreatorQueryAndRefresh([]));
   };
 
   if (following.length < 2) {
@@ -134,7 +142,7 @@ export function SelectableUserFollowing({ size = 50 }) {
 
   return (
     <TouchableOpacity
-      onPress={onPress}
+      onPress={active ? onUnselect : onSelect}
       style={{
         padding: 5,
         margin: 5,

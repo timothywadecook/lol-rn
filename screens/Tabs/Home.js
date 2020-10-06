@@ -165,7 +165,7 @@ export default function HomeScreen({ navigation }) {
         </TouchableOpacity>
 
         <T.FancyH1
-          style={{ color: theme.purple, paddingBottom: 5, fontSize: 28 }}
+          style={{ color: theme.purple, paddingBottom: 5, fontSize: 30 }}
         >
           Like Out Loud
         </T.FancyH1>

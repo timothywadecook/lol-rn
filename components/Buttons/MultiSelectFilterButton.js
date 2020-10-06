@@ -13,7 +13,7 @@ export default function MutliSelectFilterButton({
   };
 
   const addToSelected = () => {
-    setSelected([...selected, text]);
+    setSelected([text]);
   };
 
   return (

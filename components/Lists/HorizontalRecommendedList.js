@@ -86,7 +86,7 @@ export default function HorizontalRecommendedList({
       title={"Recommended"}
     >
       {loaded && (
-        <AnimateExpand doAnimation={show} height={maxHeight}>
+        <AnimateExpand fast={true} doAnimation={show} height={maxHeight}>
           <View style={{ width: theme.windowWidth }}>
             <FlatList
               keyboardShouldPersistTaps="handled"
