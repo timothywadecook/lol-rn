@@ -6,6 +6,7 @@ import SubmitButton from "../Buttons/SubmitButton";
 
 import useTheme from "../../hooks/useTheme";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { sub } from "react-native-reanimated";
 
 export default ProfileCard = (props) => {
   const theme = useTheme();
@@ -16,13 +17,12 @@ export default ProfileCard = (props) => {
       style={{
         paddingVertical: 10,
         paddingHorizontal: 0,
-        // marginBottom: 30,
-        // backgroundColor: theme.iconBg,
       }}
     >
       <CardHeader
         onPress={props.onPressHeader}
         title={props.title}
+        subtitle={props.subtitle}
         renderRightChild={
           !!props.renderRightChild
             ? props.renderRightChild
@@ -37,22 +37,25 @@ export default ProfileCard = (props) => {
   );
 };
 
-function CardHeader({ title, renderRightChild, onPress }) {
+function CardHeader({ title, subtitle, renderRightChild, onPress }) {
   const theme = useTheme();
   return (
-    <TouchableOpacity
-      onPress={onPress}
-      activeOpacity={0.7}
+    <View
       style={{
+        display: "flex",
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "space-between",
-        padding: 10,
+        paddingHorizontal: 10,
       }}
     >
-      <T.Title>{title}</T.Title>
+      <View style={{ flex: 1, paddingVertical: 10 }}>
+        <TouchableOpacity onPress={onPress} activeOpacity={0.7}>
+          <T.Title>{title}</T.Title>
+          <T.H2G>{subtitle}</T.H2G>
+        </TouchableOpacity>
+      </View>
       {renderRightChild()}
-    </TouchableOpacity>
+    </View>
   );
 }
 

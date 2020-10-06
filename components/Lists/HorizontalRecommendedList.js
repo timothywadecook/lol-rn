@@ -59,31 +59,10 @@ export default function HorizontalRecommendedList({
         setShow(!show);
       }}
       renderRightChild={() => (
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <T.Title style={{ paddingRight: 10, color: theme.purple }}>
-            {total}
-          </T.Title>
-          {canCreate && (
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate("CreateOrEditList", { list, isEdit: true })
-              }
-              style={{
-                height: 30,
-                width: 30,
-                backgroundColor: theme.iconBg,
-                alignItems: "center",
-                justifyContent: "center",
-
-                borderRadius: 15,
-              }}
-            >
-              <Entypo name="dots-two-vertical" size={20} color={theme.purple} />
-            </TouchableOpacity>
-          )}
-        </View>
+        <View style={{ flexDirection: "row", alignItems: "center" }}></View>
       )}
-      title={"Recommended"}
+      title={`Recommended`}
+      subtitle={`${total} things`}
     >
       {loaded && (
         <AnimateExpand fast={true} doAnimation={show} height={maxHeight}>

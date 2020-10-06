@@ -24,7 +24,7 @@ function FakeTextInput({}) {
         margin: 7,
         flexDirection: "row",
         justifyContent: "space-between",
-        backgroundColor: theme.bg,
+        backgroundColor: theme.iconBg,
         borderRadius: 20,
         height: 38,
       }}

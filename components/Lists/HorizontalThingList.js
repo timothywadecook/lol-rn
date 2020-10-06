@@ -19,12 +19,15 @@ export default function HorizontalThingList({
   autoOpen = true,
   openDelay = 0,
 }) {
-  // const [thingsData, setThingsData] = React.useState([]);
   const theme = useTheme();
   const navigation = useNavigation();
 
   const list = useSelector((state) => state.lists[listId]);
   const { name, isPrivate, participants, things } = list;
+
+  if (!things.length && !canCreate) {
+    return null;
+  }
 
   const [
     data,
@@ -53,48 +56,34 @@ export default function HorizontalThingList({
     }
   }, []);
 
-  if (!data.length && !canCreate) {
-    return null;
-  }
-
   return (
     <ProfileCard
       onPressHeader={() => {
         setLoaded(true);
         setShow(!show);
       }}
-      renderRightChild={() => (
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <T.Title
+      renderRightChild={() =>
+        canCreate && (
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("CreateOrEditList", { list, isEdit: true })
+            }
             style={{
-              paddingRight: 10,
-              color: theme.purple,
-              fontWeight: "normal",
+              height: 30,
+              width: 30,
+              backgroundColor: theme.iconBg,
+              alignItems: "center",
+              justifyContent: "center",
+
+              borderRadius: 15,
             }}
           >
-            {total}
-          </T.Title>
-          {canCreate && (
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate("CreateOrEditList", { list, isEdit: true })
-              }
-              style={{
-                height: 30,
-                width: 30,
-                backgroundColor: theme.iconBg,
-                alignItems: "center",
-                justifyContent: "center",
-
-                borderRadius: 15,
-              }}
-            >
-              <Entypo name="dots-two-vertical" size={20} color={theme.purple} />
-            </TouchableOpacity>
-          )}
-        </View>
-      )}
+            <Entypo name="dots-two-vertical" size={20} color={theme.purple} />
+          </TouchableOpacity>
+        )
+      }
       title={name}
+      subtitle={`${total} things`}
     >
       {loaded && (
         <AnimateExpand fast={true} doAnimation={show} height={maxHeight}>

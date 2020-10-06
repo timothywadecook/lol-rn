@@ -130,16 +130,16 @@ export default function ListListItem({
             justifyContent: "center",
           }}
         >
-          <H2
+          <Title
             style={{
               marginVertical: 4,
-              fontSize: 14,
-              fontWeight: "normal",
+              // fontSize: 14,
+              // fontWeight: "normal",
             }}
           >
             {name}
-          </H2>
-          <H4>{list.things.length} items</H4>
+          </Title>
+          <H2G>{list.things.length} items</H2G>
         </View>
 
         <View
