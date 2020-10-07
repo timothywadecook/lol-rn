@@ -4,6 +4,7 @@ import { StatusBar, Text, View } from "react-native";
 import LinkingConfiguration from "./navigation/LinkingConfiguration";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
+import { createSharedElementStackNavigator } from "react-navigation-shared-element";
 // Services
 import client from "./services/feathersClient";
 // Screens
@@ -24,6 +25,7 @@ import Profile from "./screens/Profile";
 import { login, setAppIsReady } from "./store/userSlice";
 
 const Stack = createStackNavigator();
+const SharedStack = createSharedElementStackNavigator();
 
 const mapState = (state) => ({
   appIsReady: state.user.appIsReady,
@@ -67,6 +69,43 @@ const Router = ({
       </View>
     );
   }
+
+  const AuthStackScreen = () => (
+    <SharedStack.Navigator
+      screenOptions={{
+        headerShown: false,
+        gestureResponseDistance: {
+          horizontal: 350,
+          vertical: 500,
+        },
+      }}
+      initialRouteName="Home"
+    >
+      <SharedStack.Screen name="Home" component={Home} />
+      <SharedStack.Screen
+        name="RecommendationDetails"
+        component={RecommendationDetails}
+      />
+      <SharedStack.Screen name="FriendDetails" component={FriendDetails} />
+      <SharedStack.Screen
+        name="CreateOrEditList"
+        component={CreateOrEditList}
+      />
+
+      <SharedStack.Screen name="Create" component={Create} />
+      <SharedStack.Screen name="Search Users" component={SearchUsers} />
+      <SharedStack.Screen name="List" component={List} />
+      <SharedStack.Screen name="Collections" component={Collections} />
+      <SharedStack.Screen name="SearchThings" component={SearchThings} />
+      <SharedStack.Screen name="ThingDetails" component={ThingDetails} />
+      <SharedStack.Screen
+        name="AddToCollections"
+        component={AddToCollections}
+      />
+      <SharedStack.Screen name="Profile" component={Profile} />
+    </SharedStack.Navigator>
+  );
+
   return (
     <NavigationContainer linking={LinkingConfiguration}>
       <StatusBar
@@ -80,33 +119,10 @@ const Router = ({
             vertical: 500,
           },
         }}
-        initialRouteName={"Home"}
+        initialRouteName={"Auth"}
       >
         {isAuthenticated ? (
-          <React.Fragment>
-            <Stack.Screen name="Home" component={Home} />
-            <Stack.Screen
-              name="RecommendationDetails"
-              component={RecommendationDetails}
-            />
-            <Stack.Screen name="FriendDetails" component={FriendDetails} />
-            <Stack.Screen
-              name="CreateOrEditList"
-              component={CreateOrEditList}
-            />
-
-            <Stack.Screen name="Create" component={Create} />
-            <Stack.Screen name="Search Users" component={SearchUsers} />
-            <Stack.Screen name="List" component={List} />
-            <Stack.Screen name="Collections" component={Collections} />
-            <Stack.Screen name="SearchThings" component={SearchThings} />
-            <Stack.Screen name="ThingDetails" component={ThingDetails} />
-            <Stack.Screen
-              name="AddToCollections"
-              component={AddToCollections}
-            />
-            <Stack.Screen name="Profile" component={Profile} />
-          </React.Fragment>
+          <Stack.Screen name="Auth" component={AuthStackScreen} />
         ) : (
           <Stack.Screen
             name="Login"

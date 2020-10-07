@@ -58,3 +58,10 @@ export default function FriendDetailsScreen({ navigation, route }) {
     </Screen>
   );
 }
+
+FriendDetailsScreen.sharedElements = (navigation) => {
+  const user = navigation.getParam("friend");
+  if (user._id) {
+    return [`avatar-${user._id}`];
+  }
+};

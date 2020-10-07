@@ -156,7 +156,7 @@ export default function HomeScreen({ navigation }) {
         }}
       >
         <TouchableOpacity
-          onPress={() => navigation.navigate("Profile")}
+          onPress={() => navigation.navigate("Profile", { user: sessionUser })}
           style={{
             padding: 15,
             alignItems: "center",

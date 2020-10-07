@@ -9,6 +9,7 @@ import useTheme from "../../hooks/useTheme";
 import useThingId from "../../hooks/useThingId";
 import { useNavigation } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { SharedElement } from "react-navigation-shared-element";
 
 export function ThingItem({ thing, children, border, pad }) {
   const theme = useTheme();
@@ -30,8 +31,12 @@ export function ThingItem({ thing, children, border, pad }) {
       <ThingImage thing={thing} marginRight={true} />
 
       <View style={{ flexDirection: "column", flex: 1 }}>
-        <T.Title style={{ paddingBottom: 0 }}>{title}</T.Title>
-        <T.H4 style={{ fontWeight: "bold" }}>{subtitle}</T.H4>
+        <SharedElement id={`title-${thing._id}`}>
+          <T.Title style={{ paddingBottom: 0 }}>{title}</T.Title>
+        </SharedElement>
+        <SharedElement id={`subtitle-${thing._id}`}>
+          <T.H4 style={{ fontWeight: "bold" }}>{subtitle}</T.H4>
+        </SharedElement>
       </View>
     </TouchableOpacity>
   );

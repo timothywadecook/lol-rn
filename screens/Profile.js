@@ -11,14 +11,15 @@ import FriendDetailsHeader from "../components/FriendDetailsHeader";
 import ProfileTabContent from "../components/ProfileTabContent";
 
 // Actual Component
-export default function Profile({ navigation }) {
+export default function Profile({ navigation, route }) {
   navigation.setOptions({
     gestureResponseDistance: {
       horizontal: 80,
       vertical: 100,
     },
   });
-  const user = useSelector((state) => state.user);
+  const { user } = route.params;
+  // const user = useSelector((state) => state.user);
   const theme = useTheme();
 
   const [showSettings, setShowSettings] = useState(false);
@@ -47,3 +48,10 @@ export default function Profile({ navigation }) {
     </Screen>
   );
 }
+
+Profile.sharedElements = (navigation) => {
+  const user = navigation.getParam("user");
+  if (user._id) {
+    return [`avatar-${user._id}`];
+  }
+};

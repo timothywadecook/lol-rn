@@ -14,6 +14,8 @@ import useThingId from "../hooks/useThingId";
 import Animated from "react-native-reanimated";
 import IconButtons from "../components/Buttons/IconButtons";
 import { addLoadedRecommendations } from "../store/recommendationsSlice";
+import { ThingItem } from "../components/ListItems/ThingItem";
+import { SharedElement } from "react-navigation-shared-element";
 
 export default function ThingDetails({ route }) {
   const navigation = useNavigation();
@@ -79,7 +81,9 @@ export default function ThingDetails({ route }) {
   const renderHeader = () => (
     <View style={{ alignItems: "center" }}>
       <ThingImage size={140} thing={thing} />
-      <T.Title style={{ paddingVertical: 5 }}>{thing.title}</T.Title>
+      <SharedElement id={`title-${thing._id}`}>
+        <T.Title style={{ paddingVertical: 5 }}>{thing.title}</T.Title>
+      </SharedElement>
       <T.H3>{thing.subtitle}</T.H3>
 
       <WindowWidthRow
@@ -153,3 +157,15 @@ export default function ThingDetails({ route }) {
     </Screen>
   );
 }
+
+ThingDetails.sharedElements = (navigation) => {
+  const thing = navigation.getParam("thing");
+  console.log("thing ?", thing);
+  if (thing._id) {
+    return [
+      `image-${thing._id}`,
+      // `title-${thing._id}`,
+      // `subtitle-${thing._id}`,
+    ];
+  }
+};

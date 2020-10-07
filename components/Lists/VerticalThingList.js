@@ -7,6 +7,8 @@ import { Entypo } from "@expo/vector-icons";
 
 import { useNavigation } from "@react-navigation/native";
 import useTheme from "../../hooks/useTheme";
+//
+import { SharedElement } from "react-navigation-shared-element";
 
 export default function HorizontalThingList({
   name = "Recent",
@@ -66,15 +68,17 @@ function ThingCard({ thing }) {
         }}
       >
         {image ? (
-          <Image
-            source={{ uri: image }}
-            style={{
-              resizeMode: "cover",
-              width: size,
-              height: size * 1.4,
-              borderRadius: 15,
-            }}
-          />
+          <SharedElement id={`image-${thing._id}`}>
+            <Image
+              source={{ uri: image }}
+              style={{
+                resizeMode: "cover",
+                width: size,
+                height: size * 1.4,
+                borderRadius: 15,
+              }}
+            />
+          </SharedElement>
         ) : thing.category === "Place" ? (
           <View
             style={{
@@ -90,8 +94,9 @@ function ThingCard({ thing }) {
           </View>
         ) : null}
       </View>
-
-      <T.P style={{ paddingBottom: 0 }}>{title}</T.P>
+      <SharedElement id={`title-${thing._id}`}>
+        <T.P style={{ paddingBottom: 0 }}>{title}</T.P>
+      </SharedElement>
     </TouchableOpacity>
   );
 }

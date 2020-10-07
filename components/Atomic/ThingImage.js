@@ -2,6 +2,7 @@ import React from "react";
 import { View, Image } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 import useTheme from "../../hooks/useTheme";
+import { SharedElement } from "react-navigation-shared-element";
 
 export default function ThingImage({
   size = 40,
@@ -19,10 +20,12 @@ export default function ThingImage({
     marginTop: 2,
   };
   return image ? (
-    <Image
-      source={{ uri: image }}
-      style={[{ resizeMode: "cover" }, imgStyle, style]}
-    />
+    <SharedElement id={`image-${thing._id}`}>
+      <Image
+        source={{ uri: image }}
+        style={[{ resizeMode: "cover" }, imgStyle, style]}
+      />
+    </SharedElement>
   ) : (
     <View
       style={[
