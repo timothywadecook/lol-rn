@@ -8,7 +8,7 @@ export default {
       screens: {
         Home: "home",
         Create: "create",
-        Profile: "network",
+        Profile: "profile",
       },
     },
     FriendDetails: {

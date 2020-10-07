@@ -3,7 +3,10 @@ import { View } from "react-native";
 import SingleFilterButtonSpan from "../components/SingleFilterButtonSpan";
 import DismissKeyboard from "../components/Wrappers/DismissKeyboard";
 import BackButton from "../components/Atomic/BackButton";
-
+import {
+  recommendationsService,
+  thingsService,
+} from "../services/feathersClient";
 import WindowWidthRow from "../components/Wrappers/WindowWidthRow";
 import * as T from "../components/Atomic/StyledText";
 
@@ -15,7 +18,16 @@ import useTheme from "../hooks/useTheme";
 
 import Screen from "../components/Wrappers/Screen";
 
-const MainInputField = ({ category, setItem, itemChosen, setItemChosen }) => {
+import VerticalThingList from "../components/Lists/VerticalThingList";
+import useListService from "../hooks/useListService";
+
+const MainInputField = ({
+  category,
+  setItem,
+  itemChosen,
+  setItemChosen,
+  autoFocus = false,
+}) => {
   switch (category) {
     case "Place":
       return (
@@ -23,6 +35,7 @@ const MainInputField = ({ category, setItem, itemChosen, setItemChosen }) => {
           setItem={setItem}
           itemChosen={itemChosen}
           setItemChosen={setItemChosen}
+          autoFocus={autoFocus}
         />
       );
     case "Book":
@@ -31,6 +44,7 @@ const MainInputField = ({ category, setItem, itemChosen, setItemChosen }) => {
           setItem={setItem}
           itemChosen={itemChosen}
           setItemChosen={setItemChosen}
+          autoFocus={autoFocus}
         />
       );
     case "Movie":
@@ -40,6 +54,7 @@ const MainInputField = ({ category, setItem, itemChosen, setItemChosen }) => {
           setItem={setItem}
           itemChosen={itemChosen}
           setItemChosen={setItemChosen}
+          autoFocus={autoFocus}
         />
       );
     case "Show":
@@ -49,6 +64,7 @@ const MainInputField = ({ category, setItem, itemChosen, setItemChosen }) => {
           setItem={setItem}
           itemChosen={itemChosen}
           setItemChosen={setItemChosen}
+          autoFocus={autoFocus}
         />
       );
     default:
@@ -59,14 +75,25 @@ const MainInputField = ({ category, setItem, itemChosen, setItemChosen }) => {
 export default function SearchThings({ navigation }) {
   const theme = useTheme();
 
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState("Movie");
   const [itemChosen, setItemChosen] = useState(false);
   const [item, setItem] = useState({});
 
-  React.useEffect(() => setCategory("Movie"), []);
+  // React.useEffect(() => setCategory("Movie"), []);
+
+  const [
+    data,
+    refresh,
+    refreshing,
+    fetchMore,
+    loading,
+    moreAvailable,
+    total,
+  ] = useListService(thingsService, {
+    category,
+  });
 
   React.useEffect(() => {
-    console.log("item?", item);
     if (item.title) {
       const thing = item;
       navigation.navigate("ThingDetails", { thing });
@@ -114,6 +141,15 @@ export default function SearchThings({ navigation }) {
                 setItemChosen={setItemChosen}
               />
             )}
+            <VerticalThingList
+              data={data}
+              refresh={refresh}
+              refreshing={refreshing}
+              fetchMore={fetchMore}
+              loading={loading}
+              moreAvailable={moreAvailable}
+              total={total}
+            />
           </View>
         </View>
       </DismissKeyboard>

@@ -51,10 +51,17 @@ export default function HorizontalThingList({
       setLoaded(true);
       const timeout = setTimeout(() => {
         setShow(true);
-      }, 1500 + openDelay);
+      }, 500 + openDelay);
       return () => clearTimeout(timeout);
     }
   }, []);
+
+  // React.useEffect(() => {
+  //   if (total > 0) {
+  //     setLoaded(true);
+  //     setShow(true);
+  //   }
+  // }, [total]);
 
   return (
     <ProfileCard
@@ -86,7 +93,7 @@ export default function HorizontalThingList({
       subtitle={`${total} things`}
     >
       {loaded && (
-        <AnimateExpand fast={true} doAnimation={show} height={maxHeight}>
+        <AnimateExpand fast={false} doAnimation={show} height={maxHeight}>
           <View style={{ width: theme.windowWidth }}>
             <FlatList
               initialNumToRender={5}

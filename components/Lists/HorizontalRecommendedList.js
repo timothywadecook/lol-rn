@@ -31,7 +31,7 @@ export default function HorizontalRecommendedList({
       setLoaded(true);
       const timeout = setTimeout(() => {
         setShow(true);
-      }, 1500 + openDelay);
+      }, 500 + openDelay);
       return () => clearTimeout(timeout);
     }
   }, []);
@@ -48,7 +48,7 @@ export default function HorizontalRecommendedList({
     creator: userId,
   });
 
-  if (!data.length && !canCreate) {
+  if (total === 0 && !canCreate) {
     return null;
   }
 
@@ -65,7 +65,7 @@ export default function HorizontalRecommendedList({
       subtitle={`${total} things`}
     >
       {loaded && (
-        <AnimateExpand fast={true} doAnimation={show} height={maxHeight}>
+        <AnimateExpand fast={false} doAnimation={show} height={maxHeight}>
           <View style={{ width: theme.windowWidth }}>
             <FlatList
               keyboardShouldPersistTaps="handled"

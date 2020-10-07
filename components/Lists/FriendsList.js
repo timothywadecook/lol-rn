@@ -9,6 +9,8 @@ import UserListItem from "../ListItems/UserListItem";
 import FollowUnfollowButton from "../Buttons/FollowUnfollowButton";
 import WindowWidthRow from "../Wrappers/WindowWidthRow";
 import RoundButton from "../Buttons/RoundButton";
+import AnimateExpand from "../Wrappers/AnimateExpand";
+import useTheme from "../../hooks/useTheme";
 
 export default function FriendsList({
   data,
@@ -22,10 +24,11 @@ export default function FriendsList({
 }) {
   const sessionUserId = useSelector((state) => state.user._id);
   const navigation = useNavigation();
+  const theme = useTheme();
 
   const openFriendDetails = (user) => {
     if (user._id === sessionUserId) {
-      navigation.navigate("Network");
+      navigation.navigate("Profile");
     } else {
       navigation.push("FriendDetails", { friend: user });
     }

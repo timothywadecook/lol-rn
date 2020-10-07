@@ -54,7 +54,7 @@ export default function Collections({ navigation }) {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingVertical: 40 }}
       >
-        <ListList userId={sessionUserId} />
+        <ListList userId={sessionUserId} autoOpen={true} />
       </ScrollView>
     </View>
   );

@@ -19,7 +19,7 @@ import Collections from "./screens/Collections";
 import AddToCollections from "./screens/AddToCollections";
 import SearchThings from "./screens/SearchThings";
 import ThingDetails from "./screens/ThingDetails";
-import Network from "./screens/Network";
+import Profile from "./screens/Profile";
 // Actions
 import { login, setAppIsReady } from "./store/userSlice";
 
@@ -105,7 +105,7 @@ const Router = ({
               name="AddToCollections"
               component={AddToCollections}
             />
-            <Stack.Screen name="Network" component={Network} />
+            <Stack.Screen name="Profile" component={Profile} />
           </React.Fragment>
         ) : (
           <Stack.Screen

@@ -116,6 +116,7 @@ function ListSelectableUsersWithUnreadCountAndAddNew() {
       data={userList}
       renderItem={renderUser}
       ListHeaderComponent={renderHeader}
+      ListFooterComponent={renderFooter}
       horizontal={true}
       showsHorizontalScrollIndicator={false}
       keyExtractor={(item) => item._id}

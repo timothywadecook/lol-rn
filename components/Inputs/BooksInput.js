@@ -14,7 +14,12 @@ import useTheme from "../../hooks/useTheme";
 import env from "../../env";
 // import { lookupService } from "../../services/feathersClient";
 
-export default function BooksInput({ setItem, itemChosen, setItemChosen }) {
+export default function BooksInput({
+  setItem,
+  itemChosen,
+  setItemChosen,
+  autoFocus,
+}) {
   const [query, setQuery] = useState("");
   const [data, setData] = useState([]); // {title, date_published, [authors], isbn} assumed
   const theme = useTheme();
@@ -126,6 +131,7 @@ export default function BooksInput({ setItem, itemChosen, setItemChosen }) {
       theme={theme}
       styles={styles}
       value={query}
+      autoFocus={autoFocus}
     />
   );
 
@@ -144,7 +150,7 @@ export default function BooksInput({ setItem, itemChosen, setItemChosen }) {
   );
 }
 
-const CustomTextInput = ({ theme, styles, onChange, value }) => {
+const CustomTextInput = ({ theme, styles, onChange, value, autoFocus }) => {
   return (
     <TextInput
       style={styles.inputText}
@@ -158,7 +164,7 @@ const CustomTextInput = ({ theme, styles, onChange, value }) => {
       value={value}
       underlineColorAndroid="transparent"
       keyboardAppearance={theme.theme}
-      autoFocus={true}
+      autoFocus={autoFocus}
     />
   );
 };
@@ -177,7 +183,7 @@ const getStyles = (theme, itemChosen) =>
       borderRadius: 5,
       padding: 5,
       height: theme.windowHeight * 0.8,
-      backgroundColor: "transparent",
+      backgroundColor: theme.wallbg,
     },
     row: { flexDirection: "row", alignItems: "center", paddingVertical: 4 },
     listItemImage: {

@@ -4,7 +4,12 @@ import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplet
 import env from "../../env";
 import useTheme from "../../hooks/useTheme";
 
-const GooglePlacesInput = ({ itemChosen, setItemChosen, setItem }) => {
+const GooglePlacesInput = ({
+  itemChosen,
+  setItemChosen,
+  setItem,
+  autoFocus,
+}) => {
   const theme = useTheme();
 
   const style = {
@@ -19,7 +24,7 @@ const GooglePlacesInput = ({ itemChosen, setItemChosen, setItem }) => {
       height: 0,
     },
     listView: {
-      backgroundColor: "rgba(0,0,0,0)",
+      backgroundColor: theme.wallbg,
       borderRadius: 5,
     },
     textInputContainer: {
@@ -45,7 +50,7 @@ const GooglePlacesInput = ({ itemChosen, setItemChosen, setItem }) => {
     <GooglePlacesAutocomplete
       blurOnSubmit={false}
       clearTextOnFocus={true}
-      autoFocus={true}
+      autoFocus={autoFocus}
       keyboardAppearance={theme.theme}
       placeholder="Enter a place"
       fetchDetails={false}

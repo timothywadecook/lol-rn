@@ -13,11 +13,14 @@ export default ProfileCard = (props) => {
 
   return (
     <Card
-      bottomMargin={false}
-      style={{
-        paddingVertical: 10,
-        paddingHorizontal: 0,
-      }}
+      bottomMargin={props.bottomMargin}
+      style={[
+        {
+          paddingVertical: 10,
+          paddingHorizontal: 0,
+        },
+        props.style,
+      ]}
     >
       <CardHeader
         onPress={props.onPressHeader}

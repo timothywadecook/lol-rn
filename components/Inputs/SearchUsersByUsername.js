@@ -14,6 +14,7 @@ import Autocomplete from "react-native-autocomplete-input";
 import useDebounce from "../../hooks/useDebounce";
 import useTheme from "../../hooks/useTheme";
 //
+import useSuggested from "../../hooks/useSuggested";
 import { useNavigation } from "@react-navigation/native";
 import { usersService } from "../../services/feathersClient";
 import BackButton from "../Atomic/BackButton";
@@ -24,6 +25,13 @@ export default function SearchUsersByUsername({ withFollowButton = true }) {
   const [data, setData] = useState([]);
   const theme = useTheme();
   const styles = getStyles(theme);
+
+  const [suggested] = useSuggested();
+  React.useEffect(() => {
+    if (query === "") {
+      setData(suggested);
+    }
+  }, [query, suggested]);
 
   const debouncedQuery = useDebounce(query, 300);
   const searchDbForUsername = () => {
@@ -53,7 +61,7 @@ export default function SearchUsersByUsername({ withFollowButton = true }) {
 
   const reset = () => {
     setQuery("");
-    setData([]);
+    // setData([]);
   };
 
   const navigation = useNavigation();

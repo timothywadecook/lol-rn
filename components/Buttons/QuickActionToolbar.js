@@ -65,14 +65,14 @@ export default function QuickActionProfileButton({ y }) {
           width: SIZE,
           borderRadius: SIZE / 2,
         }}
-        onPress={() => navigation.navigate("Network")}
+        onPress={() => navigation.navigate("Home")}
       >
         <Feather
-          name="users"
+          name="home" // users
           size={24}
-          color={showModal ? theme.purple : theme.primary}
+          color={!showModal ? theme.purple : theme.primary}
         />
-        <T.Label>People</T.Label>
+        <T.Label style={{ color: theme.purple }}>Discover</T.Label>
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -106,7 +106,7 @@ export default function QuickActionProfileButton({ y }) {
           size={24}
           color={showModal ? theme.purple : theme.primary}
         />
-        <T.Label>Lists</T.Label>
+        <T.Label>Saved</T.Label>
       </TouchableOpacity>
     </Animated.View>
   );

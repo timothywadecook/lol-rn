@@ -53,7 +53,7 @@ export default function useListService(service, params) {
 
   React.useEffect(() => {
     refresh();
-  }, []);
+  }, [params && params.category]);
 
   return [data, refresh, refreshing, fetchMore, loading, moreAvailable, total];
 }

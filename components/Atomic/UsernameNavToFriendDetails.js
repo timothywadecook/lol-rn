@@ -15,7 +15,7 @@ const UsernameNavToFriendDetails = ({
 
   const handleOnPress = () => {
     if (friend._id === activeUserId) {
-      navigation.navigate("Network");
+      navigation.navigate("Profile");
     } else {
       navigation.navigate("FriendDetails", { friend });
     }

@@ -32,6 +32,7 @@ export default function MoviesAndShowInput({
   itemChosen,
   setItemChosen,
   setItem,
+  autoFocus,
 }) {
   const [query, setQuery] = useState("");
   const [data, setData] = useState([]);
@@ -120,6 +121,7 @@ export default function MoviesAndShowInput({
       styles={styles}
       theme={theme}
       value={query}
+      autoFocus={autoFocus}
     />
   );
 
@@ -138,11 +140,11 @@ export default function MoviesAndShowInput({
   );
 }
 
-const CustomTextInput = ({ theme, onChange, value, styles }) => {
+const CustomTextInput = ({ theme, onChange, value, styles, autoFocus }) => {
   return (
     <TextInput
       style={styles.inputText}
-      autoFocus={true}
+      autoFocus={autoFocus}
       autoCorrect={false}
       placeholder="Search by title"
       placeholderTextColor="#A8A8A8"
@@ -171,7 +173,7 @@ const getStyles = (theme) =>
       borderRadius: 5,
       padding: 5,
       height: theme.windowHeight * 0.8,
-      backgroundColor: "transparent",
+      backgroundColor: theme.wallbg,
     },
     row: { flexDirection: "row", alignItems: "center", paddingVertical: 4 },
     listItemImage: {

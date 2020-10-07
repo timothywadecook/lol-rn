@@ -3,14 +3,12 @@ import { ActivityIndicator, ScrollView, View } from "react-native";
 import ListList from "./Lists/ListList";
 import * as T from "./Atomic/StyledText";
 
-import Animated from "react-native-reanimated";
-
 import useFollowers from "../hooks/useFollowers";
 import useFollowing from "../hooks/useFollowing";
+import useSuggested from "../hooks/useSuggested";
 import FriendsList from "./Lists/FriendsList";
 
-export default function ProfileTabContent({ userId }) {
-  const y = React.useMemo(() => new Animated.Value(0), []);
+export default function ProfileTabContent({ userId, isSessionUser }) {
   const [
     following,
     refreshFollowing,
@@ -25,8 +23,16 @@ export default function ProfileTabContent({ userId }) {
     fetchmoreFollowers,
     loadingFollowers,
   ] = useFollowers(userId);
+  const [
+    suggested,
+    refreshSuggested,
+    refreshingSuggested,
+    fetchmoreSuggested,
+    loadingSuggested,
+    moreAvailableSuggested,
+  ] = useSuggested();
 
-  return refreshingFollowers || refreshingFollowing ? (
+  return refreshingFollowers || refreshingFollowing || refreshingSuggested ? (
     <ActivityIndicator />
   ) : (
     <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
@@ -50,6 +56,17 @@ export default function ProfileTabContent({ userId }) {
           fetchMore={fetchmoreFollowers}
           loading={loadingFollowers}
         />
+
+        {isSessionUser && (
+          <FriendsList
+            data={suggested}
+            title="Suggested"
+            refresh={refreshSuggested}
+            refreshing={refreshingSuggested}
+            fetchMore={fetchmoreSuggested}
+            loading={loadingSuggested}
+          />
+        )}
 
         <T.H4 style={{ paddingTop: 10 }}>Lists</T.H4>
 

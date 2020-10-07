@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Platform, TouchableOpacity } from "react-native";
+import { Platform, TouchableOpacity, View } from "react-native";
 import * as SplashScreen from "expo-splash-screen";
 // Components
 import * as T from "../../components/Atomic/StyledText";
@@ -9,6 +9,8 @@ import FilteredRecommendationsList from "../../components/Lists/FilteredRecommen
 import FilterMenu from "../../components/FilterMenu";
 import QuickActionToolbar from "../../components/Buttons/QuickActionToolbar";
 import { Feather } from "@expo/vector-icons";
+import OnboardingChecklist from "../../components/OnboardingChecklist";
+import Avatar from "../../components/Atomic/Avatar";
 
 // State Management
 import { refreshFeedAsync, fetchMoreFeedAsync } from "../../store/feedSlice";
@@ -154,31 +156,38 @@ export default function HomeScreen({ navigation }) {
         }}
       >
         <TouchableOpacity
-          onPress={() => navigation.navigate("Search Users")}
+          onPress={() => navigation.navigate("Profile")}
           style={{
             padding: 15,
             alignItems: "center",
             justifyContent: "center",
           }}
         >
-          <Feather name="user-plus" size={24} color={theme.iconDefault} />
+          {/* <Feather name="user" size={24} color={theme.iconDefault} /> */}
+          <Avatar user={sessionUser} />
         </TouchableOpacity>
-
         <T.FancyH1
-          style={{ color: theme.purple, paddingBottom: 5, fontSize: 30 }}
+          style={{
+            color: theme.purple,
+            // paddingLeft: 10,
+            paddingBottom: 5,
+            fontSize: 24,
+          }}
         >
           Like Out Loud
         </T.FancyH1>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("SearchThings")}
-          style={{
-            padding: 15,
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Feather name="edit" size={24} color={theme.iconDefault} />
-        </TouchableOpacity>
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("SearchThings")}
+            style={{
+              padding: 15,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Feather name="edit" size={24} color={theme.iconDefault} />
+          </TouchableOpacity>
+        </View>
       </WindowWidthRow>
 
       <FilterMenu y={y} categories={categories} setCategories={setCategories} />
@@ -192,6 +201,7 @@ export default function HomeScreen({ navigation }) {
         topPad={true}
         categories={categories}
         y={y}
+        renderHeader={<OnboardingChecklist />}
       />
       <QuickActionToolbar y={y} />
     </Screen>

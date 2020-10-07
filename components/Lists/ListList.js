@@ -7,7 +7,7 @@ import { addLoadedLists } from "../../store/listsSlice";
 import HorizontalThingList from "./HorizontalThingList";
 import HorizontalRecommendedList from "./HorizontalRecommendedList";
 
-export default function ListList({ userId }) {
+export default function ListList({ userId, autoOpen = false }) {
   const sessionUserId = useSelector((state) => state.user._id);
   const canCreate = () => sessionUserId === userId;
   const dispatch = useDispatch();
@@ -47,7 +47,7 @@ export default function ListList({ userId }) {
         userId={userId}
         key={"recommendedList" + userId}
         canCreate={canCreate()}
-        autoOpen={false}
+        autoOpen={autoOpen}
       />
       {privateListIds.map((listId, i) => (
         <HorizontalThingList
@@ -55,7 +55,7 @@ export default function ListList({ userId }) {
           listId={listId}
           canCreate={canCreate()}
           openDelay={i * 500}
-          autoOpen={false}
+          autoOpen={autoOpen}
         />
       ))}
       {publicListIds.map((listId, i) => (
@@ -64,7 +64,7 @@ export default function ListList({ userId }) {
           listId={listId}
           canCreate={canCreate()}
           openDelay={(i + privateListIds.length) * 500}
-          autoOpen={false}
+          autoOpen={autoOpen}
         />
       ))}
     </View>

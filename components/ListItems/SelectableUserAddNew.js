@@ -26,19 +26,24 @@ export default function SelectableUserAddNew({ size = 50 }) {
         alignItems: "center",
       }}
     >
-      <Feather
-        style={{ height: size }}
-        name="search"
-        size={size}
-        color={theme.iconDefault}
-      />
+      <View
+        style={{
+          borderRadius: size / 2,
+          height: size,
+          width: size,
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Feather name="user-plus" size={size / 1.7} color={theme.iconDefault} />
+      </View>
 
       <T.H3 style={{ marginTop: 3 }}>Add User</T.H3>
     </TouchableOpacity>
   );
 }
 
-export function SelectableUserAll({ size = 45 }) {
+export function SelectableUserAll({ size = 50 }) {
   const theme = useTheme();
   const dispatch = useDispatch();
   const query = useSelector((state) => state.feed.query.creator["$in"]);
@@ -54,16 +59,16 @@ export function SelectableUserAll({ size = 45 }) {
       onPress={onPress}
       style={{
         padding: 5,
-        margin: 5,
+        marginRight: 5,
         marginLeft: 15,
         flexDirection: "column",
         alignItems: "center",
       }}
     >
       <Ionicons
-        style={{ paddingTop: 3 }}
+        iconStyle={{ padding: 0, margin: 0 }}
         name="md-globe"
-        size={size + 4}
+        size={size / 1}
         color={active ? theme.purple : theme.iconDefault}
       />
       <T.H3 style={{ marginTop: 3 }}></T.H3>
@@ -105,17 +110,18 @@ export function SelectableUserMe({ size = 50 }) {
           width: size,
           alignItems: "center",
           justifyContent: "center",
+          margin: 0,
+          padding: 0,
         }}
       >
-        <Ionicons
-          style={{ padding: 0 }}
-          name="md-person"
-          size={size / 1.5}
+        <Feather
+          name="user"
+          size={size / 1.7}
           color={active ? theme.purple : theme.iconDefault}
         />
       </View>
 
-      <T.H3 style={{ marginTop: 3 }}>Me</T.H3>
+      <T.H3 style={{ marginTop: 3 }}>me</T.H3>
     </TouchableOpacity>
   );
 }
@@ -154,25 +160,21 @@ export function SelectableUserFollowing({ size = 50 }) {
         style={{
           backgroundColor: active ? theme.white : theme.iconBg,
           borderRadius: size / 2,
+          margin: 0,
           height: size,
           width: size,
           alignItems: "center",
           justifyContent: "center",
         }}
       >
-        {/* <Feather
+        <Feather
           name="users"
-          size={size / 2}
-          color={active ? theme.purple : theme.iconDefault}
-        /> */}
-        <Ionicons
-          name="md-people"
-          size={size / 1.3}
+          size={size / 1.7}
           color={active ? theme.purple : theme.iconDefault}
         />
       </View>
 
-      <T.H3 style={{ marginTop: 3 }}>Following</T.H3>
+      <T.H3 style={{ marginTop: 3 }}>following</T.H3>
     </TouchableOpacity>
   );
 }
