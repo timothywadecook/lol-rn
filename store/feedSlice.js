@@ -8,7 +8,7 @@ const feedSlice = createSlice({
   name: "feed",
   initialState: {
     query: {
-      $limit: 10,
+      $limit: 15,
       creator: { $in: [] },
       recommendation: { $in: [] },
       $sort: { createdAt: -1 },

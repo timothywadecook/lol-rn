@@ -106,7 +106,7 @@ export default function QuickActionProfileButton({ y }) {
           size={24}
           color={showModal ? theme.purple : theme.primary}
         />
-        <T.Label>Saved</T.Label>
+        <T.Label>Lists</T.Label>
       </TouchableOpacity>
     </Animated.View>
   );

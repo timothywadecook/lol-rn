@@ -10,7 +10,7 @@ import ActivityIndicatorCentered from "../components/Atomic/ActivityIndicatorCen
 import ListListItem from "../components/ListItems/ListListItem";
 import IconButtons from "../components/Buttons/IconButtons";
 import WindowWidthRow from "../components/Wrappers/WindowWidthRow";
-import CloseModalButton from "../components/Atomic/CloseModalButton";
+import ThingImage from "../components/Atomic/ThingImage";
 //
 import { updateList } from "../store/listsSlice";
 import BackButton from "../components/Atomic/BackButton";
@@ -20,8 +20,7 @@ export default function AddThingToListModal({ navigation, route }) {
   const dispatch = useDispatch();
   const sessionUserId = useSelector((state) => state.user._id);
 
-  const { thingId } = route.params;
-  console.log("thingId = ", thingId);
+  const { thingId, thing } = route.params;
 
   const [selected, setSelected] = React.useState([]);
 
@@ -66,6 +65,7 @@ export default function AddThingToListModal({ navigation, route }) {
       <WindowWidthRow pad={true}>
         {/* <CloseModalButton dismissModal={() => navigation.goBack()} /> */}
         <BackButton />
+        <ThingImage size={30} thing={thing} />
         <T.H1 style={{ marginLeft: 10 }}>Save to...</T.H1>
       </WindowWidthRow>
       <View
@@ -141,3 +141,14 @@ export default function AddThingToListModal({ navigation, route }) {
     </View>
   );
 }
+
+AddThingToListModal.sharedElements = (navigation) => {
+  const thingId = navigation.getParam("thingId");
+  if (thingId) {
+    return [
+      `image-${thingId}`,
+      // `title-${thing._id}`,
+      // `subtitle-${thing._id}`,
+    ];
+  }
+};

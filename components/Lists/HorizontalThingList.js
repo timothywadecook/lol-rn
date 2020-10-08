@@ -41,27 +41,15 @@ export default function HorizontalThingList({
     _id: { $in: things.length && things },
   });
 
-  const [show, setShow] = React.useState(false);
-  const [loaded, setLoaded] = React.useState(false);
-  const size = theme.windowWidth / 5;
-  const maxHeight = size * 2.18;
+  const [show, setShow] = React.useState(true);
 
-  React.useEffect(() => {
-    if (autoOpen) {
-      setLoaded(true);
-      const timeout = setTimeout(() => {
-        setShow(true);
-      }, 500 + openDelay);
-      return () => clearTimeout(timeout);
-    }
-  }, []);
-
-  // React.useEffect(() => {
-  //   if (total > 0) {
-  //     setLoaded(true);
-  //     setShow(true);
-  //   }
-  // }, [total]);
+  const placeholderData = [
+    { _id: "abcd1", image: "true", title: "Loading...\n " },
+    { _id: "abcd2", image: "true", title: "Loading..." },
+    { _id: "abcd3", image: "true", title: "Loading..." },
+    { _id: "abcd4", image: "true", title: "Loading..." },
+    { _id: "abcd5", image: "true", title: "Loading..." },
+  ];
 
   return (
     <ProfileCard
@@ -92,25 +80,33 @@ export default function HorizontalThingList({
       title={name}
       subtitle={`${total} things`}
     >
-      {loaded && (
-        <AnimateExpand fast={false} doAnimation={show} height={maxHeight}>
-          <View style={{ width: theme.windowWidth }}>
-            <FlatList
-              initialNumToRender={5}
-              keyboardShouldPersistTaps="handled"
-              data={data}
-              renderItem={({ item: thing }) => <ThingCard thing={thing} />}
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              keyExtractor={(item) => item._id + listId}
-              onEndReached={fetchMore}
-              refreshing={refreshing}
-              onRefresh={refresh}
-              loading={loading}
-            />
-          </View>
-        </AnimateExpand>
-      )}
+      <View style={{ width: theme.windowWidth }}>
+        {!refreshing ? (
+          <FlatList
+            initialNumToRender={5}
+            keyboardShouldPersistTaps="handled"
+            data={data}
+            renderItem={({ item: thing }) => <ThingCard thing={thing} />}
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            keyExtractor={(item) => item._id + listId}
+            onEndReached={fetchMore}
+            loading={loading}
+          />
+        ) : (
+          <FlatList
+            initialNumToRender={5}
+            keyboardShouldPersistTaps="handled"
+            data={placeholderData}
+            renderItem={({ item: thing }) => <ThingCard thing={thing} />}
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            keyExtractor={(item) => item._id + listId}
+            onEndReached={fetchMore}
+            loading={loading}
+          />
+        )}
+      </View>
     </ProfileCard>
   );
 }
@@ -140,16 +136,10 @@ function ThingCard({ thing }) {
           marginBottom: 5,
         }}
       >
-        <ThingImage size={size} thing={thing} />
+        <ThingImage transition={false} size={size} thing={thing} />
       </View>
 
       <T.P style={{ paddingBottom: 0 }}>{title}</T.P>
     </TouchableOpacity>
   );
-}
-
-function PlaceIcon({ size = 50 }) {
-  const theme = useTheme();
-
-  return <Entypo name="location-pin" size={size} color={theme.red} />;
 }

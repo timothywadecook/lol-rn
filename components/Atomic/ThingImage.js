@@ -1,14 +1,16 @@
 import React from "react";
-import { View, Image } from "react-native";
+import { ActivityIndicator, View } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 import useTheme from "../../hooks/useTheme";
 import { SharedElement } from "react-navigation-shared-element";
+import { Image } from "react-native-elements";
 
 export default function ThingImage({
   size = 40,
   style,
   thing,
   marginRight = false,
+  transition = false,
 }) {
   const { image, category } = thing;
   const theme = useTheme();
@@ -22,6 +24,10 @@ export default function ThingImage({
   return image ? (
     <SharedElement id={`image-${thing._id}`}>
       <Image
+        containerStyle={{ backgroundColor: theme.iconBg }}
+        placeholderStyle={{ backgroundColor: theme.iconBg }}
+        PlaceholderContent={<ActivityIndicator />}
+        transition={transition}
         source={{ uri: image }}
         style={[{ resizeMode: "cover" }, imgStyle, style]}
       />

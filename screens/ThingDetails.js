@@ -83,7 +83,7 @@ export default function ThingDetails({ route }) {
 
   const renderHeader = () => (
     <View style={{ alignItems: "center" }}>
-      <ThingDetails.FloatingHeader thing={thing} y={y} />
+      <ThingDetails.FloatingHeader thing={thing} y={y} thingId={thingId} />
       {refreshing && <ActivityIndicator />}
       {!refreshing && (
         <WindowWidthRow pad={true}>
@@ -139,7 +139,7 @@ ThingDetails.sharedElements = (navigation) => {
   }
 };
 
-ThingDetails.FloatingHeader = ({ thing, y }) => {
+ThingDetails.FloatingHeader = ({ thing, y, thingId }) => {
   const navigation = useNavigation();
   const theme = useTheme();
   const HEIGHT = 375;
@@ -192,7 +192,7 @@ ThingDetails.FloatingHeader = ({ thing, y }) => {
           renderIcon={({ size }) => (
             <IconButtons.Bookmark
               onPress={() =>
-                navigation.navigate("AddToCollections", { thingId: thingId })
+                navigation.navigate("AddToCollections", { thingId, thing })
               }
               padding={0}
               size={size}
@@ -200,7 +200,7 @@ ThingDetails.FloatingHeader = ({ thing, y }) => {
           )}
           title="Save"
           onPress={() =>
-            navigation.navigate("AddToCollections", { thingId: thingId })
+            navigation.navigate("AddToCollections", { thingId, thing })
           }
         />
         <RoundButton
