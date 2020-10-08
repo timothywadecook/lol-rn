@@ -30,7 +30,7 @@ export default function useListService(service, params) {
   };
 
   const fetchMore = async () => {
-    if (!loading) {
+    if (!loading && moreAvailable) {
       setLoading(true);
       try {
         const datadata = await service.find({

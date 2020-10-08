@@ -198,7 +198,7 @@ export default function HomeScreen({ navigation }) {
         refresh={componentDidMount}
         fetchMore={fetchMore}
         filterable={true}
-        topPad={true}
+        topPad={HEIGHT + 50}
         categories={categories}
         y={y}
         renderHeader={<OnboardingChecklist />}

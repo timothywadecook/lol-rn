@@ -4,7 +4,6 @@ import ListItem from "../ListItems/ListItem";
 // Animation
 import Animated from "react-native-reanimated";
 import { onScrollEvent } from "react-native-redash";
-import { HEIGHT } from "../FilterMenu";
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 // Components
 import ActivityIndicatorCentered from "../Atomic/ActivityIndicatorCentered";
@@ -18,7 +17,7 @@ const FilteredRecommendationsList = ({
   refresh,
   refreshing,
   recommendations,
-  topPad = false,
+  topPad = 0,
   categories,
   y,
   initialNumToRender = 4,
@@ -70,7 +69,7 @@ const FilteredRecommendationsList = ({
         onScroll={onScroll}
         scrollEventThrottle={16}
         contentContainerStyle={{
-          paddingTop: topPad ? HEIGHT + 50 : 0,
+          paddingTop: topPad,
           alignItems: "center",
         }}
       />

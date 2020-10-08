@@ -11,14 +11,17 @@ import FilteredRecommendationsList from "../components/Lists/FilteredRecommendat
 import { recommendationsService } from "../services/feathersClient";
 import { useNavigation } from "@react-navigation/native";
 import useThingId from "../hooks/useThingId";
-import Animated from "react-native-reanimated";
 import IconButtons from "../components/Buttons/IconButtons";
 import { addLoadedRecommendations } from "../store/recommendationsSlice";
-import { ThingItem } from "../components/ListItems/ThingItem";
 import { SharedElement } from "react-navigation-shared-element";
+//
+import useTheme from "../hooks/useTheme";
+// Animations
+import Animated from "react-native-reanimated";
+import { diffClamp } from "react-native-redash";
+const { interpolate } = Animated;
 
 export default function ThingDetails({ route }) {
-  const navigation = useNavigation();
   const dispatch = useDispatch();
   const sessionUserId = useSelector((state) => state.user._id);
   const { thing } = route.params;
@@ -80,14 +83,108 @@ export default function ThingDetails({ route }) {
 
   const renderHeader = () => (
     <View style={{ alignItems: "center" }}>
+      <ThingDetails.FloatingHeader thing={thing} y={y} />
+      {refreshing && <ActivityIndicator />}
+      {!refreshing && (
+        <WindowWidthRow pad={true}>
+          <View>
+            <T.Title>
+              {!!recommendations.length
+                ? "All Recommendations"
+                : "No Recommendations Yet"}
+            </T.Title>
+            <T.H4>
+              {!!recommendations.length ? "" : "You could be the first"}
+            </T.H4>
+          </View>
+        </WindowWidthRow>
+      )}
+    </View>
+  );
+
+  return (
+    <Screen fullscreen={true} center={true}>
+      <WindowWidthRow style={{ zIndex: 3 }} topPad={true} pad={true}>
+        <BackButton />
+        <T.H1>Details</T.H1>
+      </WindowWidthRow>
+
+      {/* <ThingDetails.FloatingHeader thing={thing} y={y} /> */}
+
+      <FilteredRecommendationsList
+        // topPad={375}
+        loading={loading}
+        fetchMore={fetchMore}
+        // refresh={refresh}
+        // refreshing={refreshing}
+        recommendations={recommendations}
+        categories={[]}
+        y={y}
+        renderHeader={renderHeader}
+        initialNumToRender={1}
+      />
+    </Screen>
+  );
+}
+
+ThingDetails.sharedElements = (navigation) => {
+  const thing = navigation.getParam("thing");
+  console.log("thing ?", thing);
+  if (thing._id) {
+    return [
+      `image-${thing._id}`,
+      // `title-${thing._id}`,
+      // `subtitle-${thing._id}`,
+    ];
+  }
+};
+
+ThingDetails.FloatingHeader = ({ thing, y }) => {
+  const navigation = useNavigation();
+  const theme = useTheme();
+  const HEIGHT = 375;
+
+  return (
+    <Animated.View
+      style={{
+        // top: 110,
+        // position: "absolute",
+        // zIndex: 1,
+        // transform: [
+        //   {
+        //     translateY: interpolate(y, {
+        //       inputRange: [0, HEIGHT],
+        //       outputRange: [0, -HEIGHT / 1.5],
+        //       extrapolateLeft: "clamp",
+        //     }),
+        //   },
+        // ],
+        backgroundColor: theme.wallbg,
+        borderBottomColor: theme.iconBg,
+        borderBottomWidth: 1,
+        alignItems: "center",
+      }}
+    >
       <ThingImage size={140} thing={thing} />
       <SharedElement id={`title-${thing._id}`}>
-        <T.Title style={{ paddingVertical: 5 }}>{thing.title}</T.Title>
+        <T.Title
+          style={{
+            paddingVertical: 5,
+            paddingHorizontal: 15,
+            textAlign: "center",
+          }}
+        >
+          {thing.title}
+        </T.Title>
       </SharedElement>
-      <T.H3>{thing.subtitle}</T.H3>
+      <SharedElement id={`subtitle-${thing._id}`}>
+        <T.H3 style={{ paddingHorizontal: 15, textAlign: "center" }}>
+          {thing.subtitle}
+        </T.H3>
+      </SharedElement>
 
       <WindowWidthRow
-        style={{ justifyContent: "center", paddingVertical: 20 }}
+        style={{ justifyContent: "center", paddingVertical: 15 }}
         pad={true}
       >
         <RoundButton
@@ -118,54 +215,6 @@ export default function ThingDetails({ route }) {
           onPress={() => navigation.navigate("Create", { thing })}
         />
       </WindowWidthRow>
-
-      {refreshing ? (
-        <ActivityIndicator />
-      ) : !!recommendations.length ? (
-        <WindowWidthRow pad={true}>
-          <T.Title>All Recommendations</T.Title>
-        </WindowWidthRow>
-      ) : (
-        <WindowWidthRow pad={true}>
-          <View>
-            <T.Title>No Recommendations Yet</T.Title>
-            <T.H4>You could be the first</T.H4>
-          </View>
-        </WindowWidthRow>
-      )}
-    </View>
+    </Animated.View>
   );
-
-  return (
-    <Screen center={true}>
-      <WindowWidthRow pad={true}>
-        <BackButton />
-        <T.H1>Details</T.H1>
-      </WindowWidthRow>
-
-      <FilteredRecommendationsList
-        loading={loading}
-        fetchMore={fetchMore}
-        refresh={refresh}
-        refreshing={refreshing}
-        recommendations={recommendations}
-        categories={[]}
-        y={y}
-        renderHeader={renderHeader}
-        initialNumToRender={1}
-      />
-    </Screen>
-  );
-}
-
-ThingDetails.sharedElements = (navigation) => {
-  const thing = navigation.getParam("thing");
-  console.log("thing ?", thing);
-  if (thing._id) {
-    return [
-      `image-${thing._id}`,
-      // `title-${thing._id}`,
-      // `subtitle-${thing._id}`,
-    ];
-  }
 };

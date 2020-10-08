@@ -2,7 +2,12 @@ import React from "react";
 import { View } from "react-native";
 import useTheme from "../../hooks/useTheme";
 
-export default function WindowWidthRow({ children, pad = false, style }) {
+export default function WindowWidthRow({
+  children,
+  pad = false,
+  style,
+  topPad,
+}) {
   const theme = useTheme();
   return (
     <View
@@ -12,6 +17,8 @@ export default function WindowWidthRow({ children, pad = false, style }) {
           flexDirection: "row",
           alignItems: "center",
           padding: pad ? 10 : 0,
+          backgroundColor: theme.wallbg,
+          paddingTop: topPad && theme.topPad + 10,
         },
         style,
       ]}

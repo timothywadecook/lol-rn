@@ -10,7 +10,7 @@ import { Feather, Entypo } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import useTheme from "../../hooks/useTheme";
 import useListService from "../../hooks/useListService";
-
+import ThingImage from "../Atomic/ThingImage";
 import AnimateExpand from "../Wrappers/AnimateExpand";
 
 export default function HorizontalThingList({
@@ -38,7 +38,7 @@ export default function HorizontalThingList({
     moreAvailable,
     total,
   ] = useListService(thingsService, {
-    _id: { $in: things },
+    _id: { $in: things.length && things },
   });
 
   const [show, setShow] = React.useState(false);
@@ -140,81 +140,10 @@ function ThingCard({ thing }) {
           marginBottom: 5,
         }}
       >
-        {image ? (
-          <Image
-            source={{ uri: image }}
-            style={{
-              resizeMode: "cover",
-              width: size, //  100,
-              height: size * 1.4, // 140,
-              borderRadius: 15,
-              // marginRight: 6,
-              // marginTop: 2,
-            }}
-          />
-        ) : thing.category === "Place" ? (
-          <View
-            style={{
-              width: size,
-              height: size * 1.4,
-              borderRadius: 15,
-              alignItems: "center",
-              justifyContent: "center",
-              backgroundColor: theme.iconBg,
-            }}
-          >
-            <PlaceIcon size={size / 2.5} />
-          </View>
-        ) : null}
+        <ThingImage size={size} thing={thing} />
       </View>
 
       <T.P style={{ paddingBottom: 0 }}>{title}</T.P>
-    </TouchableOpacity>
-  );
-}
-
-function AddThingCard() {
-  const theme = useTheme();
-  const navigation = useNavigation();
-  const size = 100;
-  return (
-    <TouchableOpacity
-      onPress={() => navigation.navigate("Create")}
-      style={{
-        width: size,
-        alignItems: "center",
-        marginHorizontal: 15,
-        marginVertical: 10,
-      }}
-    >
-      <View
-        style={{
-          backgroundColor: theme.iconBg,
-          width: size,
-          height: size * 1.4,
-          alignItems: "center",
-          justifyContent: "center",
-          borderRadius: 15,
-        }}
-      >
-        <View
-          style={{
-            height: size / 2,
-            width: size / 2,
-            backgroundColor: theme.iconBg,
-            alignItems: "center",
-            justifyContent: "center",
-            borderRadius: 15,
-          }}
-        >
-          <Feather
-            style={{ width: size / 3 }}
-            name="search"
-            size={size / 3}
-            color={theme.iconDefault}
-          />
-        </View>
-      </View>
     </TouchableOpacity>
   );
 }
