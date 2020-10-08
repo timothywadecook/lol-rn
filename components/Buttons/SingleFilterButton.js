@@ -7,7 +7,7 @@ const SingleFilterButton = ({ text, setFilter, filter }) => {
   return (
     <RoundButton
       onPress={() => {
-        setFilter(filter === text ? "" : text);
+        setFilter(text);
       }}
       active={isActive}
       title={text}
