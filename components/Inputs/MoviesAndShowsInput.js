@@ -7,8 +7,10 @@ import {
   TouchableOpacity,
   Keyboard,
   Image,
+  Platform,
 } from "react-native";
 import Autocomplete from "react-native-autocomplete-input";
+import { SearchBar } from "react-native-elements";
 
 import useDebounce from "../../hooks/useDebounce";
 import useTheme from "../../hooks/useTheme";
@@ -38,11 +40,13 @@ export default function MoviesAndShowInput({
   const [data, setData] = useState([]);
   const theme = useTheme();
   const styles = getStyles(theme, itemChosen);
+  const [loading, setLoading] = useState(false);
 
-  const debouncedQuery = useDebounce(query, 300);
+  const debouncedQuery = useDebounce(query, 200);
 
   const getData = () => {
     if (!debouncedQuery || itemChosen) return;
+    setLoading(true);
     fetch(
       `https://movie-database-imdb-alternative.p.rapidapi.com/?page=1&r=json&type=${getType(
         category
@@ -59,8 +63,12 @@ export default function MoviesAndShowInput({
         if (json.Search && json.Search.length > 0) {
           setData(json.Search);
         }
+        setLoading(false);
       })
-      .catch((e) => console.log("Error: ", e));
+      .catch((e) => {
+        console.log("Error: ", e);
+        setLoading(false);
+      });
   };
 
   const clearSelection = () => {
@@ -112,16 +120,18 @@ export default function MoviesAndShowInput({
   );
 
   const renderTextInput = () => (
-    <CustomTextInput
-      onChange={(e) => {
-        // using onChange instead of onChangeText to include handling clearInput on iOS
-        setQuery(e.nativeEvent.text);
-        console.log(e.nativeEvent.text);
-      }}
-      styles={styles}
-      theme={theme}
-      value={query}
+    <SearchBar
+      platform={Platform.OS}
+      showLoading={loading}
+      onClear={() => setQuery("")}
+      onCancel={() => setQuery("")}
       autoFocus={autoFocus}
+      containerStyle={{ backgroundColor: "transparent" }}
+      placeholder="Search by title"
+      onChange={(e) => {
+        setQuery(e.nativeEvent.text);
+      }}
+      value={query}
     />
   );
 
@@ -140,30 +150,10 @@ export default function MoviesAndShowInput({
   );
 }
 
-const CustomTextInput = ({ theme, onChange, value, styles, autoFocus }) => {
-  return (
-    <TextInput
-      style={styles.inputText}
-      autoFocus={autoFocus}
-      autoCorrect={false}
-      placeholder="Search by title"
-      placeholderTextColor="#A8A8A8"
-      clearButtonMode="while-editing"
-      clearTextOnFocus={true}
-      onChange={onChange}
-      value={value}
-      underlineColorAndroid="transparent"
-      keyboardAppearance={theme.theme}
-      blurOnSubmit={false}
-    />
-  );
-};
-
 const getStyles = (theme) =>
   StyleSheet.create({
     container: {
-      width: theme.contentWidth,
-      alignItems: "stretch",
+      width: theme.windowWidth,
     },
     inputContainer: {
       borderWidth: 0,
@@ -172,7 +162,7 @@ const getStyles = (theme) =>
       borderWidth: 0,
       borderRadius: 5,
       padding: 5,
-      height: theme.windowHeight * 0.8,
+      // height: theme.windowHeight * 0.8,
       backgroundColor: theme.wallbg,
     },
     row: { flexDirection: "row", alignItems: "center", paddingVertical: 4 },

@@ -21,6 +21,9 @@ import Screen from "../components/Wrappers/Screen";
 import VerticalThingList from "../components/Lists/VerticalThingList";
 import useListService from "../hooks/useListService";
 
+import Animated from "react-native-reanimated";
+import AnimatedHeader from "../components/AnimatedHeader";
+
 const MainInputField = ({
   category,
   setItem,
@@ -80,8 +83,6 @@ export default function SearchThings({ navigation, route }) {
   const [item, setItem] = useState({});
   const { autoFocus } = (route && route.params) || { autoFocus: false };
 
-  // React.useEffect(() => setCategory("Movie"), []);
-
   const [
     data,
     refresh,
@@ -101,39 +102,32 @@ export default function SearchThings({ navigation, route }) {
     }
   }, [item]);
 
+  const y = React.useMemo(() => new Animated.Value(0), []);
+
   return (
-    <Screen>
+    <Screen fullscreen={true}>
       <DismissKeyboard>
         <View
           style={{
             backgroundColor: theme.wallbg,
             flex: 1,
-            justifyContent: "center",
             alignItems: "center",
           }}
         >
-          <WindowWidthRow pad={true}>
-            <BackButton />
-            <T.H1>Search Things</T.H1>
-          </WindowWidthRow>
-
-          <WindowWidthRow>
-            <View style={{ flex: 1, paddingRight: 10 }}>
-              <SingleFilterButtonSpan
-                options={["Movie", "Show", "Book", "Place"]}
-                setFilter={setCategory}
-                filter={category}
-              />
-            </View>
-          </WindowWidthRow>
-
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
+          <WindowWidthRow
+            topPad={true}
+            style={{ paddingBottom: 5, zIndex: 3 }}
+            pad={false}
           >
+            <BackButton />
+            <SingleFilterButtonSpan
+              options={["Movie", "Show", "Book", "Place"]}
+              setFilter={setCategory}
+              filter={category}
+            />
+          </WindowWidthRow>
+
+          <AnimatedHeader y={y} dY={100} top={theme.topPad + 60}>
             <MainInputField
               category={category}
               setItem={setItem}
@@ -141,16 +135,19 @@ export default function SearchThings({ navigation, route }) {
               setItemChosen={setItemChosen}
               autoFocus={autoFocus}
             />
-            <VerticalThingList
-              data={data}
-              refresh={refresh}
-              refreshing={refreshing}
-              fetchMore={fetchMore}
-              loading={loading}
-              moreAvailable={moreAvailable}
-              total={total}
-            />
-          </View>
+          </AnimatedHeader>
+
+          <VerticalThingList
+            data={data}
+            refresh={refresh}
+            refreshing={refreshing}
+            fetchMore={fetchMore}
+            loading={loading}
+            moreAvailable={moreAvailable}
+            total={total}
+            y={y}
+            bounces={false}
+          />
         </View>
       </DismissKeyboard>
     </Screen>

@@ -32,7 +32,7 @@ export default function FilterMenu({ y, categories, setCategories }) {
   return (
     <Animated.View
       style={{
-        top: 105,
+        top: 65 + theme.topPad,
         position: "absolute",
         zIndex: 1,
         transform: [

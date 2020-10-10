@@ -10,13 +10,11 @@ const SingleFilterButtonSpan = React.memo(({ options, setFilter, filter }) => {
   return (
     <View
       style={{
-        paddingVertical: 10,
+        // paddingVertical: 8,
         flexDirection: "row",
-        marginBottom: 0,
-        justifyContent: "space-between",
-        width: "100%",
-        zIndex: 3,
-        elevation: 3,
+        // justifyContent: "space-evenly",
+        flex: 1,
+        zIndex: 1,
       }}
     >
       <FlatList

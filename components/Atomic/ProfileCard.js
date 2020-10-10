@@ -53,7 +53,7 @@ function CardHeader({ title, subtitle, renderRightChild, onPress }) {
       <View style={{ flex: 1, paddingVertical: 10 }}>
         <ContentComponent onPress={onPress} activeOpacity={0.7}>
           <T.Title>{title}</T.Title>
-          <T.H2G>{subtitle}</T.H2G>
+          {subtitle && <T.H2G>{subtitle}</T.H2G>}
         </ContentComponent>
       </View>
       {renderRightChild()}

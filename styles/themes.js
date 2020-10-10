@@ -18,7 +18,7 @@ const base = {
   warningBackground: "#EAEB5E",
   warningText: "#666804",
   noticeText: "#fff",
-  topPad: isIphoneXOrGreater ? 40 : 20,
+  topPad: isIphoneXOrGreater ? 40 : 10,
 };
 
 export const themes = {

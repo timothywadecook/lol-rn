@@ -11,6 +11,7 @@ const SingleFilterButton = ({ text, setFilter, filter }) => {
       }}
       active={isActive}
       title={text}
+      style={{ paddingVertical: 15 }}
     />
   );
 };

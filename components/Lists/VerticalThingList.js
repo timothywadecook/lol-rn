@@ -1,16 +1,16 @@
 import React from "react";
-import { View, FlatList, Image, TouchableOpacity } from "react-native";
+import { FlatList, View } from "react-native";
+import ThingCard from "../ListItems/ThingCard";
 import * as T from "../Atomic/StyledText";
-import ProfileCard from "../Atomic/ProfileCard";
-
-import { Entypo } from "@expo/vector-icons";
-
-import { useNavigation } from "@react-navigation/native";
-import useTheme from "../../hooks/useTheme";
 //
-import { SharedElement } from "react-navigation-shared-element";
+import useTheme from "../../hooks/useTheme";
+// Animation
+import Animated from "react-native-reanimated";
+import { onScrollEvent } from "react-native-redash";
+import WindowWidthRow from "../Wrappers/WindowWidthRow";
+const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
-export default function HorizontalThingList({
+export default function VerticalThingList({
   name = "Recent",
   data,
   refresh,
@@ -19,90 +19,71 @@ export default function HorizontalThingList({
   loading,
   moreAvailable,
   total,
+  y = { y },
+  bounces = true,
 }) {
-  return (
-    <ProfileCard title={name}>
-      <FlatList
-        contentContainerStyle={{ alignSelf: "center", paddingBottom: 100 }}
-        initialNumToRender={10}
-        keyboardShouldPersistTaps="handled"
-        data={data}
-        renderItem={({ item: thing }) => <ThingCard thing={thing} />}
-        numColumns={2}
-        showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}
-        keyExtractor={(item, i) => item._id + i}
-        onEndReached={fetchMore}
-        refreshing={refreshing}
-        onRefresh={refresh}
-        loading={loading}
-      />
-    </ProfileCard>
-  );
-}
-
-function ThingCard({ thing }) {
-  const { image, title, subtitle } = thing;
+  const onScroll = onScrollEvent({ y: y });
   const theme = useTheme();
-  const navigation = useNavigation();
-  const size = theme.windowWidth / 2.5;
-  const maxHeight = size * 2.18;
-  return (
-    <TouchableOpacity
-      activeOpacity={1}
-      onPress={() => navigation.navigate("ThingDetails", { thing })}
-      style={{
-        maxHeight: maxHeight,
-        width: size,
+
+  const renderHeader = () => (
+    <WindowWidthRow pad={true}>
+      <T.Title>{name}</T.Title>
+    </WindowWidthRow>
+  );
+  const renderItem = ({ item: thing }) => (
+    <ThingCard thing={thing} sizeDivider={2.5} />
+  );
+
+  const placeholderData = [
+    { _id: "abcde1", image: "true", title: "Loading...\n " },
+    { _id: "abcde2", image: "true", title: "Loading..." },
+    { _id: "abcde3", image: "true", title: "Loading..." },
+    { _id: "abcde4", image: "true", title: "Loading..." },
+    { _id: "abcde5", image: "true", title: "Loading..." },
+  ];
+
+  return refreshing ? (
+    <FlatList
+      ListHeaderComponent={renderHeader}
+      numColumns={2}
+      initialNumToRender={6}
+      keyboardShouldPersistTaps="handled"
+      data={placeholderData}
+      renderItem={renderItem}
+      showsVerticalScrollIndicator={false}
+      keyExtractor={(item) => item._id}
+      contentContainerStyle={{
         alignItems: "center",
-        marginHorizontal: 15,
-        marginVertical: 10,
+        alignSelf: "center",
+        paddingBottom: 100,
+        paddingTop: theme.topPad + 35,
       }}
-    >
-      <View
-        style={{
-          width: size,
-          alignItems: "center",
-          justifyContent: "center",
-          marginBottom: 5,
-        }}
-      >
-        {image ? (
-          <SharedElement id={`image-${thing._id}`}>
-            <Image
-              source={{ uri: image }}
-              style={{
-                resizeMode: "cover",
-                width: size,
-                height: size * 1.4,
-                borderRadius: 15,
-              }}
-            />
-          </SharedElement>
-        ) : thing.category === "Place" ? (
-          <View
-            style={{
-              width: size,
-              height: size * 1.4,
-              borderRadius: 15,
-              alignItems: "center",
-              justifyContent: "center",
-              backgroundColor: theme.iconBg,
-            }}
-          >
-            <PlaceIcon size={size / 2.5} />
-          </View>
-        ) : null}
-      </View>
-      <SharedElement id={`title-${thing._id}`}>
-        <T.P style={{ paddingBottom: 0 }}>{title}</T.P>
-      </SharedElement>
-    </TouchableOpacity>
+    />
+  ) : (
+    <AnimatedFlatList
+      bounces={bounces}
+      onScroll={onScroll}
+      ListHeaderComponent={renderHeader}
+      stickyHeaderIndices={[0]}
+      scrollEventThrottle={16}
+      initialNumToRender={10}
+      keyboardShouldPersistTaps="handled"
+      data={data}
+      renderItem={renderItem}
+      numColumns={2}
+      showsVerticalScrollIndicator={false}
+      showsHorizontalScrollIndicator={false}
+      keyExtractor={(item, i) => item._id + i}
+      onEndReached={fetchMore}
+      // refreshing={refreshing}
+      // onRefresh={refresh}
+      loading={loading}
+      contentContainerStyle={{
+        alignItems: "center",
+        alignSelf: "center",
+        paddingBottom: 100,
+        paddingTop: theme.topPad + 35,
+      }}
+    />
   );
-}
-
-function PlaceIcon({ size = 50 }) {
-  const theme = useTheme();
-
-  return <Entypo name="location-pin" size={size} color={theme.red} />;
 }

@@ -158,7 +158,6 @@ const CustomTextInput = ({ theme, styles, onChange, value, autoFocus }) => {
       placeholder="Search by title"
       placeholderTextColor="#A8A8A8"
       clearButtonMode="always"
-      clearTextOnFocus={true}
       onChange={onChange}
       blurOnSubmit={false}
       value={value}
