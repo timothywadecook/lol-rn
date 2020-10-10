@@ -83,18 +83,18 @@ export default function FilterMenu({ y, categories, setCategories }) {
 
 function ListSelectableUsersWithUnreadCountAndAddNew() {
   const following = useSelector((state) => state.follows.following);
-  // const sessionUser = useSelector((state) => state.user);
-  // const me = { ...sessionUser, username: "me" };
 
   const [userList, setUserList] = React.useState([]);
   React.useEffect(() => {
-    usersService
-      .find({
-        query: {
-          _id: { $in: following },
-        },
-      })
-      .then((res) => setUserList([...res.data]));
+    if (following.length) {
+      usersService
+        .find({
+          query: {
+            _id: { $in: following },
+          },
+        })
+        .then((res) => setUserList([...res.data]));
+    }
   }, [following]);
 
   const renderUser = ({ item: user }) => (

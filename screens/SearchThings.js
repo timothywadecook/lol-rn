@@ -72,12 +72,13 @@ const MainInputField = ({
   }
 };
 
-export default function SearchThings({ navigation }) {
+export default function SearchThings({ navigation, route }) {
   const theme = useTheme();
 
   const [category, setCategory] = useState("Movie");
   const [itemChosen, setItemChosen] = useState(false);
   const [item, setItem] = useState({});
+  const { autoFocus } = (route && route.params) || { autoFocus: false };
 
   // React.useEffect(() => setCategory("Movie"), []);
 
@@ -133,14 +134,13 @@ export default function SearchThings({ navigation }) {
               alignItems: "center",
             }}
           >
-            {!!category && (
-              <MainInputField
-                category={category}
-                setItem={setItem}
-                itemChosen={itemChosen}
-                setItemChosen={setItemChosen}
-              />
-            )}
+            <MainInputField
+              category={category}
+              setItem={setItem}
+              itemChosen={itemChosen}
+              setItemChosen={setItemChosen}
+              autoFocus={autoFocus}
+            />
             <VerticalThingList
               data={data}
               refresh={refresh}

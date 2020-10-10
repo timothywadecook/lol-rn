@@ -178,7 +178,9 @@ export default function HomeScreen({ navigation }) {
         </T.FancyH1>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <TouchableOpacity
-            onPress={() => navigation.navigate("SearchThings")}
+            onPress={() =>
+              navigation.navigate("SearchThings", { autoFocus: true })
+            }
             style={{
               padding: 15,
               alignItems: "center",

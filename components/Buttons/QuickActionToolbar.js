@@ -36,7 +36,7 @@ export default function QuickActionProfileButton({ y }) {
         right: theme.windowWidth / 2 - 120,
         bottom: BOTTOM,
         zIndex: 3,
-        elevation: 3,
+        elevation: 8,
         shadowColor: theme.primary,
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.3,
@@ -54,6 +54,8 @@ export default function QuickActionProfileButton({ y }) {
             }),
           },
         ],
+        borderWidth: 0.5,
+        borderColor: theme.iconDefault,
       }}
     >
       <TouchableOpacity

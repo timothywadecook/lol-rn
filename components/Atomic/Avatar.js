@@ -10,7 +10,7 @@ export default function AvatarComponent({ user, size = 24, style, children }) {
   return (
     <Avatar
       rounded
-      containerStyle={{ borderWidth: 0.2, borderColor: theme.white, ...style }}
+      containerStyle={{ borderWidth: 0.5, borderColor: theme.white, ...style }}
       size={size}
       title={user.name[0].toUpperCase()}
       source={{ uri: user.avatar }}
