@@ -32,7 +32,13 @@ export function ThingItem({ thing }) {
           <T.Title style={{ paddingBottom: 0 }}>{title}</T.Title>
         </SharedElement>
         <SharedElement id={`subtitle-${thing._id}`}>
-          <T.H4 style={{ fontWeight: "bold" }}>{subtitle}</T.H4>
+          <T.H4
+            numberOfLines={1}
+            ellipsizeMode="tail"
+            style={{ fontWeight: "bold" }}
+          >
+            {subtitle}
+          </T.H4>
         </SharedElement>
       </View>
     </TouchableOpacity>

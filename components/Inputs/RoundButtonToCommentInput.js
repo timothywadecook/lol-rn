@@ -28,7 +28,7 @@ export default function CommentInput({
       renderIcon={() => (
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <IconButtons.CommentButton
-            onPress={() => setActive(true)}
+            // onPress={() => setActive(true)}
             padding={0}
           />
 

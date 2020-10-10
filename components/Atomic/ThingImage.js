@@ -21,10 +21,11 @@ export default function ThingImage({
     marginRight: marginRight ? size / 5 : 0,
     marginTop: 2,
   };
+
   return image ? (
     <SharedElement id={`image-${thing._id}`}>
       <Image
-        containerStyle={{ backgroundColor: theme.iconBg }}
+        containerStyle={{ backgroundColor: theme.iconBg, ...imgStyle }}
         placeholderStyle={{ backgroundColor: theme.iconBg }}
         PlaceholderContent={<ActivityIndicator />}
         transition={transition}

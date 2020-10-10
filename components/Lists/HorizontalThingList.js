@@ -1,24 +1,16 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { View, FlatList, Image, TouchableOpacity } from "react-native";
-import * as T from "../Atomic/StyledText";
+import { View, FlatList, TouchableOpacity } from "react-native";
 import ProfileCard from "../Atomic/ProfileCard";
-
+import ThingCard from "../ListItems/ThingCard";
 import { thingsService } from "../../services/feathersClient";
-import { Feather, Entypo } from "@expo/vector-icons";
+import { Entypo } from "@expo/vector-icons";
 
 import { useNavigation } from "@react-navigation/native";
 import useTheme from "../../hooks/useTheme";
 import useListService from "../../hooks/useListService";
-import ThingImage from "../Atomic/ThingImage";
-import AnimateExpand from "../Wrappers/AnimateExpand";
 
-export default function HorizontalThingList({
-  listId,
-  canCreate,
-  autoOpen = true,
-  openDelay = 0,
-}) {
+export default function HorizontalThingList({ listId, canCreate }) {
   const theme = useTheme();
   const navigation = useNavigation();
 
@@ -41,8 +33,6 @@ export default function HorizontalThingList({
     _id: { $in: things.length && things },
   });
 
-  const [show, setShow] = React.useState(true);
-
   const placeholderData = [
     { _id: "abcd1", image: "true", title: "Loading...\n " },
     { _id: "abcd2", image: "true", title: "Loading..." },
@@ -53,10 +43,6 @@ export default function HorizontalThingList({
 
   return (
     <ProfileCard
-      onPressHeader={() => {
-        setLoaded(true);
-        setShow(!show);
-      }}
       renderRightChild={() =>
         canCreate && (
           <TouchableOpacity
@@ -108,38 +94,5 @@ export default function HorizontalThingList({
         )}
       </View>
     </ProfileCard>
-  );
-}
-
-function ThingCard({ thing }) {
-  const { image, title, subtitle } = thing;
-  const theme = useTheme();
-  const navigation = useNavigation();
-  const size = theme.windowWidth / 5;
-  const maxHeight = size * 2.18;
-  return (
-    <TouchableOpacity
-      onPress={() => navigation.navigate("ThingDetails", { thing })}
-      style={{
-        maxHeight: maxHeight,
-        width: size,
-        alignItems: "center",
-        marginHorizontal: 15,
-        marginVertical: 10,
-      }}
-    >
-      <View
-        style={{
-          width: size,
-          alignItems: "center",
-          justifyContent: "center",
-          marginBottom: 5,
-        }}
-      >
-        <ThingImage transition={false} size={size} thing={thing} />
-      </View>
-
-      <T.P style={{ paddingBottom: 0 }}>{title}</T.P>
-    </TouchableOpacity>
   );
 }

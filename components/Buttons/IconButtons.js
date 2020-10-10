@@ -17,8 +17,9 @@ const iconButtonCreator = (iconName, Icons = Ionicons) => ({
   const theme = useTheme();
   const countColor = active ? theme.purple : theme.iconDefault;
   const iconColor = active ? theme.purple : theme.iconDefault;
+  const Component = onPress ? TouchableOpacity : View;
   return (
-    <TouchableOpacity
+    <Component
       style={{
         flexDirection: "row",
         alignItems: "center",
@@ -38,7 +39,7 @@ const iconButtonCreator = (iconName, Icons = Ionicons) => ({
         size={size}
         color={iconColor}
       />
-    </TouchableOpacity>
+    </Component>
   );
 };
 

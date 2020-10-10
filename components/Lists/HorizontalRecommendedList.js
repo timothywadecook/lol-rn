@@ -1,23 +1,14 @@
 import React from "react";
-import { View, FlatList, Image, TouchableOpacity } from "react-native";
-import * as T from "../Atomic/StyledText";
+import { View, FlatList } from "react-native";
 import ProfileCard from "../Atomic/ProfileCard";
 
 import { recommendationsService } from "../../services/feathersClient";
-import ThingImage from "../Atomic/ThingImage";
+import ThingCard from "../ListItems/ThingCard";
 
-import { useNavigation } from "@react-navigation/native";
 import useTheme from "../../hooks/useTheme";
 import useListService from "../../hooks/useListService";
 
-import AnimateExpand from "../Wrappers/AnimateExpand";
-
-export default function HorizontalRecommendedList({
-  userId,
-  canCreate,
-  autoOpen = true,
-  openDelay = 0,
-}) {
+export default function HorizontalRecommendedList({ userId, canCreate }) {
   const theme = useTheme();
 
   const [
@@ -45,17 +36,7 @@ export default function HorizontalRecommendedList({
   ];
 
   return (
-    <ProfileCard
-      onPressHeader={() => {
-        setLoaded(true);
-        setShow(!show);
-      }}
-      renderRightChild={() => (
-        <View style={{ flexDirection: "row", alignItems: "center" }}></View>
-      )}
-      title={`Recommended`}
-      subtitle={`${total} things`}
-    >
+    <ProfileCard title={`Recommended`} subtitle={`${total} things`}>
       <View style={{ width: theme.windowWidth }}>
         {!refreshing ? (
           <FlatList
@@ -82,36 +63,5 @@ export default function HorizontalRecommendedList({
         )}
       </View>
     </ProfileCard>
-  );
-}
-
-function ThingCard({ thing }) {
-  const { image, title, subtitle } = thing;
-  const theme = useTheme();
-  const navigation = useNavigation();
-  const size = theme.windowWidth / 5;
-  return (
-    <TouchableOpacity
-      onPress={() => navigation.navigate("ThingDetails", { thing })}
-      style={{
-        width: size,
-        alignItems: "center",
-        marginHorizontal: 15,
-        marginVertical: 10,
-      }}
-    >
-      <View
-        style={{
-          width: size,
-          alignItems: "center",
-          justifyContent: "center",
-          marginBottom: 5,
-        }}
-      >
-        <ThingImage transition={false} size={size} thing={thing} />
-      </View>
-
-      <T.P style={{ paddingBottom: 0 }}>{title}</T.P>
-    </TouchableOpacity>
   );
 }

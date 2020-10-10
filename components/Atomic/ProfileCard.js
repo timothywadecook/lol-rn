@@ -1,12 +1,10 @@
 import React from "react";
-import { View } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import Card from "./Card";
 import * as T from "./StyledText";
 import SubmitButton from "../Buttons/SubmitButton";
 
 import useTheme from "../../hooks/useTheme";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { sub } from "react-native-reanimated";
 
 export default ProfileCard = (props) => {
   const theme = useTheme();
@@ -42,6 +40,7 @@ export default ProfileCard = (props) => {
 
 function CardHeader({ title, subtitle, renderRightChild, onPress }) {
   const theme = useTheme();
+  const ContentComponent = onPress ? TouchableOpacity : View;
   return (
     <View
       style={{
@@ -52,10 +51,10 @@ function CardHeader({ title, subtitle, renderRightChild, onPress }) {
       }}
     >
       <View style={{ flex: 1, paddingVertical: 10 }}>
-        <TouchableOpacity onPress={onPress} activeOpacity={0.7}>
+        <ContentComponent onPress={onPress} activeOpacity={0.7}>
           <T.Title>{title}</T.Title>
           <T.H2G>{subtitle}</T.H2G>
-        </TouchableOpacity>
+        </ContentComponent>
       </View>
       {renderRightChild()}
     </View>
