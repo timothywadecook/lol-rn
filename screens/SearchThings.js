@@ -116,7 +116,7 @@ export default function SearchThings({ navigation, route }) {
         >
           <WindowWidthRow
             topPad={true}
-            style={{ paddingBottom: 5, zIndex: 3 }}
+            style={{ paddingBottom: 10, zIndex: 3 }}
             pad={false}
           >
             <BackButton />
@@ -127,7 +127,7 @@ export default function SearchThings({ navigation, route }) {
             />
           </WindowWidthRow>
 
-          <AnimatedHeader y={y} dY={100} top={theme.topPad + 60}>
+          <AnimatedHeader y={y} dY={100} top={theme.topPad + 95}>
             <MainInputField
               category={category}
               setItem={setItem}

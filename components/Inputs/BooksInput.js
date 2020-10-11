@@ -4,15 +4,15 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  View,
+  Platform,
   Image,
   Keyboard,
 } from "react-native";
 import Autocomplete from "react-native-autocomplete-input";
+import { SearchBar } from "react-native-elements";
 import useDebounce from "../../hooks/useDebounce";
 import useTheme from "../../hooks/useTheme";
 import env from "../../env";
-// import { lookupService } from "../../services/feathersClient";
 
 export default function BooksInput({
   setItem,
@@ -22,6 +22,7 @@ export default function BooksInput({
 }) {
   const [query, setQuery] = useState("");
   const [data, setData] = useState([]); // {title, date_published, [authors], isbn} assumed
+  const [loading, setLoading] = useState(false);
   const theme = useTheme();
   const styles = getStyles(theme, itemChosen);
 
@@ -33,6 +34,7 @@ export default function BooksInput({
   const getData = () => {
     // make sure we have a debounced query or that an item has not been chosen
     if (!debouncedQuery || itemChosen) return;
+    setLoading(true);
 
     // build the query URL based on the debounced query
     const queryURL = `https://www.googleapis.com/books/v1/volumes?q=${debouncedQuery}&printType=books&langRestrict=en&maxResults=20&key=${env.GCP_KEY}`;
@@ -43,8 +45,12 @@ export default function BooksInput({
         if (json.items && json.items.length > 0) {
           setData(json.items);
         }
+        setLoading(false);
       })
-      .catch((e) => console.log("Error: ", e));
+      .catch((e) => {
+        console.log("Error: ", e);
+        setLoading(false);
+      });
   };
 
   const clearSelection = () => {
@@ -124,14 +130,18 @@ export default function BooksInput({
   );
 
   const renderTextInput = () => (
-    <CustomTextInput
+    <SearchBar
+      platform={Platform.OS}
+      showLoading={loading}
+      onClear={() => setQuery("")}
+      onCancel={() => setQuery("")}
+      autoFocus={autoFocus}
+      containerStyle={{ backgroundColor: "transparent" }}
+      placeholder="Search by title"
       onChange={(e) => {
         setQuery(e.nativeEvent.text);
       }}
-      theme={theme}
-      styles={styles}
       value={query}
-      autoFocus={autoFocus}
     />
   );
 
@@ -150,29 +160,10 @@ export default function BooksInput({
   );
 }
 
-const CustomTextInput = ({ theme, styles, onChange, value, autoFocus }) => {
-  return (
-    <TextInput
-      style={styles.inputText}
-      autoCorrect={false}
-      placeholder="Search by title"
-      placeholderTextColor="#A8A8A8"
-      clearButtonMode="always"
-      onChange={onChange}
-      blurOnSubmit={false}
-      value={value}
-      underlineColorAndroid="transparent"
-      keyboardAppearance={theme.theme}
-      autoFocus={autoFocus}
-    />
-  );
-};
-
 const getStyles = (theme, itemChosen) =>
   StyleSheet.create({
     container: {
-      width: theme.contentWidth,
-      alignItems: "stretch",
+      width: theme.windowWidth,
     },
     inputContainer: {
       borderWidth: 0,
@@ -181,7 +172,7 @@ const getStyles = (theme, itemChosen) =>
       borderWidth: 0,
       borderRadius: 5,
       padding: 5,
-      height: theme.windowHeight * 0.8,
+      // height: theme.windowHeight * 0.8,
       backgroundColor: theme.wallbg,
     },
     row: { flexDirection: "row", alignItems: "center", paddingVertical: 4 },

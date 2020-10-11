@@ -44,7 +44,7 @@ export default function VerticalThingList({
 
   return refreshing ? (
     <FlatList
-      ListHeaderComponent={renderHeader}
+      // ListHeaderComponent={renderHeader}
       numColumns={2}
       initialNumToRender={6}
       keyboardShouldPersistTaps="handled"
@@ -56,15 +56,15 @@ export default function VerticalThingList({
         alignItems: "center",
         alignSelf: "center",
         paddingBottom: 100,
-        paddingTop: theme.topPad + 35,
+        paddingTop: theme.topPad + 65,
       }}
     />
   ) : (
     <AnimatedFlatList
       bounces={bounces}
       onScroll={onScroll}
-      ListHeaderComponent={renderHeader}
-      stickyHeaderIndices={[0]}
+      // ListHeaderComponent={renderHeader}
+      // stickyHeaderIndices={[0]}
       scrollEventThrottle={16}
       initialNumToRender={10}
       keyboardShouldPersistTaps="handled"
@@ -82,7 +82,7 @@ export default function VerticalThingList({
         alignItems: "center",
         alignSelf: "center",
         paddingBottom: 100,
-        paddingTop: theme.topPad + 35,
+        paddingTop: theme.topPad + 65,
       }}
     />
   );

@@ -1,8 +1,11 @@
 import React from "react";
+import { Platform } from "react-native";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 
 import env from "../../env";
 import useTheme from "../../hooks/useTheme";
+//
+import { SearchBar } from "react-native-elements";
 
 const GooglePlacesInput = ({
   itemChosen,
@@ -14,8 +17,7 @@ const GooglePlacesInput = ({
 
   const style = {
     container: {
-      width: theme.contentWidth,
-      flex: "initial",
+      width: theme.windowWidth,
     },
     description: {
       color: theme.primary,
@@ -27,35 +29,53 @@ const GooglePlacesInput = ({
       backgroundColor: theme.wallbg,
       borderRadius: 5,
     },
+    row: { flexDirection: "row", alignItems: "center", padding: 10 },
     textInputContainer: {
-      backgroundColor: "rgba(0,0,0,0)",
-      borderTopWidth: 0,
-      borderBottomWidth: 0,
+      // backgroundColor: "rgba(0,0,0,0)",
+      // height: 60,
+    },
+    poweredContainer: {
+      backgroundColor: theme.iconDefault,
+      padding: 10,
     },
     textInput: {
-      fontWeight: "normal",
-      backgroundColor: theme.inputBackground,
-      marginLeft: 0,
-      marginRight: 0,
-      height: 38,
-      color: "#5d5d5d",
-      fontSize: 16,
+      // backgroundColor: "transparent",
     },
     predefinedPlacesDescription: {
       color: "#1faadb",
     },
   };
 
+  const ref = React.useRef();
+
+  const RenderTextInput = (props) => (
+    <SearchBar
+      keyboardAppearance={theme.theme}
+      platform={Platform.OS}
+      // showLoading={loading}
+      onClear={() => ref.current.setAddressText("")}
+      onCancel={() => ref.current.setAddressText("")}
+      autoFocus={autoFocus}
+      containerStyle={{ backgroundColor: "transparent" }}
+      placeholder="Enter a place"
+      returnKeyType="default"
+      {...props}
+    />
+  );
+
+  const textInputProps = {
+    InputComp: RenderTextInput,
+    clearButtonMode: "never",
+  };
+
   return (
     <GooglePlacesAutocomplete
+      ref={ref}
+      suppressDefaultStyles={true}
+      textInputProps={textInputProps}
       blurOnSubmit={false}
-      clearTextOnFocus={true}
-      autoFocus={autoFocus}
-      keyboardAppearance={theme.theme}
-      placeholder="Enter a place"
       fetchDetails={false}
       minLength={3}
-      returnKeyType="default"
       onPress={(item) => {
         const { place_id, id, structured_formatting, types } = item;
         setItemChosen(true);
