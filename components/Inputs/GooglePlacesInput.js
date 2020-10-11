@@ -30,16 +30,9 @@ const GooglePlacesInput = ({
       borderRadius: 5,
     },
     row: { flexDirection: "row", alignItems: "center", padding: 10 },
-    textInputContainer: {
-      // backgroundColor: "rgba(0,0,0,0)",
-      // height: 60,
-    },
     poweredContainer: {
       backgroundColor: theme.iconDefault,
       padding: 10,
-    },
-    textInput: {
-      // backgroundColor: "transparent",
     },
     predefinedPlacesDescription: {
       color: "#1faadb",
@@ -52,7 +45,6 @@ const GooglePlacesInput = ({
     <SearchBar
       keyboardAppearance={theme.theme}
       platform={Platform.OS}
-      // showLoading={loading}
       onClear={() => ref.current.setAddressText("")}
       onCancel={() => ref.current.setAddressText("")}
       autoFocus={autoFocus}
@@ -66,6 +58,7 @@ const GooglePlacesInput = ({
   const textInputProps = {
     InputComp: RenderTextInput,
     clearButtonMode: "never",
+    autoFocus: autoFocus,
   };
 
   return (

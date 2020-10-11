@@ -9,6 +9,8 @@ import { Entypo } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import useTheme from "../../hooks/useTheme";
 import useListService from "../../hooks/useListService";
+//
+import { ParticipantsRow } from "../ListItems/ListListItem";
 
 export default function HorizontalThingList({ listId, canCreate }) {
   const theme = useTheme();
@@ -43,26 +45,35 @@ export default function HorizontalThingList({ listId, canCreate }) {
 
   return (
     <ProfileCard
-      renderRightChild={() =>
-        canCreate && (
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate("CreateOrEditList", { list, isEdit: true })
-            }
-            style={{
-              height: 30,
-              width: 30,
-              backgroundColor: theme.iconBg,
-              alignItems: "center",
-              justifyContent: "center",
+      renderRightChild={() => (
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "flex-end",
+            alignItems: "center",
+          }}
+        >
+          <ParticipantsRow participants={participants} />
+          {canCreate && (
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate("CreateOrEditList", { list, isEdit: true })
+              }
+              style={{
+                height: 30,
+                width: 30,
+                backgroundColor: theme.iconBg,
+                alignItems: "center",
+                justifyContent: "center",
 
-              borderRadius: 15,
-            }}
-          >
-            <Entypo name="dots-two-vertical" size={20} color={theme.purple} />
-          </TouchableOpacity>
-        )
-      }
+                borderRadius: 15,
+              }}
+            >
+              <Entypo name="dots-two-vertical" size={20} color={theme.purple} />
+            </TouchableOpacity>
+          )}
+        </View>
+      )}
       title={name}
       subtitle={`${total} things`}
     >

@@ -29,7 +29,7 @@ export default function AnimatedHeader({
             {
               translateY: interpolate(yVal, {
                 inputRange: [0, 1],
-                outputRange: [0, -1],
+                outputRange: [0, -0.8],
               }),
             },
           ],

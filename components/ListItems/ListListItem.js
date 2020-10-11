@@ -14,7 +14,6 @@ import { useNavigation } from "@react-navigation/native";
 import {
   TouchableWithoutFeedback,
   FlatList,
-  TouchableOpacity,
 } from "react-native-gesture-handler";
 import { usersService, listsService } from "../../services/feathersClient";
 import Avatar from "../Atomic/Avatar";
@@ -164,14 +163,14 @@ export default function ListListItem({
   );
 }
 
-function ParticipantsRow({ participants }) {
+export function ParticipantsRow({ participants }) {
   const sessionUserId = useSelector((state) => state.user._id);
 
   return (
-    <View style={{ flexGrow: 0 }}>
+    <View style={{ flexGrow: 0, paddingRight: 5 }}>
       <FlatList
         horizontal={true}
-        data={participants.filter((uId) => uId !== sessionUserId)}
+        data={participants} //.filter((uId) => uId !== sessionUserId)
         renderItem={({ item }) => <ParticipantAvatar participantId={item} />}
         initialNumToRender={5}
         keyExtractor={(item) => item}
