@@ -4,6 +4,8 @@ import { Entypo } from "@expo/vector-icons";
 import useTheme from "../../hooks/useTheme";
 import { SharedElement } from "react-navigation-shared-element";
 import { Image } from "react-native-elements";
+//
+import env from "../../env";
 
 export default function ThingImage({
   size = 40,
@@ -22,6 +24,15 @@ export default function ThingImage({
     marginTop: 2,
   };
 
+  const getPlaceImageUrl = (photo_reference) => {
+    // if image already in Cloudinary then get that image, else grab from google
+    if (photo_reference.includes("cloudinary")) {
+      return photo_reference;
+    }
+    const maxWidth = 400;
+    return `https://maps.googleapis.com/maps/api/place/photo?maxwidth=${maxWidth}&photoreference=${photo_reference}&key=${env.GCP_KEY}`;
+  };
+
   return image ? (
     <SharedElement id={`image-${thing._id}`}>
       <Image
@@ -29,7 +40,7 @@ export default function ThingImage({
         placeholderStyle={{ backgroundColor: theme.iconBg }}
         PlaceholderContent={<ActivityIndicator />}
         transition={transition}
-        source={{ uri: image }}
+        source={{ uri: category === "Place" ? getPlaceImageUrl(image) : image }}
         style={[{ resizeMode: "cover" }, imgStyle, style]}
       />
     </SharedElement>

@@ -73,7 +73,7 @@ const GooglePlacesInput = ({
         const { place_id, id, structured_formatting, types } = item;
         setItemChosen(true);
 
-        const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place_id}&key=${env.GCP_KEY}&fields=geometry`;
+        const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place_id}&key=${env.GCP_KEY}&fields=geometry,photo`;
         fetch(url)
           .then((res) => res.json())
           .then((json) => {
@@ -86,6 +86,7 @@ const GooglePlacesInput = ({
                 list_of_tags: types,
                 api: "GooglePlaces",
                 api_id: place_id,
+                image: json.result.photos[0].photo_reference,
                 physical_location: {
                   type: "Point",
                   coordinates: [lat, lng],
