@@ -5,12 +5,13 @@ import useTheme from "../../hooks/useTheme";
 export function FancyH1(props) {
   const theme = useTheme();
   return (
-    <H1
+    <Text
       {...props}
       style={[
         {
           fontFamily: "Noteworthy",
           color: "#8C979A",
+          fontSize: 36,
         },
         props.style,
       ]}
