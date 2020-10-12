@@ -21,7 +21,7 @@ export default function useCachedResources() {
           ...Ionicons.font,
           ...Feather.font,
           ...Entypo.font,
-          Noteworthy: require("../assets/fonts/Noteworthy-Bold.otf"),
+          Noteworthy: require("../assets/fonts/Noteworthy-Lt.ttf"),
         });
       } catch (e) {
         // We might want to provide this error information to an error reporting service
