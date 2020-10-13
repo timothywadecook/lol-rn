@@ -14,7 +14,7 @@ export default function ThingCard({ thing, sizeDivider = 5 }) {
   return (
     <TouchableOpacity
       onPress={() => navigation.navigate("ThingDetails", { thing })}
-      activeOpacity={0.7}
+      activeOpacity={0.9}
       style={{
         padding: 10,
       }}

@@ -115,11 +115,14 @@ export default function SearchThings({ navigation, route }) {
           }}
         >
           <WindowWidthRow
-            topPad={true}
-            style={{ paddingBottom: 10, zIndex: 3 }}
+            style={{ zIndex: 3, paddingBottom: 10 }}
             pad={false}
+            topPad={true}
           >
             <BackButton />
+            <T.H1>Search Things</T.H1>
+          </WindowWidthRow>
+          <WindowWidthRow style={{ paddingBottom: 10, zIndex: 3 }} pad={false}>
             <SingleFilterButtonSpan
               options={["Movie", "Show", "Book", "Place"]}
               setFilter={setCategory}
@@ -127,14 +130,16 @@ export default function SearchThings({ navigation, route }) {
             />
           </WindowWidthRow>
 
-          <AnimatedHeader y={y} dY={100} top={theme.topPad + 95}>
-            <MainInputField
-              category={category}
-              setItem={setItem}
-              itemChosen={itemChosen}
-              setItemChosen={setItemChosen}
-              autoFocus={autoFocus}
-            />
+          <AnimatedHeader y={y} dY={100} top={theme.topPad + 150}>
+            <WindowWidthRow>
+              <MainInputField
+                category={category}
+                setItem={setItem}
+                itemChosen={itemChosen}
+                setItemChosen={setItemChosen}
+                autoFocus={autoFocus}
+              />
+            </WindowWidthRow>
           </AnimatedHeader>
 
           <VerticalThingList

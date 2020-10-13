@@ -43,22 +43,21 @@ const GooglePlacesInput = ({
 
   const RenderTextInput = (props) => (
     <SearchBar
+      {...props}
+      autoFocus={false}
       keyboardAppearance={theme.theme}
       platform={Platform.OS}
       onClear={() => ref.current.setAddressText("")}
       onCancel={() => ref.current.setAddressText("")}
-      autoFocus={autoFocus}
       containerStyle={{ backgroundColor: "transparent" }}
       placeholder="Enter a place"
       returnKeyType="default"
-      {...props}
+      clearButtonMode="never"
     />
   );
 
   const textInputProps = {
     InputComp: RenderTextInput,
-    clearButtonMode: "never",
-    autoFocus: autoFocus,
   };
 
   return (
