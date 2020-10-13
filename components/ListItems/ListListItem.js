@@ -15,7 +15,8 @@ import {
   TouchableWithoutFeedback,
   FlatList,
 } from "react-native-gesture-handler";
-import { usersService, listsService } from "../../services/feathersClient";
+import { listsService } from "../../services/feathersClient";
+import useUser from "../../hooks/useUser";
 import Avatar from "../Atomic/Avatar";
 
 import { removeDeletedList, updateList } from "../../store/listsSlice";
@@ -164,13 +165,11 @@ export default function ListListItem({
 }
 
 export function ParticipantsRow({ participants }) {
-  const sessionUserId = useSelector((state) => state.user._id);
-
   return (
     <View style={{ flexGrow: 0, paddingRight: 5 }}>
       <FlatList
         horizontal={true}
-        data={participants} //.filter((uId) => uId !== sessionUserId)
+        data={participants}
         renderItem={({ item }) => <ParticipantAvatar participantId={item} />}
         initialNumToRender={5}
         keyExtractor={(item) => item}
@@ -181,25 +180,7 @@ export function ParticipantsRow({ participants }) {
 }
 
 function ParticipantAvatar({ participantId }) {
-  const [user, setUser] = React.useState({});
-
-  React.useEffect(() => {
-    usersService
-      .get(participantId)
-      .then((res) => setUser(res))
-      .catch((e) =>
-        console.log(
-          "Error getting participant for participant avatar",
-          participantId,
-          e.message
-        )
-      );
-  }, []);
-
-  if (!user._id) {
-    return <ActivityIndicator size="small" />;
-  }
-
+  const user = useUser(participantId);
   return (
     <View style={{ justifyContent: "center" }}>
       <Avatar

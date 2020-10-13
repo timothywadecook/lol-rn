@@ -1,29 +1,13 @@
 import React from "react";
-import { View, Button, TextInput } from "react-native";
+import { View } from "react-native";
 // Components
-import ActivityIndicatorCentered from "../Atomic/ActivityIndicatorCentered";
 import UsernameNavToFriendDetails from "../Atomic/UsernameNavToFriendDetails";
 import * as T from "../Atomic/StyledText";
-
-// Services
-import { usersService } from "../../services/feathersClient";
+// Hook
+import useUser from "../../hooks/useUser";
 
 export default function Comment({ text, creator, large = false }) {
-  // fetch user from
-  const [friend, setFriend] = React.useState({});
-
-  const fetchUser = async (userId) => {
-    try {
-      const user = await usersService.get(userId);
-      setFriend(user);
-    } catch (error) {
-      console.log("Problem fetching user for comment", error);
-    }
-  };
-
-  React.useEffect(() => {
-    fetchUser(creator);
-  }, []);
+  const friend = useUser(creator);
 
   return (
     <View

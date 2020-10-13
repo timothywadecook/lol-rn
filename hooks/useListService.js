@@ -1,6 +1,7 @@
 import React from "react";
 
 export default function useListService(service, params) {
+  const isMounted = React.useRef(true);
   const [data, setData] = React.useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
@@ -8,7 +9,7 @@ export default function useListService(service, params) {
   const [total, setTotal] = React.useState(0);
 
   const refresh = async () => {
-    if (!refreshing) {
+    if (isMounted.current && !refreshing) {
       setRefreshing(true);
       try {
         const datadata = await service.find({
@@ -18,19 +19,25 @@ export default function useListService(service, params) {
             ...params,
           },
         });
-        setData(datadata.data);
-        setMoreAvailable(datadata.total > datadata.data.length);
-        setTotal(datadata.total);
+        if (isMounted.current) {
+          setData(datadata.data);
+          setMoreAvailable(datadata.total > datadata.data.length);
+          setTotal(datadata.total);
+        }
       } catch (error) {
         console.log("Error using list service refresh", service, error);
-        setMoreAvailable(false);
+        if (isMounted.current) {
+          setMoreAvailable(false);
+        }
       }
-      setRefreshing(false);
+      if (isMounted.current) {
+        setRefreshing(false);
+      }
     }
   };
 
   const fetchMore = async () => {
-    if (!loading && moreAvailable) {
+    if (isMounted.current && !loading && moreAvailable) {
       setLoading(true);
       try {
         const datadata = await service.find({
@@ -41,18 +48,27 @@ export default function useListService(service, params) {
             ...params,
           },
         });
-        setData([...data, ...datadata.data]);
-        setMoreAvailable(datadata.total > datadata.skip);
+        if (isMounted.current) {
+          setData([...data, ...datadata.data]);
+          setMoreAvailable(datadata.total > datadata.skip);
+        }
       } catch (error) {
         console.log("Error using list service fetchmore", service, error);
-        setMoreAvailable(false);
+        if (isMounted.current) {
+          setMoreAvailable(false);
+        }
       }
-      setLoading(false);
+      if (isMounted.current) {
+        setLoading(false);
+      }
     }
   };
 
   React.useEffect(() => {
     refresh();
+    return () => {
+      isMounted.current = false;
+    };
   }, [params && params.category]);
 
   return [data, refresh, refreshing, fetchMore, loading, moreAvailable, total];

@@ -129,7 +129,6 @@ export default function ThingDetails({ route }) {
 
 ThingDetails.sharedElements = (navigation) => {
   const thing = navigation.getParam("thing");
-  console.log("thing ?", thing);
   if (thing._id) {
     return [
       `image-${thing._id}`,
