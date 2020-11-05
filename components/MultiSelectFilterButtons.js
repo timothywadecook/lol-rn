@@ -16,10 +16,10 @@ export default function MultiSelectFilterButtons({
     <View
       style={{
         paddingVertical: 5,
-        paddingLeft: 6,
+        // paddingLeft: 6,
         flexDirection: "row",
         marginBottom: 0,
-        width: theme.windowWidth,
+        // width: theme.windowWidth,
         zIndex: 3,
         elevation: 3,
       }}
@@ -30,6 +30,7 @@ export default function MultiSelectFilterButtons({
         data={options}
         ListHeaderComponent={() => (
           <RoundButton
+            style={{ paddingVertical: 15 }}
             secondary={true}
             onPress={() => setSelected([])}
             active={selected.length === 0}

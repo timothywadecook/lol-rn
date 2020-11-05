@@ -17,7 +17,7 @@ export default function RoundButton({
   solid = theme.theme === "light" ? !solid : solid;
   const inActiveColor = solid ? theme.iconBg : "transparent";
   const inActiveBorderWidth = solid ? 0 : 1;
-  const activeBgColor = secondary ? theme.wallbg : theme.activeButtonBg;
+  const activeBgColor = secondary ? "transparent" : theme.activeButtonBg;
 
   return (
     <TouchableOpacity

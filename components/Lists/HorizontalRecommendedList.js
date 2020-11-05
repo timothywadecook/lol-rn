@@ -3,15 +3,19 @@ import { View, FlatList } from "react-native";
 import ProfileCard from "../Atomic/ProfileCard";
 
 import { recommendationsService } from "../../services/feathersClient";
-import ThingCard from "../ListItems/ThingCard";
+import ThingCard, { ThingCardAdd } from "../ListItems/ThingCard";
 
 import useTheme from "../../hooks/useTheme";
 import useListService from "../../hooks/useListService";
 
-export default function HorizontalRecommendedList({ userId, canCreate }) {
+export default function HorizontalRecommendedList({
+  userId,
+  title = "Recommended",
+  canCreate,
+}) {
   const theme = useTheme();
 
-  const [
+  const {
     data,
     refresh,
     refreshing,
@@ -19,7 +23,7 @@ export default function HorizontalRecommendedList({ userId, canCreate }) {
     loading,
     moreAvailable,
     total,
-  ] = useListService(recommendationsService, {
+  } = useListService(recommendationsService, {
     creator: userId,
   });
 
@@ -36,10 +40,11 @@ export default function HorizontalRecommendedList({ userId, canCreate }) {
   ];
 
   return (
-    <ProfileCard title={`Recommended`} subtitle={`${total} things`}>
+    <ProfileCard title={title} subtitle={`${total} things`}>
       <View style={{ width: theme.windowWidth }}>
         {!refreshing ? (
           <FlatList
+            // ListHeaderComponent={<ThingCardAdd />}
             keyboardShouldPersistTaps="handled"
             renderItem={({ item: thing }) => <ThingCard thing={thing} />}
             horizontal={true}

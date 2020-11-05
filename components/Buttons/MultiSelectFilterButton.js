@@ -18,6 +18,7 @@ export default function MutliSelectFilterButton({
 
   return (
     <RoundButton
+      style={{ paddingVertical: 15 }}
       // solid={true}
       onPress={() => (isActive ? removeFromSelected() : addToSelected())}
       active={isActive}

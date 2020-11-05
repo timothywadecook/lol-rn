@@ -10,7 +10,7 @@ import {
   Platform,
 } from "react-native";
 import Autocomplete from "react-native-autocomplete-input";
-import { SearchBar } from "react-native-elements";
+import { SearchBar, Icon } from "react-native-elements";
 
 import useDebounce from "../../hooks/useDebounce";
 import useTheme from "../../hooks/useTheme";
@@ -119,6 +119,17 @@ export default function MoviesAndShowInput({
     </TouchableOpacity>
   );
 
+  // const [c, setC] = React.useState("Movies");
+  // const categories = ["Movies", "Shows", "Books", "Restaurants", "Places"];
+  // React.useEffect(() => {
+  //   const int = setInterval(() => {
+  //     const index = Math.floor(Math.random() * 5);
+  //     console.log("index", index);
+  //     setC(categories[index]);
+  //   }, 3000);
+  //   return () => clearInterval(int);
+  // }, []);
+  const [placeholder, setPlaceholder] = React.useState("Post a recommendation");
   const renderTextInput = () => (
     <SearchBar
       platform={Platform.OS}
@@ -126,8 +137,13 @@ export default function MoviesAndShowInput({
       onClear={() => setQuery("")}
       onCancel={() => setQuery("")}
       autoFocus={autoFocus}
+      inputContainerStyle={{ backgroundColor: theme.iconBg }}
       containerStyle={{ backgroundColor: "transparent" }}
-      placeholder="Search by title"
+      // placeholder="Places, Movies, Shows, Books..."
+      placeholder={placeholder}
+      searchIcon={<Icon name="edit" type="feather" color={theme.purple} />}
+      onFocus={() => setPlaceholder("Places, Movies, Shows, Books...")}
+      onEndEditing={() => setPlaceholder("Post a recommendation")}
       onChange={(e) => {
         setQuery(e.nativeEvent.text);
       }}
@@ -153,7 +169,7 @@ export default function MoviesAndShowInput({
 const getStyles = (theme) =>
   StyleSheet.create({
     container: {
-      width: theme.windowWidth,
+      // width: theme.windowWidth,
     },
     inputContainer: {
       borderWidth: 0,

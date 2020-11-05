@@ -33,12 +33,14 @@ export default function SelectableUserAddNew({ size = 50 }) {
           width: size,
           alignItems: "center",
           justifyContent: "center",
+          borderWidth: 1,
+          borderColor: theme.iconDefault
         }}
       >
-        <Feather name="user-plus" size={size / 1.7} color={theme.iconDefault} />
+        <Feather name="plus" size={size / 1.5} color={theme.iconDefault} />
       </View>
 
-      <T.H3 style={{ marginTop: 3 }}>Add User</T.H3>
+      <T.H3 style={{ marginTop: 3 }}></T.H3>
     </TouchableOpacity>
   );
 }

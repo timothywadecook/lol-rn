@@ -1,20 +1,20 @@
 import React, { useState } from "react";
 import { View, TextInput, StyleSheet, Image } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import AnimateExpand from "../../components/Wrappers/AnimateExpand";
-import DismissKeyboard from "../../components/Wrappers/DismissKeyboard";
-import SubmitButton from "../../components/Buttons/SubmitButton";
-import BackButton from "../../components/Atomic/BackButton";
+import AnimateExpand from "../components/Wrappers/AnimateExpand";
+import DismissKeyboard from "../components/Wrappers/DismissKeyboard";
+import SubmitButton from "../components/Buttons/SubmitButton";
+import BackButton from "../components/Atomic/BackButton";
 
-import { ThingItem } from "../../components/ListItems/ThingItem";
-import SelectDirectRecipients from "../../components/Lists/SelectDirectRecipients";
-import WindowWidthRow from "../../components/Wrappers/WindowWidthRow";
-import * as T from "../../components/Atomic/StyledText";
+import { ThingItem } from "../components/ListItems/ThingItem";
+import SelectDirectRecipients from "../components/Lists/SelectDirectRecipients";
+import WindowWidthRow from "../components/Wrappers/WindowWidthRow";
+import * as T from "../components/Atomic/StyledText";
 
-import useTheme from "../../hooks/useTheme";
-import { createRecommendationAsync } from "../../store/recommendationsSlice";
+import useTheme from "../hooks/useTheme";
+import { createRecommendationAsync } from "../store/recommendationsSlice";
 
-import Screen from "../../components/Wrappers/Screen";
+import Screen from "../components/Wrappers/Screen";
 
 const MainCommentField = ({ styles, theme, main_comment, setComment }) => (
   <AnimateExpand doAnimation={true} height={80}>

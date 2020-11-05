@@ -11,27 +11,23 @@ import WindowWidthRow from "../Wrappers/WindowWidthRow";
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
 export default function VerticalThingList({
-  name = "Recent",
   data,
   refresh,
   refreshing,
   fetchMore,
   loading,
-  moreAvailable,
-  total,
+  initialNumToRender=10,
+  numColumns = 2,
   y = { y },
   bounces = true,
+  topPad = 10,
+  renderHeader=null
 }) {
   const onScroll = onScrollEvent({ y: y });
   const theme = useTheme();
 
-  const renderHeader = () => (
-    <WindowWidthRow pad={true}>
-      <T.Title>{name}</T.Title>
-    </WindowWidthRow>
-  );
   const renderItem = ({ item: thing }) => (
-    <ThingCard thing={thing} sizeDivider={2.5} />
+    <ThingCard thing={thing} sizeDivider={numColumns + 0.7} />
   );
 
   const placeholderData = [
@@ -40,13 +36,18 @@ export default function VerticalThingList({
     { _id: "abcde3", image: "true", title: "Loading..." },
     { _id: "abcde4", image: "true", title: "Loading..." },
     { _id: "abcde5", image: "true", title: "Loading..." },
+    { _id: "abcde6", image: "true", title: "Loading..." },
+    { _id: "abcde7", image: "true", title: "Loading..." },
+    { _id: "abcde8", image: "true", title: "Loading..." },
+    { _id: "abcde9", image: "true", title: "Loading..." },
+    { _id: "abcde10", image: "true", title: "Loading..." },
   ];
 
   return refreshing ? (
     <FlatList
-      // ListHeaderComponent={renderHeader}
-      numColumns={2}
-      initialNumToRender={6}
+      ListHeaderComponent={renderHeader}
+      numColumns={numColumns}
+      initialNumToRender={initialNumToRender}
       keyboardShouldPersistTaps="handled"
       data={placeholderData}
       renderItem={renderItem}
@@ -56,33 +57,30 @@ export default function VerticalThingList({
         alignItems: "center",
         alignSelf: "center",
         paddingBottom: 100,
-        paddingTop: theme.topPad + 65,
+        paddingTop: topPad,
       }}
     />
   ) : (
     <AnimatedFlatList
+    ListHeaderComponent={renderHeader}
       bounces={bounces}
       onScroll={onScroll}
-      // ListHeaderComponent={renderHeader}
-      // stickyHeaderIndices={[0]}
       scrollEventThrottle={16}
-      initialNumToRender={10}
+      initialNumToRender={initialNumToRender}
       keyboardShouldPersistTaps="handled"
       data={data}
       renderItem={renderItem}
-      numColumns={2}
+      numColumns={numColumns}
       showsVerticalScrollIndicator={false}
       showsHorizontalScrollIndicator={false}
       keyExtractor={(item, i) => item._id + i}
       onEndReached={fetchMore}
-      // refreshing={refreshing}
-      // onRefresh={refresh}
       loading={loading}
       contentContainerStyle={{
+        width: theme.windowWidth,
         alignItems: "center",
-        alignSelf: "center",
         paddingBottom: 100,
-        paddingTop: theme.topPad + 65,
+        paddingTop: topPad,
       }}
     />
   );

@@ -1,21 +1,20 @@
 import React from "react";
 import { TouchableOpacity } from "react-native";
 // Components
-import { Feather, Ionicons } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import * as T from "../Atomic/StyledText";
 // Animations
 import Animated from "react-native-reanimated";
 import { diffClamp } from "react-native-redash";
-const { interpolate, abs } = Animated;
+const { interpolate } = Animated;
+import { SharedElement } from "react-navigation-shared-element";
 // Hooks
 import useTheme from "../../hooks/useTheme";
 import { useNavigation } from "@react-navigation/native";
 
-export default function QuickActionProfileButton({ y }) {
+export default function QuickActionProfileButton({ y, tab }) {
   const theme = useTheme();
   const navigation = useNavigation();
-
-  const [showModal, setShowModal] = React.useState(false);
 
   const SIZE = 54;
   const BOTTOM = 45;
@@ -60,7 +59,6 @@ export default function QuickActionProfileButton({ y }) {
     >
       <TouchableOpacity
         style={{
-          // backgroundColor: theme.iconBg,
           alignItems: "center",
           justifyContent: "center",
           height: SIZE,
@@ -72,14 +70,17 @@ export default function QuickActionProfileButton({ y }) {
         <Feather
           name="home" // users
           size={24}
-          color={!showModal ? theme.purple : theme.primary}
+          color={tab === "Home" ? theme.purple : theme.primary}
         />
-        <T.Label style={{ color: theme.purple }}>Discover</T.Label>
+        <T.Label
+          style={{ color: tab === "Home" ? theme.purple : theme.primary }}
+        >
+          Discover
+        </T.Label>
       </TouchableOpacity>
 
       <TouchableOpacity
         style={{
-          // backgroundColor: theme.iconBg,
           height: SIZE,
           width: SIZE,
           borderRadius: SIZE / 2,
@@ -88,15 +89,24 @@ export default function QuickActionProfileButton({ y }) {
         }}
         onPress={() => navigation.navigate("SearchThings")}
       >
-        <Feather name="search" size={24} color={theme.primary} />
-        <T.Label>Things</T.Label>
+        <Feather
+          name="search"
+          size={24}
+          color={tab === "SearchThings" ? theme.purple : theme.primary}
+        />
+        <T.Label
+          style={{
+            color: tab === "SearchThings" ? theme.purple : theme.primary,
+          }}
+        >
+          Things
+        </T.Label>
       </TouchableOpacity>
 
       <TouchableOpacity
         style={{
           height: SIZE,
           width: SIZE,
-          // backgroundColor: theme.iconBg,
           alignItems: "center",
           justifyContent: "center",
           borderRadius: SIZE / 2,
@@ -106,9 +116,15 @@ export default function QuickActionProfileButton({ y }) {
         <Feather
           name="bookmark"
           size={24}
-          color={showModal ? theme.purple : theme.primary}
+          color={tab === "Collections" ? theme.purple : theme.primary}
         />
-        <T.Label>Lists</T.Label>
+        <T.Label
+          style={{
+            color: tab === "Collections" ? theme.purple : theme.primary,
+          }}
+        >
+          Lists
+        </T.Label>
       </TouchableOpacity>
     </Animated.View>
   );

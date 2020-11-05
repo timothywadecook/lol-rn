@@ -25,12 +25,45 @@ const FilteredRecommendationsList = ({
 }) => {
   const theme = useTheme();
   const styles = getStyles(theme);
+  const onScroll = onScrollEvent({ y: y });
 
-  const renderItem = ({ item }) => (
-    <ListItem spaced={true} recId={item} categories={categories} />
+  return (
+    <View style={styles.container}>
+      <AnimatedFlatList
+        onEndReached={fetchMore}
+        onEndReachedThreshold={0.5}
+        onRefresh={refresh}
+        refreshing={refreshing}
+        data={recommendations}
+        renderItem={renderItem(categories)}
+        initialNumToRender={initialNumToRender}
+        keyExtractor={keyExtractor}
+        showsVerticalScrollIndicator={false}
+        ListFooterComponent={
+          <RenderFooter loading={loading} recommendations={recommendations} />
+        }
+        ListHeaderComponent={renderHeader}
+        onScroll={onScroll}
+        scrollEventThrottle={16}
+        contentContainerStyle={{
+          paddingTop: topPad,
+          alignItems: "center",
+        }}
+      />
+    </View>
   );
+};
 
-  const renderFooter = () => (
+export default FilteredRecommendationsList;
+
+const keyExtractor = (item) => item;
+const renderItem = (categories) => ({ item }) => (
+  <ListItem spaced={true} recId={item} categories={categories} />
+);
+
+const RenderFooter = ({ loading, recommendations }) => {
+  const theme = useTheme();
+  return (
     <View
       style={{
         paddingVertical: 30,
@@ -45,39 +78,7 @@ const FilteredRecommendationsList = ({
       ) : null}
     </View>
   );
-
-  // const onScroll = Animated.event([{ nativeEvent: { contentOffset: { y } } }], {
-  //   useNativeDriver: true,
-  // });
-
-  const onScroll = onScrollEvent({ y: y });
-
-  return (
-    <View style={styles.container}>
-      <AnimatedFlatList
-        onEndReached={fetchMore}
-        onEndReachedThreshold={0.5}
-        onRefresh={refresh}
-        refreshing={refreshing}
-        data={recommendations}
-        renderItem={renderItem}
-        initialNumToRender={initialNumToRender}
-        keyExtractor={(item) => item}
-        showsVerticalScrollIndicator={false}
-        ListFooterComponent={renderFooter}
-        ListHeaderComponent={renderHeader}
-        onScroll={onScroll}
-        scrollEventThrottle={16}
-        contentContainerStyle={{
-          paddingTop: topPad,
-          alignItems: "center",
-        }}
-      />
-    </View>
-  );
 };
-
-export default FilteredRecommendationsList;
 
 const getStyles = (theme) =>
   StyleSheet.create({

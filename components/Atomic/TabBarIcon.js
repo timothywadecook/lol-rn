@@ -1,27 +1,40 @@
-import { Ionicons, Feather } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import React from "react";
+import { useSelector } from "react-redux";
+import { View } from "react-native";
+import Avatar from "./Avatar";
 
 import useTheme from "../../hooks/useTheme";
 
-export default function TabBarIcon(props) {
+export default function TabBarIcon({ name, focused }) {
   const theme = useTheme();
+  const sessionUser = useSelector((state) => state.user);
 
-  if (props.name === "search") {
+  if (name === "profile") {
     return (
-      <Feather
-        name={props.name}
-        size={24}
-        style={{ marginTop: 7 }}
-        color={props.focused ? theme.primary : theme.tabIconDefault}
-      />
+      <View
+        // onPress={() => navigation.navigate("Profile", { user: sessionUser })}
+        style={{
+          // paddingHorizontal: 10,
+          // height: 30,
+          // width: 30,
+          // padding: 5,
+          backgroundColor: focused ? theme.primary : "transparent",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Avatar user={sessionUser} />
+      </View>
     );
   }
+
   return (
-    <Ionicons
-      name={props.name}
+    <Feather
+      name={name}
       size={24}
       style={{ marginTop: 7 }}
-      color={props.focused ? theme.primary : theme.tabIconDefault}
+      color={focused ? theme.primary : theme.tabIconDefault}
     />
   );
 }

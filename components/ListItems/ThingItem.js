@@ -3,14 +3,17 @@ import { View } from "react-native";
 // components
 import * as T from "../Atomic/StyledText";
 import ThingImage from "../Atomic/ThingImage";
+import { Icon } from "react-native-elements";
 // hooks
 import { useNavigation } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { SharedElement } from "react-navigation-shared-element";
+import useTheme from "../../hooks/useTheme";
 
 export function ThingItem({ thing }) {
   const navigation = useNavigation();
   const { image, title, subtitle } = thing;
+  const theme = useTheme();
 
   return (
     <TouchableOpacity
@@ -41,6 +44,15 @@ export function ThingItem({ thing }) {
           </T.H4>
         </SharedElement>
       </View>
+      <Icon
+        size={14}
+        reverse
+        name="bookmark"
+        type="feather"
+        reverseColor={theme.iconDefault}
+        // containerStyle={{ position: "absolute", right: 0, top: 24 }}
+        color={theme.iconBg}
+      />
     </TouchableOpacity>
   );
 }

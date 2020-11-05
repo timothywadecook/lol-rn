@@ -49,6 +49,23 @@ export function Title(props) {
   );
 }
 
+export function TitleG(props) {
+  const theme = useTheme();
+  return (
+    <Text
+      {...props}
+      style={[
+        {
+          color: theme.iconDefault,
+          fontSize: 24,
+          fontWeight: "bold",
+        },
+        props.style,
+      ]}
+    />
+  );
+}
+
 export function H2(props) {
   const theme = useTheme();
   return (

@@ -3,15 +3,18 @@ import { View, TextInput } from "react-native";
 import useTheme from "../../hooks/useTheme";
 import { useNavigation } from "@react-navigation/native";
 
-export default function FollowUserByUsernameInput() {
+export default function FollowUserByUsernameInput({
+  placeholder = "Find friends by username...",
+  navToOnFocus = "Search Users",
+}) {
   return (
     <View style={{ flex: 1 }}>
-      <FakeTextInput />
+      <FakeTextInput placeholder={placeholder} navToOnFocus={navToOnFocus} />
     </View>
   );
 }
 
-function FakeTextInput({}) {
+function FakeTextInput({ placeholder, navToOnFocus }) {
   const navigation = useNavigation();
   const theme = useTheme();
 
@@ -31,7 +34,7 @@ function FakeTextInput({}) {
     >
       <TextInput
         onFocus={() => {
-          navigation.navigate("Search Users");
+          navigation.navigate(navToOnFocus);
         }}
         style={{
           flex: 1,
@@ -39,7 +42,7 @@ function FakeTextInput({}) {
         }}
         keyboardAppearance={theme.theme}
         placeholderTextColor={theme.iconDefault}
-        placeholder="Find friends by username..."
+        placeholder={placeholder}
       />
     </View>
   );

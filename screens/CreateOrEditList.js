@@ -180,7 +180,7 @@ function EditName({ name, setName }) {
           placeholderTextColor="#A8A8A8"
           value={name}
           onChangeText={(text) => setName(text)}
-          autoFocus={false}
+          autoFocus={!name}
           // style={[styles.textInput, { minHeight: 60, marginTop: 15 }]}
           autoCorrect={true}
           underlineColorAndroid="transparent"

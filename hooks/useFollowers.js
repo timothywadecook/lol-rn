@@ -3,14 +3,14 @@ import { followsService } from "../services/feathersClient";
 import useListService from "./useListService";
 
 export default function useFollowers(userId) {
-  const [
+  const {
     data,
     refresh,
     refreshing,
     fetchmore,
     loading,
     moreAvailable,
-  ] = useListService(followsService, { following: userId });
+  } = useListService(followsService, { following: userId });
   return [
     data.map((follow) => follow.follower),
     refresh,

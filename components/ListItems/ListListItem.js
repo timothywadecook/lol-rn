@@ -1,6 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { View, ActivityIndicator } from "react-native";
+import { Accessory } from "react-native-elements";
 
 import { Title, H2G, H2, H4 } from "../Atomic/StyledText";
 import useTheme from "../../hooks/useTheme";
@@ -164,6 +165,35 @@ export default function ListListItem({
   );
 }
 
+export function ParticipantsIcon({ participants, size = 50 }) {
+  const sessionUser = useSelector((state) => state.user);
+  const otherUsers = participants.filter((uId) => uId !== sessionUser._id);
+  const user = useUser(otherUsers[0]);
+  //source={{ uri: sessionUser.avatar }}
+  return (
+    <View
+      style={{
+        width: size + 10 + otherUsers.length * 15 - 15,
+        height: size + 10,
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      {otherUsers.map((user, i) => (
+        <ParticipantAvatar
+          size={size}
+          participantId={user}
+          style={{
+            position: "absolute",
+            left: i > 0 ? i * 15 : 5,
+            margin: 0,
+          }}
+        />
+      ))}
+    </View>
+  );
+}
+
 export function ParticipantsRow({ participants }) {
   return (
     <View style={{ flexGrow: 0, paddingRight: 5 }}>
@@ -179,11 +209,12 @@ export function ParticipantsRow({ participants }) {
   );
 }
 
-function ParticipantAvatar({ participantId }) {
+export function ParticipantAvatar({ participantId, style, size }) {
   const user = useUser(participantId);
   return (
-    <View style={{ justifyContent: "center" }}>
+    <View style={style}>
       <Avatar
+        size={size}
         style={{ marginHorizontal: 4, backgroundColor: "transparent" }}
         user={user}
       />

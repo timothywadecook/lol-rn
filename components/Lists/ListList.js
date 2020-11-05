@@ -1,13 +1,18 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { View } from "react-native";
+import { View, FlatList } from "react-native";
 //
 import { listsService } from "../../services/feathersClient";
 import { addLoadedLists } from "../../store/listsSlice";
 import HorizontalThingList from "./HorizontalThingList";
 import HorizontalRecommendedList from "./HorizontalRecommendedList";
+import ListTile, { AddListTile } from "../ListItems/ListTile";
 
-export default function ListList({ userId, autoOpen = false }) {
+export default function ListList({
+  userId,
+  vertical = false,
+  byCategory = false,
+}) {
   const sessionUserId = useSelector((state) => state.user._id);
   const canCreate = () => sessionUserId === userId;
   const dispatch = useDispatch();
@@ -41,21 +46,40 @@ export default function ListList({ userId, autoOpen = false }) {
     )
   );
 
+  if (byCategory) {
+    // return all things from all lists
+  }
+
+  if (vertical) {
+    return (
+      <View>
+        <FlatList
+          data={[...privateListIds, ...publicListIds]}
+          numColumns={2}
+          renderItem={({ item }) => (
+            <ListTile listId={item} canCreate={canCreate()} />
+          )}
+          showsVerticalScrollIndicator={false}
+          keyExtractor={(item) => item}
+          contentContainerStyle={{}}
+          // ListFooterComponent={<AddListTile />}
+        />
+      </View>
+    );
+  }
+
   return (
     <View style={{ paddingBottom: 200 }}>
       <HorizontalRecommendedList
         userId={userId}
         key={"recommendedList" + userId}
         canCreate={canCreate()}
-        autoOpen={autoOpen}
       />
       {privateListIds.map((listId, i) => (
         <HorizontalThingList
           key={listId}
           listId={listId}
           canCreate={canCreate()}
-          openDelay={i * 500}
-          autoOpen={autoOpen}
         />
       ))}
       {publicListIds.map((listId, i) => (
@@ -63,8 +87,6 @@ export default function ListList({ userId, autoOpen = false }) {
           key={listId}
           listId={listId}
           canCreate={canCreate()}
-          openDelay={(i + privateListIds.length) * 500}
-          autoOpen={autoOpen}
         />
       ))}
     </View>

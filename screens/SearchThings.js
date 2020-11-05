@@ -3,10 +3,7 @@ import { View } from "react-native";
 import SingleFilterButtonSpan from "../components/SingleFilterButtonSpan";
 import DismissKeyboard from "../components/Wrappers/DismissKeyboard";
 import BackButton from "../components/Atomic/BackButton";
-import {
-  recommendationsService,
-  thingsService,
-} from "../services/feathersClient";
+import { thingsService } from "../services/feathersClient";
 import WindowWidthRow from "../components/Wrappers/WindowWidthRow";
 import * as T from "../components/Atomic/StyledText";
 
@@ -23,6 +20,7 @@ import useListService from "../hooks/useListService";
 
 import Animated from "react-native-reanimated";
 import AnimatedHeader from "../components/AnimatedHeader";
+import QuickActionToolbar from "../components/Buttons/QuickActionToolbar";
 
 const MainInputField = ({
   category,
@@ -83,7 +81,7 @@ export default function SearchThings({ navigation, route }) {
   const [item, setItem] = useState({});
   const { autoFocus } = (route && route.params) || { autoFocus: false };
 
-  const [
+  const {
     data,
     refresh,
     refreshing,
@@ -91,9 +89,14 @@ export default function SearchThings({ navigation, route }) {
     loading,
     moreAvailable,
     total,
-  ] = useListService(thingsService, {
-    category,
-  });
+  } = useListService(
+    thingsService,
+    {
+      category,
+    },
+    [category],
+    true
+  );
 
   React.useEffect(() => {
     if (item.title) {
@@ -103,58 +106,53 @@ export default function SearchThings({ navigation, route }) {
   }, [item]);
 
   const y = React.useMemo(() => new Animated.Value(0), []);
-
   return (
     <Screen fullscreen={true}>
-      <DismissKeyboard>
-        <View
-          style={{
-            backgroundColor: theme.wallbg,
-            flex: 1,
-            alignItems: "center",
-          }}
-        >
-          <WindowWidthRow
-            style={{ zIndex: 3, paddingBottom: 10 }}
-            pad={false}
-            topPad={true}
-          >
-            <BackButton />
-            <T.H1>Search Things</T.H1>
-          </WindowWidthRow>
-          <WindowWidthRow style={{ paddingBottom: 10, zIndex: 3 }} pad={false}>
-            <SingleFilterButtonSpan
-              options={["Movie", "Show", "Book", "Place"]}
-              setFilter={setCategory}
-              filter={category}
+      <View
+        style={{
+          backgroundColor: theme.wallbg,
+          flex: 1,
+          alignItems: "center",
+        }}
+      >
+        <WindowWidthRow style={{ zIndex: 3 }} pad={true} topPad={true}>
+          {/* <BackButton /> */}
+          <T.H1 style={{ paddingLeft: 10 }}>Search Things</T.H1>
+        </WindowWidthRow>
+        <WindowWidthRow style={{ paddingBottom: 10, zIndex: 3 }} pad={false}>
+          <SingleFilterButtonSpan
+            options={["Movie", "Show", "Book", "Place"]}
+            setFilter={setCategory}
+            filter={category}
+          />
+        </WindowWidthRow>
+
+        <AnimatedHeader y={y} dY={100} top={theme.topPad + 150}>
+          <WindowWidthRow blur={false}>
+            <MainInputField
+              category={category}
+              setItem={setItem}
+              itemChosen={itemChosen}
+              setItemChosen={setItemChosen}
+              autoFocus={autoFocus}
             />
           </WindowWidthRow>
+        </AnimatedHeader>
 
-          <AnimatedHeader y={y} dY={100} top={theme.topPad + 150}>
-            <WindowWidthRow>
-              <MainInputField
-                category={category}
-                setItem={setItem}
-                itemChosen={itemChosen}
-                setItemChosen={setItemChosen}
-                autoFocus={autoFocus}
-              />
-            </WindowWidthRow>
-          </AnimatedHeader>
-
-          <VerticalThingList
-            data={data}
-            refresh={refresh}
-            refreshing={refreshing}
-            fetchMore={fetchMore}
-            loading={loading}
-            moreAvailable={moreAvailable}
-            total={total}
-            y={y}
-            bounces={false}
-          />
-        </View>
-      </DismissKeyboard>
+        <VerticalThingList
+          data={data}
+          refresh={refresh}
+          refreshing={refreshing}
+          fetchMore={fetchMore}
+          loading={loading}
+          moreAvailable={moreAvailable}
+          total={total}
+          y={y}
+          bounces={false}
+          topPad={theme.topPad + 65}
+        />
+        {/* <QuickActionToolbar y={y} tab="SearchThings" /> */}
+      </View>
     </Screen>
   );
 }

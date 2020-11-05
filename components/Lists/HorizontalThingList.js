@@ -23,7 +23,7 @@ export default function HorizontalThingList({ listId, canCreate }) {
     return null;
   }
 
-  const [
+  const {
     data,
     refresh,
     refreshing,
@@ -31,7 +31,7 @@ export default function HorizontalThingList({ listId, canCreate }) {
     loading,
     moreAvailable,
     total,
-  ] = useListService(thingsService, {
+  } = useListService(thingsService, {
     _id: { $in: things.length && things },
   });
 

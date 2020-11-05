@@ -1,6 +1,11 @@
 import React from "react";
 
-export default function useListService(service, params) {
+export default function useListService(
+  service,
+  params,
+  dependancies = [],
+  alwaysMounted = false
+) {
   const isMounted = React.useRef(true);
   const [data, setData] = React.useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
@@ -9,6 +14,12 @@ export default function useListService(service, params) {
   const [total, setTotal] = React.useState(0);
 
   const refresh = async () => {
+    console.log(
+      "here in useListService for",
+      service.name,
+      isMounted.current,
+      !refreshing
+    );
     if (isMounted.current && !refreshing) {
       setRefreshing(true);
       try {
@@ -67,9 +78,19 @@ export default function useListService(service, params) {
   React.useEffect(() => {
     refresh();
     return () => {
-      isMounted.current = false;
+      if (alwaysMounted === false) {
+        isMounted.current = false;
+      }
     };
-  }, [params && params.category]);
+  }, dependancies);
 
-  return [data, refresh, refreshing, fetchMore, loading, moreAvailable, total];
+  return {
+    data,
+    refresh,
+    refreshing,
+    fetchMore,
+    loading,
+    moreAvailable,
+    total,
+  };
 }
