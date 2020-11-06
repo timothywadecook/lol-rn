@@ -101,7 +101,7 @@ export default function SearchThings({ navigation, route }) {
   React.useEffect(() => {
     if (item.title) {
       const thing = item;
-      navigation.navigate("ThingDetails", { thing });
+      navigation.navigate("Details", { thing });
     }
   }, [item]);
 

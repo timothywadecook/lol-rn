@@ -18,22 +18,22 @@ export default function _Tabs() {
     <Tabs.Navigator
       tabBarPosition="bottom"
       tabBarOptions={{
-        showLabel: true,
+        showLabel: false,
         showIcon: true,
-        indicatorStyle: { backgroundColor: "transparent" },
+        indicatorStyle: { backgroundColor: theme.iconBg },
         activeTintColor: theme.primary,
         inactiveTintColor: theme.tabIconDefault,
-        labelStyle: { fontSize: 9 },
-        iconStyle: { height: 30 },
-        tabStyle: { paddingTop: 0, paddingBottom: theme.topPad > 15 ? 30 : 15 },
+        labelStyle: { fontSize: 8 },
+        iconStyle: { height: 34 },
+        tabStyle: { paddingTop: 0, marginBottom: theme.topPad?20:10 },
         style: {
-          backgroundColor: theme.wallbg,
-          borderTopWidth: 1,
+          backgroundColor: theme.menubg,
+          // borderTopWidth: 1,
           borderTopColor: theme.iconBg,
           paddingHorizontal: 40,
         },
       }}
-      initialRouteName="Library"
+      initialRouteName="Home"
     >
       
       <Tabs.Screen
@@ -43,11 +43,11 @@ export default function _Tabs() {
           title: "Home",
           tabBarLabel: "Home",
           tabBarIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="home" />
+            <TabBarIcon focused={focused} name="flame" type="octicons" />
           ),
         }}
       />
-      {/* <Tabs.Screen
+      <Tabs.Screen
         name="Browse"
         component={Browse}
         options={{
@@ -57,18 +57,18 @@ export default function _Tabs() {
             <TabBarIcon focused={focused} name="search" />
           ),
         }}
-      /> */}
-      <Tabs.Screen
+      />
+      {/* <Tabs.Screen
         name="Network"
         component={OurLibrary}
         options={{
           title: "Network",
-          tabBarLabel: "Network",
+          tabBarLabel: "Library",
           tabBarIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="users" />
+            <TabBarIcon focused={focused} name="bookmark" />
           ),
         }}
-      />
+      /> */}
       <Tabs.Screen
         name="Library"
         component={Library}
@@ -76,7 +76,7 @@ export default function _Tabs() {
           title: "Library",
           tabBarLabel: "Library",
           tabBarIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="user" />
+            <TabBarIcon focused={focused} name="bookmark" />
           ),
         }}
       />

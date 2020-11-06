@@ -15,7 +15,7 @@ export default function ThingCard({ thing, sizeDivider = 5 }) {
   // const maxHeight = size * 2.18;
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate("ThingDetails", { thing })}
+      onPress={() => navigation.navigate("Details", { thing })}
       activeOpacity={0.9}
       style={{
         padding: 10,

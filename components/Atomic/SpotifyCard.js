@@ -42,3 +42,70 @@ export default function SpotifyCard({
     </ContainerCard>
   );
 }
+
+
+const categoryLists = [
+  {
+    title: "All",
+    onPress: () => console.log("clicked"),
+  },
+  {
+    title: "Recommended",
+    onPress: () => console.log("clicked"),
+  },
+  {
+    title: "Movies",
+    onPress: () => console.log("clicked"),
+  },
+  {
+    title: "Shows",
+    onPress: () => console.log("clicked"),
+  },
+  {
+    title: "Books",
+    onPress: () => console.log("clicked"),
+  },
+  {
+    title: "Restaurants",
+    onPress: () => console.log("clicked"),
+  },
+  {
+    title: "Places",
+    onPress: () => console.log("clicked"),
+  },
+];
+
+function CategoryIcon({ c, color, reverse = false, size = 24 }) {
+  const theme = useTheme();
+  const iconColor = color ? color : theme.purpledark;
+  const props = {
+    All: {
+      name: "list",
+    },
+    Recommended: {
+      name: "list",
+    },
+    Movies: {
+      name: "movie",
+      type: "materialcommunityicons",
+    },
+    Shows: {
+      name: "local-movies",
+      type: "materialicons",
+    },
+    Books: {
+      name: "book",
+      type: "entypo",
+    },
+    Restaurants: {
+      name: "restaurant",
+      type: "materialicons",
+    },
+    Places: {
+      name: "map-pin",
+      type: "feather",
+    },
+  };
+
+  return <Icon {...props[c]} color={iconColor} reverse={reverse} size={size} />;
+}

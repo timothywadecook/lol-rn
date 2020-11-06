@@ -18,7 +18,7 @@ export function ThingItem({ thing }) {
   return (
     <TouchableOpacity
       activeOpacity={0.7}
-      onPress={() => navigation.navigate("ThingDetails", { thing })}
+      onPress={() => navigation.navigate("Details", { thing })}
       style={{
         width: "100%",
         flexDirection: "row",
@@ -45,13 +45,13 @@ export function ThingItem({ thing }) {
         </SharedElement>
       </View>
       <Icon
-        size={14}
-        reverse
-        name="bookmark"
+        // size={14}
+        // reverse
+        name="plus-circle"
         type="feather"
-        reverseColor={theme.iconDefault}
+        // reverseColor={theme.iconDefault}
         // containerStyle={{ position: "absolute", right: 0, top: 24 }}
-        color={theme.iconBg}
+        color={theme.iconDefault}
       />
     </TouchableOpacity>
   );

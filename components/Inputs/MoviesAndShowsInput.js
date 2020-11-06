@@ -139,11 +139,11 @@ export default function MoviesAndShowInput({
       autoFocus={autoFocus}
       inputContainerStyle={{ backgroundColor: theme.iconBg }}
       containerStyle={{ backgroundColor: "transparent" }}
-      // placeholder="Places, Movies, Shows, Books..."
-      placeholder={placeholder}
-      searchIcon={<Icon name="edit" type="feather" color={theme.purple} />}
-      onFocus={() => setPlaceholder("Places, Movies, Shows, Books...")}
-      onEndEditing={() => setPlaceholder("Post a recommendation")}
+      placeholder="Places, Movies, Shows, Books..."
+      // placeholder={placeholder}
+      searchIcon={<Icon name="search" type="feather" color={theme.iconDefault} />}
+      // onFocus={() => setPlaceholder("Places, Movies, Shows, Books...")}
+      // onEndEditing={() => setPlaceholder("Post a recommendation")}
       onChange={(e) => {
         setQuery(e.nativeEvent.text);
       }}

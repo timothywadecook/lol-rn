@@ -40,7 +40,7 @@ function SelectableCircle({ selected, onPress, size = 50, children }) {
   );
 }
 
-function MyList({ listId, canCreate, size = 50, onPress, selected }) {
+function MyList({ listId, canCreate, size = 50, onPress, selected, withName = false }) {
   const theme = useTheme();
 
   const list = useSelector((state) => state.lists[listId]);
@@ -55,9 +55,10 @@ function MyList({ listId, canCreate, size = 50, onPress, selected }) {
   });
 
   return (
-    <SelectableCircle selected={selected} onPress={onPress}>
+    <View style={{alignItems: "center"}}>
+    <SelectableCircle size={size} selected={selected} onPress={onPress}>
       {selected ? (
-        <T.Title style={{ color: theme.purple }}>{user.name[0]}</T.Title>
+        <T.Title style={{ color: theme.purple }}>{name[0]}</T.Title>
       ) : (
         <Image
           placeholderStyle={{ backgroundColor: theme.iconBg }}
@@ -66,6 +67,8 @@ function MyList({ listId, canCreate, size = 50, onPress, selected }) {
         />
       )}
     </SelectableCircle>
+     {withName && <T.H3 numberOfLines={1} ellipsizeMode="tail">{name}</T.H3>}
+    </View>
   );
 }
 

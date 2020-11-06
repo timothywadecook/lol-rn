@@ -15,14 +15,9 @@ export default function UserListItem({
   const { username, name } = user;
 
   const navigation = useNavigation();
-  const sessionUserId = useSelector((state) => state.user._id);
-
+  
   const openFriendDetails = () => {
-    if (user._id === sessionUserId) {
       navigation.navigate("Profile", { user });
-    } else {
-      navigation.navigate("FriendDetails", { friend: user });
-    }
   };
 
   return (

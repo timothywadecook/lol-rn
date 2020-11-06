@@ -1,17 +1,18 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { StatusBar } from "react-native";
+import { StatusBar, View } from "react-native";
 import LinkingConfiguration from "./navigation/LinkingConfiguration";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import { createSharedElementStackNavigator } from "react-navigation-shared-element";
 import { Icon } from "react-native-elements";
+import BackButton from './components/Atomic/BackButton';
+import Avatar from './components/Atomic/Avatar';
 // Services
 import client from "./services/feathersClient";
 import useTheme from './hooks/useTheme';
 // Screens
 import Login from "./screens/Login";
-import FriendDetails from "./screens/FriendDetails";
 import CreateOrEditList from "./screens/CreateOrEditList";
 import SearchUsers from "./screens/SearchUsers";
 import Create from "./screens/Create";
@@ -77,27 +78,29 @@ export default function Router() {
   return null;
 }
 
+
+
+
 function AuthStackScreen() {
   const theme = useTheme();
+  const sessionUser = useSelector((state) => state.user);
   const options = ({navigation, route}) => ({
-    headerLeft: () => <Icon
+    headerLeft: () => <View style={{flexDirection: 'row', alignItems: 'center'}}><Avatar onPress={()=>navigation.navigate("Profile", {user: sessionUser})} style={{marginLeft: 15}} user={sessionUser} /><Icon
     onPress={() => navigation.navigate("Search Users")}
     name="user-plus"
-    size={24}
     color={theme.iconDefault}
     type="feather"
-    containerStyle={{ paddingHorizontal: 15 }}
-  />,
+    containerStyle={{ paddingLeft: 15 }}
+    /></View> ,
     headerRight: () => <Icon
     onPress={() => navigation.navigate("SearchThings")}
     name="plus-circle"
-    size={24}
     color={theme.iconDefault}
     type="feather"
     containerStyle={{ paddingHorizontal: 15 }}
   />,
     headerStyle: {
-      backgroundColor: theme.wallbg,
+      backgroundColor: theme.menubg,
       shadowColor: theme.iconBg
       
     },
@@ -106,21 +109,24 @@ function AuthStackScreen() {
       fontFamily: 'Noteworthy',
     },
   });
+
+  const nonHomescreenOptions = {headerLeft: ()=> <BackButton />, headerTintColor: theme.primary, headerRight: null }
   return (
     <SharedStack.Navigator screenOptions={options} initialRouteName="Like Out Loud">
       <SharedStack.Screen name="Like Out Loud" component={Tabs} />
-      <SharedStack.Screen name="FriendDetails" component={FriendDetails} />
       <SharedStack.Screen name="Profile" component={Profile} />
-      <SharedStack.Screen name="Create" component={Create} />
-      <SharedStack.Screen name="Search Users" component={SearchUsers} />
-      <SharedStack.Screen name="ThingDetails" component={ThingDetails} />
+      <SharedStack.Screen name="Create" component={Create} options={nonHomescreenOptions} />
+      <SharedStack.Screen name="Search Users" component={SearchUsers} options={nonHomescreenOptions} />
+      <SharedStack.Screen name="Details" component={ThingDetails} options={nonHomescreenOptions} />
       <SharedStack.Screen
         name="AddToCollections"
         component={AddToCollections}
+        options={nonHomescreenOptions}
       />
       <SharedStack.Screen
         name="CreateOrEditList"
         component={CreateOrEditList}
+        options={nonHomescreenOptions}
       />
     </SharedStack.Navigator>
   );

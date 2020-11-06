@@ -67,15 +67,12 @@ export default function FilterMenu({
     <View style={{ width: theme.windowWidth }}>
       <View
         style={{
-          // marginHorizontal: 10,
-          // width: theme.windowWidth,
-          // paddingBottom: 20,
-          paddingVertical: 10,
+          paddingVertical: 15,
+          marginVertical: 5,
           flexDirection: "column",
-          // backgroundColor: theme.iconBg,
+          backgroundColor: theme.menubg,
           borderBottomColor: theme.iconBg,
           borderBottomWidth: 1,
-          // borderRadius: 15,
         }}
       >
         {p && <ListSelectableUsersWithUnreadCountAndAddNew />}
@@ -126,7 +123,7 @@ function ListSelectableUsersWithUnreadCountAndAddNew() {
     <FlatList
       data={userList}
       renderItem={renderUser}
-      // ListHeaderComponent={renderHeader}
+      ListHeaderComponent={renderHeader}
       ListFooterComponent={renderFooter}
       horizontal={true}
       showsHorizontalScrollIndicator={false}

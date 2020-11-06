@@ -31,6 +31,9 @@ import ListList from "../../../components/Lists/ListList";
 
 import { HomeHeader } from "../Home/Home";
 
+import MapView from "react-native-maps";
+
+
 import { ParticipantAvatar } from "../../../components/ListItems/ListListItem";
 
 export default function Library({ navigation, route }) {
@@ -85,7 +88,7 @@ export default function Library({ navigation, route }) {
 }
 
 
-function RenderOldVersion({
+export function RenderOldVersion({
   data,
   refresh,
   refreshing,
@@ -102,27 +105,22 @@ function RenderOldVersion({
 
   const ListHeader = () => (
     <View>
-    <T.H4 style={{ paddingTop: 10, alignSelf: "center" }}>Following</T.H4>
-      <WindowWidthRow pad={true} style={{ flexWrap: "wrap" }}>
-        {following.map((userId) => (
-          <ParticipantAvatar
-            style={{ padding: 3 }}
-            participantId={userId}
-            size={40}
-          />
-        ))}
-      </WindowWidthRow>
+    {/* <T.H4 style={{ paddingTop: 10, alignSelf: "center" }}>Following</T.H4> */}
 
-      <T.H4 style={{ paddingVertical: 10, alignSelf: "center" }}>
+    
+
+      {/* <T.H4 style={{ paddingVertical: 10, alignSelf: "center" }}>
         Their Lists
-      </T.H4>
+      </T.H4> */}
+      
+
+        <SectionHeader title="Collections from Following" />
       <WindowWidthRow style={{ paddingBottom: 10, flexWrap: "wrap" }}>
         <FlatList
-          ListHeaderComponent={<SelectableListCircle.AddNew />}
           keyboardShouldPersistTaps="handled"
           data={[...privateListIds, ...publicListIds]}
           renderItem={({ item: listId }) => (
-            <SelectableListCircle.MyList canCreate={true} listId={listId} />
+            <SelectableListCircle.MyList withName={true} size={80} canCreate={true} listId={listId} />
           )}
           horizontal={true}
           showsHorizontalScrollIndicator={false}
@@ -130,7 +128,37 @@ function RenderOldVersion({
         />
       </WindowWidthRow>
 
-      <T.H4 style={{ paddingVertical: 10, alignSelf: "center" }}>Recent</T.H4>
+      <SectionHeader title="View a Library" />
+      <WindowWidthRow pad={true} >
+        <FlatList 
+        keyboardShouldPersistTaps="handled"
+        data={following}
+        renderItem={({ item: userId }) => (
+          <ParticipantAvatar style={{ padding: 3 }}
+          participantId={userId}
+          size={80} />
+        )}
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}
+        keyExtractor={(item) => item}
+        />
+      </WindowWidthRow>
+
+      <SectionHeader title="Nearby" />
+        <WindowWidthRow style={{ justifyContent: "center" }}>
+          <ContainerCard style={{ padding: 0 }}>
+            <MapView
+              style={{
+                height: 150,
+                // width: theme.windowWidth / 2,
+              }}
+            />
+          </ContainerCard>
+        </WindowWidthRow>
+
+      {/* <T.H4 style={{ paddingVertical: 10, alignSelf: "center" }}>Recent</T.H4> */}
+
+      <SectionHeader title="Browse by Category" />
 
       <WindowWidthRow style={{ paddingBottom: 10, zIndex: 3 }} pad={false}>
         <SingleFilterButtonSpan

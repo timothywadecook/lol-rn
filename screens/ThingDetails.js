@@ -104,19 +104,9 @@ export default function ThingDetails({ route }) {
 
   return (
     <Screen fullscreen={true} center={true}>
-      <WindowWidthRow style={{ zIndex: 3 }} topPad={true} pad={true}>
-        <BackButton />
-        <T.H1>Details</T.H1>
-      </WindowWidthRow>
-
-      {/* <ThingDetails.FloatingHeader thing={thing} y={y} /> */}
-
       <FilteredRecommendationsList
-        // topPad={375}
         loading={loading}
         fetchMore={fetchMore}
-        // refresh={refresh}
-        // refreshing={refreshing}
         recommendations={recommendations}
         categories={[]}
         y={y}
@@ -146,18 +136,6 @@ ThingDetails.FloatingHeader = ({ thing, y, thingId }) => {
   return (
     <Animated.View
       style={{
-        // top: 110,
-        // position: "absolute",
-        // zIndex: 1,
-        // transform: [
-        //   {
-        //     translateY: interpolate(y, {
-        //       inputRange: [0, HEIGHT],
-        //       outputRange: [0, -HEIGHT / 1.5],
-        //       extrapolateLeft: "clamp",
-        //     }),
-        //   },
-        // ],
         backgroundColor: theme.wallbg,
         borderBottomColor: theme.iconBg,
         borderBottomWidth: 1,

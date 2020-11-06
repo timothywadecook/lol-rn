@@ -13,12 +13,7 @@ const UsernameNavToFriendDetails = ({
   const navigation = useNavigation();
   const activeUserId = useSelector((state) => state.user._id);
 
-  const handleOnPress = () => {
-    if (friend._id === activeUserId) {
-      navigation.navigate("Profile", { user: friend });
-    } else {
-      navigation.navigate("FriendDetails", { friend });
-    }
+  const handleOnPress = () => {navigation.navigate("Profile", { user: friend })
   };
   return (
     <TouchableOpacity

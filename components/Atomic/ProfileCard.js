@@ -16,6 +16,7 @@ export default ProfileCard = (props) => {
         {
           paddingVertical: 10,
           paddingHorizontal: 0,
+          backgroundColor: theme.bg
         },
         props.style,
       ]}

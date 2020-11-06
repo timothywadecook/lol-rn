@@ -13,20 +13,22 @@ import SpotifyCard from "../../../components/Atomic/SpotifyCard";
 import SectionHeader from "../../../components/Atomic/SectionHeader";
 import ContainerCard from "../../../components/Wrappers/ContainerCard";
 
-import MapView from "react-native-maps";
+import OurLibrary from '../OurLibrary/OurLibrary';
+
 
 export default function Browse() {
   const theme = useTheme();
   return (
-    <Screen>
-      <WindowWidthRow style={{ zIndex: 3 }} pad={true} topPad={true}>
+    <Screen fullscreen={true}>
+      {/* <WindowWidthRow style={{ zIndex: 3 }} pad={true} topPad={false}>
         <T.H1 style={{ paddingLeft: 10, paddingBottom: 15 }}>Browse</T.H1>
-      </WindowWidthRow>
+      </WindowWidthRow> */}
 
       <ScrollView
         contentContainerStyle={{ paddingBottom: 40 }}
         showsVerticalScrollIndicator={false}
       >
+        <SectionHeader title="Search" />
         <WindowWidthRow blur={false}>
           <MoviesAndShowsInput
             category="Movie"
@@ -36,7 +38,8 @@ export default function Browse() {
             autoFocus={false}
           />
         </WindowWidthRow>
-        <SectionHeader title="Popular" />
+
+        {/* <SectionHeader title="Popular" />
         <WindowWidthRow style={{ paddingTop: 0 }}>
           <SpotifyCard
             title="Movies"
@@ -67,19 +70,11 @@ export default function Browse() {
             iconColor={theme.softredlight}
             icon="map"
           />
-        </WindowWidthRow>
+        </WindowWidthRow> */}
 
-        <SectionHeader title="Nearby" />
-        <WindowWidthRow style={{ justifyContent: "center" }}>
-          <ContainerCard style={{ padding: 0 }}>
-            <MapView
-              style={{
-                height: theme.windowHeight / 2,
-                // width: theme.windowWidth / 2,
-              }}
-            />
-          </ContainerCard>
-        </WindowWidthRow>
+
+<OurLibrary />
+
       </ScrollView>
     </Screen>
   );

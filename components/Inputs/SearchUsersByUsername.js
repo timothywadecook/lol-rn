@@ -2,9 +2,7 @@ import React, { useState, useEffect } from "react";
 import {
   View,
   TextInput,
-  Button,
   StyleSheet,
-  TouchableOpacity,
   ActivityIndicator,
   Keyboard,
 } from "react-native";
@@ -17,7 +15,6 @@ import useTheme from "../../hooks/useTheme";
 import useSuggested from "../../hooks/useSuggested";
 import { useNavigation } from "@react-navigation/native";
 import { usersService } from "../../services/feathersClient";
-import BackButton from "../Atomic/BackButton";
 
 export default function SearchUsersByUsername({ withFollowButton = true }) {
   const [query, setQuery] = useState("");
@@ -26,7 +23,7 @@ export default function SearchUsersByUsername({ withFollowButton = true }) {
   const theme = useTheme();
   const styles = getStyles(theme);
 
-  const [suggested] = useSuggested();
+  const {data:suggested} = useSuggested();
   React.useEffect(() => {
     if (query === "") {
       setData(suggested);
@@ -61,7 +58,6 @@ export default function SearchUsersByUsername({ withFollowButton = true }) {
 
   const reset = () => {
     setQuery("");
-    // setData([]);
   };
 
   const navigation = useNavigation();
@@ -78,11 +74,12 @@ export default function SearchUsersByUsername({ withFollowButton = true }) {
   }, [query]);
 
   return (
-    <View style={styles.container}>
       <Autocomplete
-        containerStyle={styles.autocompleteContainer}
+        onStartShouldSetResponderCapture={() => Keyboard.dismiss()}
+        containerStyle={styles.container}
         inputContainerStyle={styles.inputContainer}
         listStyle={styles.list}
+        flatListProps={{contentContainerStyle: {paddingBottom: 100}}}
         data={data}
         defaultValue={query}
         keyExtractor={(item) => item._id}
@@ -104,7 +101,6 @@ export default function SearchUsersByUsername({ withFollowButton = true }) {
           />
         )}
       />
-    </View>
   );
 }
 
@@ -112,98 +108,45 @@ function CustomTextInput({ onChange, value, loading, onCancel }) {
   const theme = useTheme();
 
   return (
-    <View
-      style={{
-        flexDirection: "row",
-        alignItems: "center",
-        width: theme.windowWidth,
-        paddingRight: 10,
-      }}
-    >
-      <BackButton />
-
       <View
         style={{
-          flex: 1,
-          alignSelf: "center",
+          width: theme.windowWidth,
           paddingHorizontal: 20,
           flexDirection: "row",
-          justifyContent: "space-between",
-          backgroundColor: theme.bg,
-          borderRadius: 20,
           height: 38,
         }}
       >
         <TextInput
           style={{
-            flex: 1,
             color: theme.primary,
+            flex:1
           }}
           value={value}
           onChange={onChange}
           autoCorrect={false}
           keyboardAppearance={theme.theme}
-          // placeholderTextColor="#5d5d5d"
           placeholderTextColor={theme.iconDefault}
           placeholder="Find friends by username..."
           onSubmit={onCancel}
           autoFocus={true}
         />
-        {loading && <ActivityIndicator color={theme.primary} size="small" />}
+        {loading && <ActivityIndicator style={{alignSelf: 'flex-end'}} color={theme.primary} size="small" />}
       </View>
-    </View>
   );
 }
 
 const getStyles = (theme) =>
   StyleSheet.create({
     container: {
-      flex: 1,
-    },
-    autocompleteContainer: {
-      backgroundColor: "transparent",
-      flex: 1,
-      borderWidth: 0,
+      width: theme.windowWidth,
     },
     inputContainer: {
       borderWidth: 0,
     },
     list: {
       borderWidth: 0,
-      borderRadius: 5,
       backgroundColor: "transparent",
-      height: theme.windowHeight * 0.4,
+      height: theme.windowHeight - 50,
+      flexGrow: 1
     },
-    row: { flexDirection: "row", alignItems: "center" },
-    listItemImage: {
-      width: "5%",
-      height: 20,
-      resizeMode: "contain",
-      borderRadius: 2,
-    },
-    infoText: {
-      textAlign: "center",
-      fontSize: 16,
-    },
-    inputText: {
-      fontWeight: "normal",
-      backgroundColor: theme.inputBackground,
-      height: 38,
-      color: "#5d5d5d",
-      fontSize: 16,
-      borderRadius: 5,
-      paddingHorizontal: 10,
-      paddingVertical: 4.5,
-      marginTop: 7.5,
-    },
-    listItemTitle: {
-      fontSize: 15,
-      paddingTop: 5,
-      paddingBottom: 5,
-      paddingLeft: 5,
-      margin: 2,
-      color: theme.primary,
-    },
-    subtitle: { color: theme.iconDefault },
-    subsubtitle: { color: theme.purple },
   });

@@ -24,6 +24,9 @@ export default function SelectableUserAddNew({ size = 50 }) {
         margin: 5,
         flexDirection: "column",
         alignItems: "center",
+        // borderWidth: 1,
+          borderColor: theme.iconDefault,
+          // borderRadius: 5,
       }}
     >
       <View
@@ -33,8 +36,7 @@ export default function SelectableUserAddNew({ size = 50 }) {
           width: size,
           alignItems: "center",
           justifyContent: "center",
-          borderWidth: 1,
-          borderColor: theme.iconDefault
+          
         }}
       >
         <Feather name="plus" size={size / 1.5} color={theme.iconDefault} />

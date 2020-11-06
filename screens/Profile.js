@@ -1,50 +1,34 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { View, ScrollView, ActivityIndicator } from "react-native";
+import {Icon} from 'react-native-elements';
 import useTheme from "../hooks/useTheme";
 
 // Components
-import ProfileMainHeader from "../components/ProfileMainHeader";
-import ProfileSettings from "../components/ProfileSettings";
+import BackButton from '../components/Atomic/BackButton';
 import Screen from "../components/Wrappers/Screen";
 import FriendDetailsHeader from "../components/FriendDetailsHeader";
-import ProfileTabContent from "../components/ProfileTabContent";
+import {LibraryContent} from "./Tabs/Library/Library";
+import FollowUnfollowButton from "../components/Buttons/FollowUnfollowButton";
 
-// Actual Component
+
 export default function Profile({ navigation, route }) {
-  navigation.setOptions({
-    gestureResponseDistance: {
-      horizontal: 80,
-      vertical: 100,
-    },
-  });
   const { user } = route.params;
-  // const user = useSelector((state) => state.user);
+  const sessionUser = useSelector((state) => state.user);
   const theme = useTheme();
+  const isSessionUser = sessionUser._id === user._id;
 
-  const [showSettings, setShowSettings] = useState(false);
+  const renderHeaderRight = () => isSessionUser?<Icon containerStyle={{paddingHorizontal:15}} name="settings" type="feather" onPress={()=>navigation.navigate("Settings")} color={theme.iconDefault} />:<FollowUnfollowButton userId={user._id} />
+
+  navigation.setOptions({
+    headerTintColor: theme.primary,
+    headerRight:renderHeaderRight,
+    headerLeft:()=><BackButton />,
+  });
   return (
     <Screen fullscreen={true} center={true}>
-      <View
-        style={{
-          backgroundColor: theme.bg,
-          paddingTop: theme.topPad + 10,
-        }}
-      >
-        <ProfileMainHeader
-          user={user}
-          showSettings={showSettings}
-          setShowSettings={setShowSettings}
-        />
-
         <FriendDetailsHeader user={user} />
-      </View>
-
-      {showSettings ? (
-        <ProfileSettings user={user} theme={theme} />
-      ) : (
-        <ProfileTabContent userId={user._id} isSessionUser={true} />
-      )}
+        <LibraryContent user={user} />
     </Screen>
   );
 }
