@@ -18,7 +18,7 @@ export default function ThingCard({ thing, sizeDivider = 5 }) {
       onPress={() => navigation.navigate("Details", { thing })}
       activeOpacity={0.9}
       style={{
-        padding: 10,
+        padding: 5,
       }}
     >
       <View

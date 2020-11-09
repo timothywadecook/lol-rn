@@ -54,9 +54,8 @@ export default function VerticalThingList({
       showsVerticalScrollIndicator={false}
       keyExtractor={(item) => item._id}
       contentContainerStyle={{
-        alignItems: "center",
+        // maxWidth:theme.windowWidth,
         alignSelf: "center",
-        paddingBottom: 100,
         paddingTop: topPad,
       }}
     />
@@ -77,9 +76,7 @@ export default function VerticalThingList({
       onEndReached={fetchMore}
       loading={loading}
       contentContainerStyle={{
-        width: theme.windowWidth,
-        alignItems: "center",
-        paddingBottom: 100,
+        // maxWidth:theme.windowWidth,
         paddingTop: topPad,
       }}
     />

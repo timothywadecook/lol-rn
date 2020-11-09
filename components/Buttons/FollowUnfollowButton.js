@@ -33,14 +33,4 @@ export default function FollowUnfollowButton({ userId }) {
     type="clear"
     />
   )
-
-  return (
-    <SubmitButton
-      style={{ paddingVertical: 5, paddingHorizontal: 10 }}
-      isProcessing={processing}
-      onPress={() => toggleFollowing(userId)}
-      intent={sessionUserFollowing.includes(userId) ? "info" : "primary"}
-      title={sessionUserFollowing.includes(userId) ? "Following" : "Follow"}
-    />
-  );
 }

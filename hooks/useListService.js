@@ -1,11 +1,14 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 
 export default function useListService(
   service,
   params,
   dependancies = [],
-  alwaysMounted = false
+  alwaysMounted = false,
+  successAction = null
 ) {
+  const dispatch = useDispatch();
   const isMounted = React.useRef(true);
   const [data, setData] = React.useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
@@ -14,12 +17,6 @@ export default function useListService(
   const [total, setTotal] = React.useState(0);
 
   const refresh = async () => {
-    console.log(
-      "here in useListService for",
-      service.name,
-      isMounted.current,
-      !refreshing
-    );
     if (isMounted.current && !refreshing) {
       setRefreshing(true);
       try {
@@ -31,6 +28,9 @@ export default function useListService(
           },
         });
         if (isMounted.current) {
+          if (successAction) {
+            dispatch(successAction(datadata.data));
+          }
           setData(datadata.data);
           setMoreAvailable(datadata.total > datadata.data.length);
           setTotal(datadata.total);
@@ -60,6 +60,9 @@ export default function useListService(
           },
         });
         if (isMounted.current) {
+          if (successAction) {
+            dispatch(successAction(datadata.data));
+          }
           setData([...data, ...datadata.data]);
           setMoreAvailable(datadata.total > datadata.skip);
         }

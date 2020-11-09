@@ -1,6 +1,7 @@
 import React from "react";
-import { View, Switch, ScrollView, Button, TextInput } from "react-native";
+import { View, Switch, ScrollView, TextInput } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
+import {Button} from 'react-native-elements';
 import IconButtons from "../components/Buttons/IconButtons";
 import SubmitButton from "../components/Buttons/SubmitButton";
 
@@ -31,17 +32,6 @@ export default function CreateOrEditList({ navigation, route }) {
   const [name, setName] = React.useState("");
   const [isPrivate, setIsPrivate] = React.useState(false);
   const [participants, setParticipants] = React.useState([sessionUserId]);
-
-  const ifEditMode = () => {
-    if (isEdit) {
-      setName(list.name);
-      setIsPrivate(list.isPrivate);
-      setParticipants(list.participants);
-    } else {
-      setIsPrivate(false);
-    }
-  };
-  React.useEffect(ifEditMode, []);
 
   const isParticipant = (userId) => participants.includes(userId);
 
@@ -92,10 +82,41 @@ export default function CreateOrEditList({ navigation, route }) {
     navigation.goBack();
   };
 
+  const onDeleteList = async () => {
+    try {
+      listsService.remove(list._id);
+      dispatch(removeDeletedList(list._id));
+      navigation.goBack();
+    } catch (error) {
+      console.log("Error onDeleteList for listId", list, error);
+    }
+  };
+
+  const DeleteButton = () => (<Button 
+    onPress={onDeleteList}
+    title={"Delete"}
+    titleStyle={{color:theme.red, paddingHorizontal: 15}}
+    type="clear"
+    />)
+
+
+  const ifEditMode = () => {
+    if (isEdit) {
+      navigation.setOptions({title: 'Edit Collection', headerRight: ()=><DeleteButton />})
+      setName(list.name);
+      setIsPrivate(list.isPrivate);
+      setParticipants(list.participants);
+    } else {
+      navigation.setOptions({title: 'New Collection'})
+      setIsPrivate(false);
+    }
+  };
+  React.useEffect(ifEditMode, []);
+
+
   return (
-    <Screen center={true}>
-      <EditListHeader isEditMode={isEdit} list={list} />
-      <EditName name={name} setName={setName} />
+    <Screen fullscreen={true} center={true}>
+      <EditName isEdit={isEdit} name={name} setName={setName} />
       <ToggleIsPrivate
         isPrivate={isPrivate}
         toggleIsPrivate={() => setIsPrivate((prev) => !prev)}
@@ -115,30 +136,6 @@ export default function CreateOrEditList({ navigation, route }) {
   );
 }
 
-function EditListHeader({ isEditMode, list }) {
-  const theme = useTheme();
-  const dispatch = useDispatch();
-  const navigation = useNavigation();
-  const onDeleteList = async () => {
-    try {
-      listsService.remove(list._id);
-      dispatch(removeDeletedList(list._id));
-      navigation.goBack();
-    } catch (error) {
-      console.log("Error onDeleteList for listId", list, error);
-    }
-  };
-
-  return (
-    <WindowWidthRow pad={true}>
-      <BackButton noLeftMargin={true} />
-      <T.H1>{isEditMode ? "Edit List" : "Create List"}</T.H1>
-      <View style={{ flex: 1 }}></View>
-      {isEditMode && <SubmitButton title="Delete" onPress={onDeleteList} />}
-    </WindowWidthRow>
-  );
-}
-
 function EditListFooter({ show, onSubmit, processing }) {
   const theme = useTheme();
   return (
@@ -147,7 +144,7 @@ function EditListFooter({ show, onSubmit, processing }) {
         <SubmitButton
           isProcessing={processing}
           intent="primary"
-          title="Save List"
+          title="Save"
           onPress={onSubmit}
         />
       </View>
@@ -155,12 +152,13 @@ function EditListFooter({ show, onSubmit, processing }) {
   );
 }
 
-function EditName({ name, setName }) {
+function EditName({ name, setName, isEdit }) {
   const theme = useTheme();
+  
   return (
     <View style={{ width: theme.contentWidth }}>
       <View style={{ paddingTop: 30, paddingBottom: 15 }}>
-        <T.H2G>List Name</T.H2G>
+        <T.H2G>Collection Name</T.H2G>
       </View>
 
       <View
@@ -180,7 +178,7 @@ function EditName({ name, setName }) {
           placeholderTextColor="#A8A8A8"
           value={name}
           onChangeText={(text) => setName(text)}
-          autoFocus={!name}
+          autoFocus={!isEdit}
           // style={[styles.textInput, { minHeight: 60, marginTop: 15 }]}
           autoCorrect={true}
           underlineColorAndroid="transparent"
@@ -198,7 +196,7 @@ function ToggleIsPrivate({ isPrivate, toggleIsPrivate }) {
   return (
     <View style={{ width: theme.contentWidth }}>
       <View style={{ paddingTop: 30, paddingBottom: 15 }}>
-        <T.H2G>Secret List</T.H2G>
+        <T.H2G>Keep it Secret?</T.H2G>
       </View>
 
       <Switch value={isPrivate} onValueChange={toggleIsPrivate} />

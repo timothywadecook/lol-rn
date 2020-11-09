@@ -26,7 +26,7 @@ export default function useVisibleLists(userId) {
       (listId) =>
         state.lists[listId].participants.includes(userId) &&
         state.lists[listId].participants.includes(sessionUserId) &&
-        state.lists[listId].isPrivate
+        state.lists[listId].isPrivate && (sessionUserId === userId || !!state.lists[listId].things.length)
     )
   );
 
@@ -34,7 +34,7 @@ export default function useVisibleLists(userId) {
     Object.keys(state.lists).filter(
       (listId) =>
         state.lists[listId].participants.includes(userId) &&
-        !state.lists[listId].isPrivate
+        !state.lists[listId].isPrivate && (sessionUserId === userId || !!state.lists[listId].things.length)
     )
   );
 

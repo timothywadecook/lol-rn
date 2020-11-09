@@ -6,7 +6,6 @@ import useTheme from "../../hooks/useTheme";
 import TabBarIcon from "../../components/Atomic/TabBarIcon";
 import Home from "./Home/Home";
 import Browse from "./Browse/Browse";
-import OurLibrary from "./OurLibrary/OurLibrary";
 import Library from "./Library/Library";
 
 
@@ -58,17 +57,6 @@ export default function _Tabs() {
           ),
         }}
       />
-      {/* <Tabs.Screen
-        name="Network"
-        component={OurLibrary}
-        options={{
-          title: "Network",
-          tabBarLabel: "Library",
-          tabBarIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="bookmark" />
-          ),
-        }}
-      /> */}
       <Tabs.Screen
         name="Library"
         component={Library}

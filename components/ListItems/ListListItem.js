@@ -15,6 +15,7 @@ import { useNavigation } from "@react-navigation/native";
 import {
   TouchableWithoutFeedback,
   FlatList,
+  TouchableOpacity,
 } from "react-native-gesture-handler";
 import { listsService } from "../../services/feathersClient";
 import useUser from "../../hooks/useUser";
@@ -181,6 +182,7 @@ export function ParticipantsIcon({ participants, size = 50 }) {
     >
       {otherUsers.map((user, i) => (
         <ParticipantAvatar
+          key={user._id}
           size={size}
           participantId={user}
           style={{
@@ -209,15 +211,17 @@ export function ParticipantsRow({ participants }) {
   );
 }
 
-export function ParticipantAvatar({ participantId, style, size }) {
+export function ParticipantAvatar({ participantId, style, size, linkToProfile=false }) {
   const user = useUser(participantId);
+  const navigation= useNavigation();
+  const onPress = ()=> linkToProfile?navigation.navigate('Profile', {user}):null;
   return (
-    <View style={style}>
+    <TouchableOpacity onPress={onPress} activeOpacity={0.9} style={style}>
       <Avatar
         size={size}
         style={{ marginHorizontal: 4, backgroundColor: "transparent" }}
         user={user}
       />
-    </View>
+    </TouchableOpacity>
   );
 }

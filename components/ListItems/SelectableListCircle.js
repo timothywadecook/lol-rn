@@ -16,6 +16,7 @@ function SelectableCircle({ selected, onPress, size = 50, children }) {
   return (
     <TouchableOpacity
       onPress={onPress}
+      activeOpacity={0.9}
       style={{
         padding: 5,
         margin: 5,
@@ -45,24 +46,21 @@ function MyList({ listId, canCreate, size = 50, onPress, selected, withName = fa
 
   const list = useSelector((state) => state.lists[listId]);
   const { name, isPrivate, participants, things } = list;
-
-  if (!things.length && !canCreate) {
-    return null;
-  }
+  console.log('list name for avatar =', name)
 
   const { data } = useListService(thingsService, {
-    _id: { $in: things.length && things },
-  });
+    _id: { $in: things },
+  }, [things]);
 
   return (
     <View style={{alignItems: "center"}}>
     <SelectableCircle size={size} selected={selected} onPress={onPress}>
-      {selected ? (
+      {!data.length ? (
         <T.Title style={{ color: theme.purple }}>{name[0]}</T.Title>
       ) : (
         <Image
           placeholderStyle={{ backgroundColor: theme.iconBg }}
-          source={{ uri: data.length ? data[0].image : "null" }}
+          source={{ uri: data[0].image}}
           style={{ width: size, height: size }}
         />
       )}

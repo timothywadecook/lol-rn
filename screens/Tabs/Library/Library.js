@@ -1,10 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
-import { View, FlatList, ScrollView } from "react-native";
-import { Icon, ListItem, Button } from "react-native-elements";
-import SingleFilterButtonSpan from "../../../components/SingleFilterButtonSpan";
-import { thingsService } from "../../../services/feathersClient";
-import WindowWidthRow from "../../../components/Wrappers/WindowWidthRow";
+import {useNavigation} from '@react-navigation/native';
+import { ScrollView } from "react-native";
+import { ListItem, Button } from "react-native-elements";
 import * as T from "../../../components/Atomic/StyledText";
 
 import useTheme from "../../../hooks/useTheme";
@@ -24,14 +22,15 @@ export default function Library({ navigation, route }) {
   const sessionUser = useSelector(state=>state.user)
   return (
     <Screen fullscreen={true}>
-      <LibraryContent user={sessionUser}/>
+      <LibraryContent isSessionUserLibrary={true} user={sessionUser}/>
     </Screen>
   );
 }
 
 // Also used for profiles with user prop
-export function LibraryContent({ user }) {
+export function LibraryContent({ user, isSessionUserLibrary=false}) {
   const theme = useTheme();
+  const navigation = useNavigation()
   const [privateListIds, publicListIds] = useVisibleLists(user._id);
   const lists = useSelector((state) => state.lists);
   const listIds = [...privateListIds, ...publicListIds];
@@ -40,30 +39,29 @@ export function LibraryContent({ user }) {
   const myListIds = listIds.filter((listId) => !isSharedList(lists[listId]));
 
   return (
-
 <ScrollView
       contentContainerStyle={{ paddingBottom: 20, width: theme.windowWidth }}
       showsVerticalScrollIndicator={false}
     >
     <HorizontalRecommendedList userId={user._id} />
       <SectionHeader title="Collections">
-        <Button
+        {isSessionUserLibrary && <Button
+          onPress={()=>navigation.navigate('CreateOrEditList')}
           title="New Collection"
           type="clear"
           titleStyle={{ color: theme.purple }}
-        />
+        />}
       </SectionHeader>
       {myListIds.map((id, i) => (
         <ListItem
+          onPress={()=>navigation.navigate('Collection', {listId: id})}
           containerStyle={{
             backgroundColor: "transparent",
             borderBottomColor: theme.iconDefault,
           }}
           key={id}
-          // bottomDivider={i !== myListIds.length - 1}
-          // bottomDivider={true}
         >
-          <SelectableListCircle.MyList listId={id} canCreate={true} />
+          <SelectableListCircle.MyList listId={id} canCreate={isSessionUserLibrary} />
           <ListItem.Content>
             <ListItem.Title style={{ color: theme.primary }}>
               {lists[id].name}
@@ -76,12 +74,12 @@ export function LibraryContent({ user }) {
 
       {sharedListIds.map((id, i) => (
         <ListItem
+        onPress={()=>navigation.navigate('Collection', {listId: id})}
           containerStyle={{
             backgroundColor: "transparent",
             borderBottomColor: theme.iconDefault,
           }}
           key={id}
-          // bottomDivider={i !== sharedListIds.length - 1}
         >
           <ParticipantsIcon participants={lists[id].participants} />
           <ListItem.Content>

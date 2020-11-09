@@ -17,7 +17,7 @@ export default function UserListItem({
   const navigation = useNavigation();
   
   const openFriendDetails = () => {
-      navigation.navigate("Profile", { user });
+      navigation.push("Profile", { user });
   };
 
   return (

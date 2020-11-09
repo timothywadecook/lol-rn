@@ -18,7 +18,11 @@ import SearchUsers from "./screens/SearchUsers";
 import Create from "./screens/Create";
 import AddToCollections from "./screens/AddToCollections";
 import ThingDetails from "./screens/ThingDetails";
+import Following from './screens/Following';
+import Followers from './screens/Followers';
 import Profile from "./screens/Profile";
+import Collection from './screens/Collection';
+import Settings from './screens/Settings';
 import Tabs from "./screens/Tabs";
 // Actions
 import { login, setAppIsReady } from "./store/userSlice";
@@ -118,6 +122,10 @@ function AuthStackScreen() {
       <SharedStack.Screen name="Create" component={Create} options={nonHomescreenOptions} />
       <SharedStack.Screen name="Search Users" component={SearchUsers} options={nonHomescreenOptions} />
       <SharedStack.Screen name="Details" component={ThingDetails} options={nonHomescreenOptions} />
+      <SharedStack.Screen name="Settings" component={Settings} options={nonHomescreenOptions} />
+      <SharedStack.Screen name="Following" component={Following} options={nonHomescreenOptions} />
+      <SharedStack.Screen name="Followers" component={Followers} options={nonHomescreenOptions} />
+      <SharedStack.Screen name="Collection" component={Collection} options={nonHomescreenOptions} />
       <SharedStack.Screen
         name="AddToCollections"
         component={AddToCollections}

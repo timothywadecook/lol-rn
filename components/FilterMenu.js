@@ -104,7 +104,6 @@ const keyExtractor = (item) => item._id;
 
 function ListSelectableUsersWithUnreadCountAndAddNew() {
   const following = useSelector((state) => state.follows.following);
-  console.log("following is ids ?");
 
   const [userList, setUserList] = React.useState([]);
   React.useEffect(() => {
